@@ -8,12 +8,10 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 module.exports = {
   mode: isDevelopment ? 'development' : 'production',
   entry: './src/index.tsx',
-  devServer: {
-    hot: true,
-  },
+  devServer: {},
   target: 'web',
   output: {
-    filename: 'bundle.[hash].js',
+    filename: 'bundle.[fullhash].js',
     path: path.resolve(__dirname, 'dist'),
   },
   plugins: [
