@@ -5,9 +5,6 @@ This is a basic **Typescript** <img src="public/images/icons8-typescript-20.png"
 
 The main idea is taken from [here](https://dev.to/riddhiagrawal001/create-react-app-without-create-react-app-typescript-5ea2) and a few additions have been made to it.
 
-* Quick summary
-* Version
-
 ## How do I get set up?
 
 ### Summary of set up
@@ -48,8 +45,6 @@ After cloning this project the following steps are needed to start coding:
 > * react-refresh
 > * @pmmmwh/react-refresh-webpack-plugin
 
-* How to run tests
-* Deployment instructions
 
 ## Useful links
 
@@ -61,28 +56,32 @@ Check its main page [here](https://babeljs.io/docs/en/index.html)
 
 #### Presets
 * **@babel/core**: I couldn't find any documentation that explans this preset. I think it is needed to run babel
-* [@babel/preset-env](https://babeljs.io/docs/en/babel-preset-env)
-* [@babel/preset-react](https://babeljs.io/docs/en/babel-preset-react)
+* [@babel/preset-env](https://babeljs.io/docs/en/babel-preset-env): allows to use the latest JavaScript without needing to manage which syntax transforms are needed by your target environment
+* [@babel/preset-react](https://babeljs.io/docs/en/babel-preset-react): includes the following plugins:
+> * [@babel/plugin-syntax-jsx](https://www.npmjs.com/package/@babel/plugin-syntax-jsx): allows babel to understand JSX syntax
+> * [@babel/plugin-transform-react-jsx](https://www.npmjs.com/package/@babel/plugin-transform-react-jsx): compiles JSX into JavaScript
+> * [@babel/plugin-transform-react-display-name](https://www.npmjs.com/package/@babel/plugin-transform-react-display-name): add a displayName to React.createClass calls
+> * [@babel/plugin-transform-react-jsx-self](https://www.npmjs.com/package/@babel/plugin-transform-react-jsx-self): add a __self prop to all JSX elements
+> * [@babel/plugin-transform-react-jsx-source](https://www.npmjs.com/package/@babel/plugin-transform-react-jsx-source): add a __source prop to all JSX elements
+
 * [@babel/preset-typescript](https://babeljs.io/docs/en/babel-preset-typescript)
 ### <img src="public/images/icons8-webpack-48.png"/> Webpack
 * webpack
 * webpack-cli
 > ##### Loaders
-> * babel-loader
-> * file-loader
-> * style-loader
-> * css-loader
-> * sass-loader
+> * [babel-loader](https://www.npmjs.com/package/babel-loader): allows transpiling javascript using Babel and Webpack
+> * [file-loader](https://www.npmjs.com/package/file-loader): emits the file in the output directory and resolves the correct URL to reference it
+> * [style-loader](https://www.npmjs.com/package/style-loader): inject CSS into DOM
+> * [css-loader](https://www.npmjs.com/package/css-loader): interpret the @import and url() like import/require() and will resolve them
+> * [sass-loader](https://www.npmjs.com/package/sass-loader): load a SASS/SCSS file and compiles it to CSS
 > ##### Hot reload
-> * webpack-dev-server
-> * html-webpack-plugin
-> * react-refresh
-> * @pmmmwh/react-refresh-webpack-plugin
+> * [webpack-dev-server](https://www.npmjs.com/package/webpack-dev-server): use webpack with a development server that provides hot reloading
+> * [html-webpack-plugin](https://www.npmjs.com/package/html-webpack-plugin): plugin that simplifies the creation of HTML files to serve your bundles
+> * [react-refresh](https://www.npmjs.com/package/react-refresh): implements all the wiring necessary to integrate fast refresh to bundlers. Fast refresh is a feature that lets you edit a React component on a running application without losing their state.
+> * [@pmmmwh/react-refresh-webpack-plugin](https://www.npmjs.com/package/@pmmmwh/react-refresh-webpack-plugin): plugin needed to enable react-refresh
 
 
-* Writing tests
-* Code review
-* Other guidelines
+### Webpack configuration explained
 
 ### Who do I talk to? ###
 
