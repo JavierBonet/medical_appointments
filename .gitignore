@@ -5,6 +5,8 @@ dist/
 # Log files
 *.log
 
+.vscode
+
 # Large media files
 *.mp4
 *.tiff
