@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
-    <nav>
-      <Link to="/hospitals">Hospitals</Link> {' | '}
-      <Link to="/doctors">Doctors</Link>
+    <nav className="navigation-header">
+      <Link to="/admin"> {'Admin >'}</Link>
     </nav>
   );
 };

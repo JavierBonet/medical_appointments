@@ -1,4 +1,30 @@
-.general-container {
+$siteBackgroundColor: #e3f2fd;
+$navBarBackgroundColor: #1a759f;
+
+* {
+  font-family: 'Montserrat';
+}
+
+body {
+  margin: 0;
+  background-color: $siteBackgroundColor;
+}
+
+.general-container,
+.section-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.navigation-header {
+  background-color: $navBarBackgroundColor;
+  color: white;
+  font-size: 30px;
+  padding: 20px;
+  text-align: center;
+  a {
+    color: white;
+    text-decoration: none;
+  }
 }

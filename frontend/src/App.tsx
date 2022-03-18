@@ -3,10 +3,12 @@ import Header from './components/commons/Header';
 
 function App() {
   return (
-    <div className="general-container">
+    <>
       <Header />
-      <h1>BASIC PROJECT</h1>
-    </div>
+      <div className="general-container">
+        <h1>BASIC PROJECT</h1>
+      </div>
+    </>
   );
 }
 
