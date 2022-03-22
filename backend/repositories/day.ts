@@ -1,4 +1,4 @@
-import { FindOptions, InferAttributes } from 'sequelize';
+import { FindOptions, InferAttributes, ValidationError } from 'sequelize';
 import Day, { Attributes, CreationAttributes } from '../db/models/day';
 import { HourRange } from './hourRange';
 
@@ -35,8 +35,18 @@ const DayRepository = {
   updateDay: function updateDay(id: number, day: Attributes) {
     return DayRepository.getDayById(id).then((previousDay) => {
       if (previousDay) {
-        previousDay.update(day);
-        return { message: `Day ${id} updated successfully` };
+        return previousDay
+          .update(day)
+          .then((_) => ({ message: `Day ${id} updated successfully` }))
+          .catch((err: Error) => {
+            let message;
+            if (err instanceof ValidationError && err.errors) {
+              message = err.errors.map((error) => error.message).join('\n');
+            } else {
+              message = err.message;
+            }
+            throw { message };
+          });
       } else {
         return { message: `Unable to find day ${id}` };
       }

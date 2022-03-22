@@ -6,7 +6,7 @@ function App() {
     <>
       <Header />
       <div className="general-container">
-        <h1>BASIC PROJECT</h1>
+        <h1>Medical appointments web site</h1>
       </div>
     </>
   );

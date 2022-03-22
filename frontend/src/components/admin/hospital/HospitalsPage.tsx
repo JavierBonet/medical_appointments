@@ -1,30 +1,49 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { deleteHospital, getHospitals } from '../../../api/hospitals';
+import CustomLoader from '../../commons/CustomLoader';
 import HospitalsList from './HospitalsList';
 
 const HospitalsPage = () => {
-  const [hospitals, setHospitals] = useState([
-    { name: 'asd', address: 'asafswef', phone: '2131634712', zip_code: 2000 },
-  ] as Hospital[]);
+  const [_hospitals, setHospitals] = useState([] as Hospital[]);
+  const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if (hospitals.length == 0) {
-  //     // Obtener los hospitales por medio de la api
-  //   }
-  // }, [hospitals]);
+  useEffect(() => {
+    if (_hospitals.length == 0) {
+      setLoading(true);
+      getHospitals()
+        .then((hospitals) => {
+          setLoading(false);
+          setHospitals(hospitals);
+        })
+        .catch((errorMessage) => {
+          setLoading(false);
+          toast.error(errorMessage);
+        });
+    }
+  }, [_hospitals]);
+
+  function deleteHandler(id: number) {
+    deleteHospital(id)
+      .then((message) => {
+        const hospitals = _hospitals.filter((hospital) => hospital.id != id);
+        setHospitals(hospitals);
+        toast.success(message);
+      })
+      .catch((errorMessage) => toast.error(errorMessage));
+  }
 
   return (
     <div className="section-container">
       <h1>Hospitals</h1>
-      <HospitalsList hospitals={hospitals} />
-      {/* Botón para crear hospital */}
+      <HospitalsList hospitals={_hospitals} deleteHandler={deleteHandler} />
+      <CustomLoader loading={loading} />
+      <Link className="create-button" to="../hospital">
+        New hospital
+      </Link>
     </div>
   );
 };
-
-/**
- * Acá tengo que guardar info sobre los hospitales,
- * mostrar la lista de hospitales y tener un botón
- * que lleve a una vista para crear un hospital
- */
 
 export default HospitalsPage;

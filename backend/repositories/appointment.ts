@@ -1,4 +1,4 @@
-import { FindOptions, InferAttributes, NonNullFindOptions } from 'sequelize';
+import { FindOptions, InferAttributes, ValidationError } from 'sequelize';
 import Appointment, {
   Attributes,
   CreationAttributes,
@@ -43,8 +43,20 @@ const AppointmentRepository = {
     return AppointmentRepository.getAppointmentById(id).then(
       (previousAppointment) => {
         if (previousAppointment) {
-          previousAppointment.update(appointment);
-          return { message: `Appointment ${id} updated successfully` };
+          return previousAppointment
+            .update(appointment)
+            .then((_) => ({
+              message: `Appointment ${id} updated successfully`,
+            }))
+            .catch((err: Error) => {
+              let message;
+              if (err instanceof ValidationError && err.errors) {
+                message = err.errors.map((error) => error.message).join('\n');
+              } else {
+                message = err.message;
+              }
+              throw { message };
+            });
         } else {
           return { message: `Unable to find appointment ${id}` };
         }

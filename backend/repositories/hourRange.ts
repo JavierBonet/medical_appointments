@@ -1,4 +1,4 @@
-import { FindOptions, InferAttributes } from 'sequelize';
+import { FindOptions, InferAttributes, ValidationError } from 'sequelize';
 import HourRange, {
   Attributes,
   CreationAttributes,
@@ -38,8 +38,18 @@ const HourRangeRepository = {
     return HourRangeRepository.getHourRangeById(id).then(
       (previousHourRange) => {
         if (previousHourRange) {
-          previousHourRange.update(hourRange);
-          return { message: `Hour range ${id} updated successfully` };
+          return previousHourRange
+            .update(hourRange)
+            .then((_) => ({ message: `Hour range ${id} updated successfully` }))
+            .catch((err: Error) => {
+              let message;
+              if (err instanceof ValidationError && err.errors) {
+                message = err.errors.map((error) => error.message).join('\n');
+              } else {
+                message = err.message;
+              }
+              throw { message };
+            });
         } else {
           return { message: `Unable to find hour range ${id}` };
         }

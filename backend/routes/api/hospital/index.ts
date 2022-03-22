@@ -35,7 +35,7 @@ const Router = {
           }
         })
         .catch((err: Error) => {
-          res.status(400).send(err.message).end();
+          res.status(400).send({ message: err.message }).end();
         });
     });
 
@@ -58,7 +58,7 @@ const Router = {
           res.send(data.message).end();
         })
         .catch((err: Error) => {
-          res.status(400).send(err.message).end();
+          res.status(400).send({ message: err.message }).end();
         });
     });
 

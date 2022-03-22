@@ -1,9 +1,4 @@
-import {
-  DataTypes,
-  FindOptions,
-  InferAttributes,
-  NonNullFindOptions,
-} from 'sequelize';
+import { FindOptions, InferAttributes, ValidationError } from 'sequelize';
 import Calendar, {
   Attributes,
   CreationAttributes,
@@ -44,8 +39,18 @@ const CalendarRepository = {
   updateCalendar: function updateCalendar(id: number, calendar: Attributes) {
     return CalendarRepository.getCalendarById(id).then((previousCalendar) => {
       if (previousCalendar) {
-        previousCalendar.update(calendar);
-        return { message: `Calendar ${id} updated successfully` };
+        return previousCalendar
+          .update(calendar)
+          .then((_) => ({ message: `Calendar ${id} updated successfully` }))
+          .catch((err: Error) => {
+            let message;
+            if (err instanceof ValidationError && err.errors) {
+              message = err.errors.map((error) => error.message).join('\n');
+            } else {
+              message = err.message;
+            }
+            throw { message };
+          });
       } else {
         return { message: `Unable to find calendar ${id}` };
       }

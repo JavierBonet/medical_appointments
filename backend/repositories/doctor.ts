@@ -1,4 +1,9 @@
-import { FindOptions, InferAttributes, NonNullFindOptions } from 'sequelize';
+import {
+  FindOptions,
+  InferAttributes,
+  NonNullFindOptions,
+  ValidationError,
+} from 'sequelize';
 import Doctor, { Attributes, CreationAttributes } from '../db/models/doctor';
 
 const DoctorRepository = {
@@ -34,8 +39,18 @@ const DoctorRepository = {
   updateDoctor: function updateDoctor(id: number, doctor: Attributes) {
     return DoctorRepository.getDoctorById(id).then((previousDoctor) => {
       if (previousDoctor) {
-        previousDoctor.update(doctor);
-        return { message: `Doctor ${id} updated successfully` };
+        return previousDoctor
+          .update(doctor)
+          .then((_) => ({ message: `Doctor ${id} updated successfully` }))
+          .catch((err: Error) => {
+            let message;
+            if (err instanceof ValidationError && err.errors) {
+              message = err.errors.map((error) => error.message).join('\n');
+            } else {
+              message = err.message;
+            }
+            throw { message };
+          });
       } else {
         return { message: `Unable to find doctor ${id}` };
       }

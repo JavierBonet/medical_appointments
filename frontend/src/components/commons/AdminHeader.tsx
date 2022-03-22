@@ -1,21 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const activeStyle = { fontWeight: 'bold' };
 
 const AdminHeader = () => {
   return (
     <nav className="navigation-header">
-      <Link
-        to="/"
-        className={({ isActive: boolean }) => (isActive ? activeStyle : {})}
-      >
-        Home
-      </Link>{' '}
+      <NavLink to="/">{'< Home'}</NavLink>
       {' | '}
-      <Link to="/admin">Admin</Link> {' | '}
-      <Link to="hospitals">Hospitals</Link> {' | '}
-      <Link to="doctors">Doctors</Link>
+      <NavLink
+        to="hospitals"
+        className={({ isActive }) => (isActive ? 'active-link' : '')}
+      >
+        Hospitals
+      </NavLink>{' '}
+      {' | '}
+      <NavLink
+        to="doctors"
+        className={({ isActive }) => (isActive ? 'active-link' : '')}
+      >
+        Doctors
+      </NavLink>
     </nav>
   );
 };
