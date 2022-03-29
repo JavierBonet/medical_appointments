@@ -6,7 +6,9 @@ const AdminPage = () => {
   return (
     <>
       <AdminHeader />
-      <Outlet />
+      <main>
+        <Outlet />
+      </main>
     </>
   );
 };

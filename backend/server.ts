@@ -1,8 +1,7 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 import { createRouter } from './routes';
-import { GeneralRouterConfig, RouterConfig } from './types/global';
-const listEndpoints = require('express-list-endpoints');
+import { GeneralRouterConfig } from './types/global';
 
 export interface ServerInterface {
   init: (config: GeneralRouterConfig, port?: number) => void;
@@ -25,7 +24,6 @@ const Server: ServerInterface = {
     _app.use(cors(corsOptions));
     const router = createRouter(config.routerConfig);
     _app.use(router);
-    console.log(listEndpoints(_app));
 
     _port = port;
   },

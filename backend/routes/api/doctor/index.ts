@@ -1,5 +1,6 @@
 import { Router as ExpressRouter } from 'express';
 import { Appointment } from '../../../repositories/appointment';
+import { Calendar } from '../../../repositories/calendar';
 import {
   Doctor,
   DoctorRepositoryInterface,
@@ -39,7 +40,7 @@ const Router = {
     _router.get('/:doctorId', (req, res) => {
       const doctorId = parseInt(req.params.doctorId);
       _doctorsRepository
-        .getDoctorById(doctorId)
+        .getDoctorById(doctorId, { include: Calendar })
         .then((doctor) => {
           if (doctor) {
             res.send(doctor).end();

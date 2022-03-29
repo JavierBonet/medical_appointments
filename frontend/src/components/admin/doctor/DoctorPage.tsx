@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link, Outlet } from 'react-router-dom';
 import { getDoctor, saveDoctor } from '../../../api/doctors';
 import { toast } from 'react-toastify';
 import DoctorForm from './DoctorForm';
 import CustomLoader from '../../commons/CustomLoader';
+import CalendarsPage from './calendar/CalendarsPage';
 
 const initialDoctor: OptionalDoctor = {
   name: '',
   surname: '',
   age: 0,
   speciality: '',
+  Calendars: [],
 };
 
 const DoctorPage = () => {
@@ -19,7 +21,7 @@ const DoctorPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const doctorId = params.id;
+    const doctorId = params.doctorId;
 
     if (doctorId) {
       setLoading(true);
@@ -53,20 +55,29 @@ const DoctorPage = () => {
 
   return (
     <div className="section-container">
-      {loading ? (
+      {params.calendarId ? (
+        <Outlet />
+      ) : loading ? (
         <>
           <h1>Loading...</h1>
           <CustomLoader loading={loading} />
         </>
       ) : (
-        <>
-          <h1>{doctor ? `${doctor.name}` : 'New doctor'}</h1>
-          <DoctorForm
-            doctor={doctor}
-            changeHandler={changeHandler}
-            saveHandler={saveHandler}
-          />
-        </>
+        <div className="two-columns">
+          <div className="first-column">
+            <h1>
+              {doctor.name ? `${doctor.name} ${doctor.surname}` : 'New doctor'}
+            </h1>
+            <DoctorForm
+              doctor={doctor}
+              changeHandler={changeHandler}
+              saveHandler={saveHandler}
+            />
+          </div>
+          <div className="second-column">
+            <Outlet />
+          </div>
+        </div>
       )}
     </div>
   );

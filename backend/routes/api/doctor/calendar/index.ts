@@ -23,13 +23,17 @@ const Router = {
     _router.use('/:calendarId/days', daysRouter);
 
     _router.get('/', (req: Request<{ doctorId: string }>, res) => {
+      const doctorId = parseInt(req.params.doctorId);
       _calendarsRepository
         .getAll({
+          where: { doctorId: doctorId },
           include: [
             {
               model: Day,
               include: [HourRange],
             },
+            Doctor,
+            Hospital,
           ],
         })
         .then((calendars: Calendar[]) => {

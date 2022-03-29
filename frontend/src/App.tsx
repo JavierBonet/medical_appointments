@@ -5,9 +5,9 @@ function App() {
   return (
     <>
       <Header />
-      <div className="general-container">
+      <main className="general-container">
         <h1>Medical appointments web site</h1>
-      </div>
+      </main>
     </>
   );
 }

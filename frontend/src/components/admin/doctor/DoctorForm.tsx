@@ -10,7 +10,7 @@ interface PropsInterface {
 
 const DoctorForm = ({ doctor, changeHandler, saveHandler }: PropsInterface) => {
   return (
-    <Form onSubmit={() => saveHandler()}>
+    <Form onSubmit={() => saveHandler()} className="form">
       <Form.Field>
         <InputField
           label="Name"

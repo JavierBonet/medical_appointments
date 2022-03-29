@@ -19,7 +19,7 @@ const HospitalPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const hospitalId = params.id;
+    const hospitalId = params.hospitalId;
 
     if (hospitalId) {
       setLoading(true);
@@ -60,7 +60,7 @@ const HospitalPage = () => {
         </>
       ) : (
         <>
-          <h1>{hospital ? `${hospital.name}` : 'New hospital'}</h1>
+          <h1>{hospital.name ? `${hospital.name}` : 'New hospital'}</h1>
           <HospitalForm
             hospital={hospital}
             changeHandler={changeHandler}
