@@ -22,7 +22,7 @@ const DoctorsPage = () => {
           toast.error(errorMessage);
         });
     }
-  }, [_doctors]);
+  }, []);
 
   function deleteHandler(id: number) {
     deleteDoctor(id)
