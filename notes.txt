@@ -1,0 +1,44 @@
+References:
+  - Days' configuration: information that one can obtain from:
+    · The calendar
+      · Its hour ranges
+        · Its days
+
+Pending:
+  - Admin side:
+    - Save the hour ranges (and therefore, the days) that the user have configured (ConfigureDays.tsx)
+      - Decide which is the factor that indicates when to create an hour range / day and when to update it:
+        How to decide:
+          - If a day has the id field with a value, the update the day and
+            - If the hour range has the id field with a value, the update the hour range
+            - Otherwise: create the hour range
+          - Otherwise: create the day
+            - Create the hour ranges
+
+  - Patient side:
+    - Create an appointment
+      1- Select hospital
+      2- Select doctor that works in that hospital
+      3- Using the calendar corresponding to that doctor and hospital show current's month calendar
+        so that the patient can select a day.
+      4- With a specific date selected, use the days' configuration and the existing appointments
+        to show the hours available to schedule an appointment.
+      
+      Notes: when showing the month view (previous step of selecting a specific date) use the days'
+      configuration and the existing appointments to show as selectable the dates that do not have
+      all the appointments taken
+  
+
+Done:
+
+    - Al crear hour ranges solo crea algunos. No se si se reproduce asi nomas:
+      · RAZON: había dejado mal una parte del código y nunca se creaban realmente los hour ranges
+
+
+
+
+---------------------------------------------
+
+
+
+
