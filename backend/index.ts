@@ -4,6 +4,7 @@ import { createCalendarsRepository } from './repositories/calendar';
 import { createDaysRepository } from './repositories/day';
 import { createDoctorsRepository } from './repositories/doctor';
 import { createHospitalsRepository } from './repositories/hospital';
+import { createHourRangesRepository } from './repositories/hourRange';
 import Server, { ServerInterface } from './server';
 import { GeneralRouterConfig } from './types/global';
 
@@ -19,7 +20,10 @@ const config: GeneralRouterConfig = {
         appointmentsRepository: createAppointmentsRepository(),
         calendarsConfig: {
           calendarsRepository: createCalendarsRepository(),
-          daysRepository: createDaysRepository(),
+          daysConfig: {
+            daysRepository: createDaysRepository(),
+            hourRangesRepository: createHourRangesRepository(),
+          },
         },
       },
       hospitalsRepository: createHospitalsRepository(),

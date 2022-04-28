@@ -9,14 +9,25 @@ interface DaysMap {
 type WeekDay = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday';
 
 interface HourRangeInfo {
-  lastIndex: number;
-  offset: number;
+  id?: number;
   start: {
     options: SelectOption[];
-    selected?: number;
+    selected: number;
   };
   end: {
     options: SelectOption[];
-    selected?: number;
+    selected: number;
   };
+}
+
+interface NoDayHourRangeAttributes {
+  start: string;
+  end: string;
+}
+
+interface HourRangeAttributes {
+  id?: number;
+  start: string;
+  end: string;
+  dayId: number;
 }

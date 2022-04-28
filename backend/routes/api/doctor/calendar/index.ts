@@ -15,10 +15,10 @@ let _calendarsRepository: CalendarRepositoryInterface;
 
 const Router = {
   init: function init(calendarsConfig: CalendarConfig) {
-    const { calendarsRepository, daysRepository } = calendarsConfig;
+    const { calendarsRepository, daysConfig } = calendarsConfig;
     _calendarsRepository = calendarsRepository;
     _router = ExpressRouter({ mergeParams: true });
-    const daysRouter = createDaysRouter(daysRepository);
+    const daysRouter = createDaysRouter(daysConfig);
 
     _router.use('/:calendarId/days', daysRouter);
 

@@ -25,13 +25,16 @@ const HospitalsPage = () => {
   }, []);
 
   function deleteHandler(id: number) {
-    deleteHospital(id)
-      .then((message) => {
-        const hospitals = _hospitals.filter((hospital) => hospital.id != id);
-        setHospitals(hospitals);
-        toast.success(message);
-      })
-      .catch((errorMessage) => toast.error(errorMessage));
+    let deletionConfirmed = confirm('Are you sure to delete the hospital?');
+    if (deletionConfirmed) {
+      deleteHospital(id)
+        .then((message) => {
+          const hospitals = _hospitals.filter((hospital) => hospital.id != id);
+          setHospitals(hospitals);
+          toast.success(message);
+        })
+        .catch((errorMessage) => toast.error(errorMessage));
+    }
   }
 
   return (

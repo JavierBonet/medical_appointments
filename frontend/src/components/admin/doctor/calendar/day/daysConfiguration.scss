@@ -31,6 +31,23 @@ $navBarBackgroundColor: #1a759f;
   }
 }
 
+.save-button {
+  .ui.button {
+    background-color: $navBarBackgroundColor;
+    color: white;
+    font-size: 1.3em;
+    
+    &:hover {
+      filter: brightness(90%);
+    }
+
+    &:active {
+      filter: brightness(70%);
+
+    }
+  }
+}
+
 .days {
   grid-area: headerDays;
   display: grid;
@@ -65,6 +82,7 @@ $navBarBackgroundColor: #1a759f;
   grid-template-areas: '. . hourRange';
   column-gap: 25px;
   row-gap: 10px;
+  margin-bottom: 25px;
 }
 
 .day-hour-ranges {
@@ -73,6 +91,6 @@ $navBarBackgroundColor: #1a759f;
   text-align: center;
 
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 1fr 1fr;
   column-gap: 15px;
 }

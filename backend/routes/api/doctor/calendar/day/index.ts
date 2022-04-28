@@ -1,19 +1,27 @@
 import { Request, Router as ExpressRouter } from 'express';
 import { Day, DayRepositoryInterface } from '../../../../../repositories/day';
 import { HourRange } from '../../../../../repositories/hourRange';
+import { DaysConfig } from '../../../../../types/global';
+import { createRouter as createHourRangesRouter } from './hourRange';
 
 let _router: ExpressRouter;
 let _daysRepository: DayRepositoryInterface;
 
 const Router = {
-  init: function init(daysRepository: DayRepositoryInterface) {
+  init: function init({ daysRepository, hourRangesRepository }: DaysConfig) {
     _daysRepository = daysRepository;
     _router = ExpressRouter({ mergeParams: true });
+    const hourRangesRouter = createHourRangesRouter(hourRangesRepository);
 
-    _router.get('/', (req: Request<{ doctorId: string }>, res) => {
+    _router.use('/:dayId/hourRanges', hourRangesRouter);
+
+    _router.get('/', (req: Request<{ calendarId: string }>, res) => {
+      const calendarId = req.params.calendarId;
       _daysRepository
         .getAll({
+          where: { calendarId: calendarId },
           include: HourRange,
+          order: [[HourRange, 'id', 'ASC']],
         })
         .then((days: Day[]) => {
           res.send(days).end();
@@ -81,9 +89,9 @@ const Router = {
 
 type RouterInterface = typeof Router;
 
-function createRouter(dayRepository: DayRepositoryInterface) {
+function createRouter(daysConfig: DaysConfig) {
   let dayRouter: RouterInterface = Object.create(Router);
-  dayRouter.init(dayRepository);
+  dayRouter.init(daysConfig);
   return dayRouter.getRouter();
 }
 

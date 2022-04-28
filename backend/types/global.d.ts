@@ -3,6 +3,7 @@ import { CalendarRepositoryInterface } from '../repositories/calendar';
 import { DayRepositoryInterface } from '../repositories/day';
 import { DoctorRepositoryInterface } from '../repositories/doctor';
 import { HospitalRepositoryInterface } from '../repositories/hospital';
+import { HourRangeRepositoryInterface } from '../repositories/hourRange';
 
 declare namespace NodeJS {
   export interface ProcessEnv {
@@ -15,9 +16,14 @@ declare namespace NodeJS {
   }
 }
 
+interface DaysConfig {
+  daysRepository: DayRepositoryInterface;
+  hourRangesRepository: HourRangeRepositoryInterface;
+}
+
 interface CalendarConfig {
   calendarsRepository: CalendarRepositoryInterface;
-  daysRepository: DayRepositoryInterface;
+  daysConfig: DaysConfig;
 }
 
 interface DoctorsConfig {

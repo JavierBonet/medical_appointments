@@ -8,6 +8,7 @@ import {
   BelongsToGetAssociationMixin,
   HasManyGetAssociationsMixin,
   Association,
+  HasManyAddAssociationMixin,
 } from 'sequelize';
 import Calendar from './calendar';
 import HourRange from './hourrange';
@@ -29,6 +30,7 @@ class Day extends Model<InferAttributes<Day>, InferCreationAttributes<Day>> {
 
   declare getCalendar: BelongsToGetAssociationMixin<Calendar>;
   declare getHourRanges: HasManyGetAssociationsMixin<HourRange>;
+  declare addHourRange: HasManyAddAssociationMixin<HourRange, number>;
 
   declare static associations: {
     calendar: Association<Day, Calendar>;
