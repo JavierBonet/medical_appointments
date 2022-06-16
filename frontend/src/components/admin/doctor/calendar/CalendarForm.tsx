@@ -9,6 +9,7 @@ interface PropsInterface {
   changeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
   selectChangeHandler: (field: string, id: number) => void;
   saveHandler: () => void;
+  errors: CalendarErrors;
 }
 
 const CalendarForm = ({
@@ -17,25 +18,28 @@ const CalendarForm = ({
   changeHandler,
   selectChangeHandler,
   saveHandler,
+  errors,
 }: PropsInterface) => {
   return (
     <Form onSubmit={() => saveHandler()}>
-      <Form.Field>
+      <Form.Field required>
         <InputField
           label="Name"
           type="text"
           name="name"
           value={calendar.name}
           changeHandler={changeHandler}
+          error={errors.name}
         />
       </Form.Field>
-      <Form.Field>
+      <Form.Field required>
         <SelectInputField
           label="Hospital"
           name="hospitalId"
           selected={calendar.hospitalId}
           options={hospitalOptions}
           changeHandler={(id: number) => selectChangeHandler('hospitalId', id)}
+          error={errors.hospitalId}
         />
       </Form.Field>
 

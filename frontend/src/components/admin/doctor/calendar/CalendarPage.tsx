@@ -4,17 +4,26 @@ import { getCalendar, saveCalendar } from '../../../../api/calendars';
 import { toast } from 'react-toastify';
 import CalendarForm from './CalendarForm';
 import CustomLoader from '../../../commons/CustomLoader';
-import { getHospitals } from '../../../../api/hospitals';
+import { getAvailableHospitals } from '../../../../api/calendars';
 import ConfigureDays from './day/ConfigureDays';
 
 const initialCalendar: OptionalCalendar = {
   name: '',
 };
 
+const defaultErrors = {
+  name: '',
+  hospitalId: '',
+};
+
 const CalendarPage = () => {
   const [calendar, setCalendar] = useState(initialCalendar);
   const [hospitals, setHospitals] = useState([] as Hospital[]);
+  const [previousHospitalId, setPreviousHospitalId] = useState<
+    number | undefined
+  >(undefined);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<CalendarErrors>({ ...defaultErrors });
   const params = useParams();
   const navigate = useNavigate();
 
@@ -22,57 +31,120 @@ const CalendarPage = () => {
     const doctorId = params.doctorId;
     const calendarId = params.calendarId;
 
-    if (doctorId) {
+    if (doctorId && !calendarId) {
       const newCalendar = { ...calendar, doctorId: parseInt(doctorId) };
       setCalendar(newCalendar);
     }
 
-    if (doctorId && calendarId) {
-      setLoading(true);
-      getCalendar(doctorId, calendarId)
-        .then((calendar) => {
-          setLoading(false);
-          setCalendar(calendar);
-        })
-        .catch((err) => {
-          setLoading(false);
-          navigate('..');
-          toast.warning(err);
-        });
+    if (doctorId) {
+      if (calendarId) {
+        setLoading(true);
+        getCalendar(doctorId, calendarId)
+          .then((calendar) => {
+            getAvailableHospitals(doctorId)
+              .then((hospitals) => {
+                hospitals.unshift(calendar.Hospital);
+                setHospitals(hospitals);
+              })
+              .catch((err) => toast.warning(err));
+            setLoading(false);
+            setCalendar(calendar);
+          })
+          .catch((err) => {
+            setLoading(false);
+            navigate('..');
+            toast.warning(err);
+          });
+      } else {
+        getAvailableHospitals(doctorId)
+          .then((hospitals) => {
+            setHospitals(hospitals);
+          })
+          .catch((err) => toast.warning(err));
+      }
     }
-    getHospitals()
-      .then((hospitals) => {
-        setHospitals(hospitals);
-      })
-      .catch((err) => toast.warning(err));
+
+    if (doctorId) {
+      getAvailableHospitals(doctorId)
+        .then((hospitals) => {
+          let newHospitals = hospitals;
+
+          if (calendarId) {
+            const calendarHospital = calendar.Hospital;
+            if (calendarHospital) {
+              newHospitals.unshift(calendarHospital);
+            }
+          }
+
+          setHospitals(newHospitals);
+        })
+        .catch((err) => toast.warning(err));
+    }
   }, []);
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     let newCalendar = { ...calendar, [name]: value };
+    updateErrors(newCalendar);
     setCalendar(newCalendar);
   }
 
   function selectChangeHandler(field: string, id: number) {
+    setPreviousHospitalId(calendar.hospitalId);
     let newCalendar = { ...calendar, [field]: id };
+    updateErrors(newCalendar);
     setCalendar(newCalendar);
   }
 
   function saveHandler() {
     const doctorId = params.doctorId;
-    if (doctorId) {
-      setLoading(true);
-      saveCalendar(doctorId, calendar)
-        .then((message) => {
-          setLoading(false);
-          navigate('..');
-          toast.success(message);
-        })
-        .catch((errorMessage) => {
-          setLoading(false);
-          toast.error(errorMessage);
-        });
+    const errors = updateErrors(calendar);
+
+    if (!existErrors(errors)) {
+      if (doctorId) {
+        setLoading(true);
+        saveCalendar(doctorId, calendar, previousHospitalId)
+          .then((message) => {
+            setLoading(false);
+            navigate('..');
+            toast.success(message);
+          })
+          .catch((errorMessage) => {
+            setLoading(false);
+            toast.error(errorMessage);
+          });
+      }
+    } else {
+      updateErrors(calendar);
     }
+  }
+
+  function existErrors(errors: CalendarErrors): boolean {
+    let existErrors = false;
+
+    for (const key in errors) {
+      // @ts-ignore
+      if (errors[key]) {
+        existErrors = true;
+        break;
+      }
+    }
+
+    return existErrors;
+  }
+
+  function updateErrors(calendar: OptionalCalendar): CalendarErrors {
+    let newErrors = { ...defaultErrors };
+
+    if (!calendar.name) {
+      newErrors.name = 'You should set a name';
+    }
+    if (!calendar.hospitalId) {
+      newErrors.hospitalId = 'A hospital should be selected';
+    }
+
+    setErrors(newErrors);
+    return newErrors;
   }
 
   const hospitalOptions = hospitals.map((hospital) => {
@@ -95,6 +167,7 @@ const CalendarPage = () => {
             changeHandler={changeHandler}
             selectChangeHandler={selectChangeHandler}
             saveHandler={saveHandler}
+            errors={errors}
           />
           {params.calendarId && (
             <>

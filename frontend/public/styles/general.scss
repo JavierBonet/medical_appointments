@@ -1,5 +1,6 @@
 $siteBackgroundColor: #e3f2fd;
 $navBarBackgroundColor: #1a759f;
+$aqua: #39D1B4;
 
 * {
   font-family: 'Montserrat';
@@ -26,17 +27,72 @@ body {
   background-color: $navBarBackgroundColor;
   color: white;
   font-size: 30px;
-  padding: 20px;
+  padding: 5px;
   text-align: center;
   a {
     color: white;
     text-decoration: none;
   }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 5px;
 }
+
+.navigation-header-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.links-separator {
+  width: 2px;
+  height: 80%;
+  background-color: white;
+}
+
+.pages-links {
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid white;
+  padding: 10px;
+  column-gap: 10px;
+}
+
+.user-links {
+  height: 75px;
+  position: absolute;
+  right: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  column-gap: 20px;
+}
+
 
 a.active-link {
   font-size: 40px;
   color: rgb(0, 194, 243);
+}
+
+.center-diamond{
+  background: $aqua;
+  
+  &:before{
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: $aqua;
+    display: inline-block;
+    border: 2px solid $aqua;
+    margin: 0 0 0 -3px;
+    transform:rotate(45deg);
+    -ms-transform:rotate(45deg); /* IE 9 */
+    -webkit-transform:rotate(45deg); /* Opera, Chrome, and Safari */
+  }
 }
 
 .create-button {
@@ -60,6 +116,19 @@ a.active-link {
     text-align: center;
   }
 }
+
+.error-message {
+  color: salmon;
+  margin-top: 10px;
+}
+
+.info-message {
+  color: #06d6a0;
+  font-weight: bold;
+  font-size: large;
+  margin-top: 10px;
+}
+
 
 .two-columns {
   width: 70%;

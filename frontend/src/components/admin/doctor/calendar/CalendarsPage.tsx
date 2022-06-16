@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { deleteCalendar, getCalendars } from '../../../../api/calendars';
+import {
+  areAvailableHospitals,
+  deleteCalendar,
+  getCalendars,
+} from '../../../../api/calendars';
 import CustomLoader from '../../../commons/CustomLoader';
 import CalendarsList from './CalendarsList';
 
 const CalendarsPage = () => {
   const [_calendars, setCalendars] = useState([] as Calendar[]);
   const [loading, setLoading] = useState(false);
+  const [areHospitalsLeft, setAreHospitalsLeft] = useState(true);
   const params = useParams();
 
   const doctorId = params.doctorId;
@@ -17,15 +22,31 @@ const CalendarsPage = () => {
       setLoading(true);
       getCalendars(doctorId)
         .then((calendars) => {
-          setLoading(false);
           setCalendars(calendars);
         })
         .catch((errorMessage) => {
-          setLoading(false);
           toast.error(errorMessage);
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
   }, []);
+
+  useEffect(() => {
+    if (doctorId) {
+      areAvailableHospitals(doctorId)
+        .then((areHospitalsLeft) => {
+          setAreHospitalsLeft(areHospitalsLeft);
+        })
+        .catch((errorMessage) => {
+          toast.error(errorMessage);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [_calendars]);
 
   function deleteHandler(id: number) {
     if (doctorId) {
@@ -56,9 +77,15 @@ const CalendarsPage = () => {
       )}
       <CustomLoader loading={loading} />
 
-      <Link className="create-button" to="calendar">
-        New calendar
-      </Link>
+      {areHospitalsLeft ? (
+        <Link className="create-button" to="calendar">
+          New calendar
+        </Link>
+      ) : (
+        <div className="info-message">
+          This doctor already has a calendar for each hospital
+        </div>
+      )}
     </div>
   );
 };

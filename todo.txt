@@ -1,0 +1,105 @@
+
+ ---------
+| Pending |
+ ---------
+
+  - FRONTEND:
+    - Admin side:
+      - Save the hour ranges (and therefore, the days) that the user have configured (ConfigureDays.tsx)
+        - Decide which is the factor that indicates when to create an hour range / day and when to update it:
+          How to decide:
+            - If a day has the id field with a value, the update the day and
+              - If the hour range has the id field with a value, the update the hour range
+              - Otherwise: create the hour range
+            - Otherwise: create the day
+              - Create the hour ranges
+
+    - Patient side:
+      - Create an appointment
+        1- Select hospital
+        2- Select doctor that works in that hospital
+        3- Using the calendar corresponding to that doctor and hospital show current's month calendar
+          so that the patient can select a day.
+          (*)
+        4- With a specific date selected, use the days' configuration and the existing appointments
+          to show the hours available to schedule an appointment.
+        
+        (*)
+        Notes:
+          - When showing the month view (previous step of selecting a specific date) use the days'
+            configuration and the existing appointments to show as selectable the dates that do not have
+            all the appointments taken
+          - Take the dates between tomorrow and the last day of the month
+            group them by appointment date
+            only show those which count is less than (((the total amount of appointments that can exist)))
+
+    - Hour range delete isn't working
+    
+    - REFACTOR appointment FOLDER BECAUSE WE NO LONGER USING APPOINTMETS AS
+      A SEPARATE PAGE, IT DEPENDS ON PATIENTS
+
+ ------
+| Done |
+ ------
+
+  - Al crear hour ranges solo crea algunos. No se si se reproduce asi nomas:
+    · RAZON: había dejado mal una parte del código y nunca se creaban realmente los hour ranges
+
+  - FRONTEND:
+    - Al loguearse esta mostrando 2 mensajes. El de info lo debería mostrar solo cuando se accede
+      a la página signin y ya se está logueado
+
+
+  - BACKEND:
+    - Usar passport y passport-local para la autenticación
+
+    - Ya esta el registro para pacientes:
+      . Recordar usar bcrypt para comparar contra la password guardada (EN BACKEND SE HACE LA COMPARACIÓN)
+
+    - ###############################
+      // --- Imports ---
+
+        const express = require('express')
+        const app = express()
+
+        const passport = require('passport')
+        const session = require('express-session')
+
+        const LocalStrategy = require('passport-local').Strategy
+
+      // --- Initialize Middleware ---
+
+        // This is the basic express session({..}) initialization.
+        app.use(session({
+          secret: "secret",
+          resave: false ,
+          saveUninitialized: true ,
+        }))
+
+        // init passport on every route call.
+        app.use(passport.initialize()) 
+        
+        // allow passport to use "express-session".
+        app.use(passport.session())
+
+        // --- Use Passport to define the Authentication Strategy ---
+
+        passport.use(new LocalStrategy (authUser))
+
+        En caso de querer usar diferentes local-strategies se puede poner nombre del siguiente modo:
+        - passport.use('patient-login', new LocalStrategy (authUserCb1));
+        - passport.use('admin-login', new LocalStrategy (authUserCb2));
+
+        en authUserCb1 puedo devolver {model: 'patient', user: dbUser}
+
+      (https://medium.com/@prashantramnyc/node-js-with-passport-authentication-simplified-76ca65ee91e5)
+      (https://volk.dev/blog/implement-multiple-local-user-authentication-strategies-in-passport-js)
+      ###############################
+
+
+
+---------------------------------------------
+
+
+
+

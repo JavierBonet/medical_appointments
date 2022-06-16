@@ -28,13 +28,19 @@ interface CalendarConfig {
 
 interface DoctorsConfig {
   doctorsRepository: DoctorRepositoryInterface;
-  appointmentsRepository: AppointmentRepositoryInterface;
   calendarsConfig: CalendarConfig;
+}
+
+interface PatientsConfig {
+  patientsRepository: PatientRepositoryInterface;
+  appointmentsRepository: AppointmentRepositoryInterface;
 }
 
 interface ApiRouterConfig {
   doctorsConfig: DoctorsConfig;
+  patientsConfig: PatientsConfig;
   hospitalsRepository: HospitalRepositoryInterface;
+  adminUsersRepository: AdminUserRepositoryInterface;
 }
 
 interface RouterConfig {

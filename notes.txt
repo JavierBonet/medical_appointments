@@ -4,41 +4,80 @@ References:
       · Its hour ranges
         · Its days
 
-Pending:
-  - Admin side:
-    - Save the hour ranges (and therefore, the days) that the user have configured (ConfigureDays.tsx)
-      - Decide which is the factor that indicates when to create an hour range / day and when to update it:
-        How to decide:
-          - If a day has the id field with a value, the update the day and
-            - If the hour range has the id field with a value, the update the hour range
-            - Otherwise: create the hour range
-          - Otherwise: create the day
-            - Create the hour ranges
 
-  - Patient side:
-    - Create an appointment
-      1- Select hospital
-      2- Select doctor that works in that hospital
-      3- Using the calendar corresponding to that doctor and hospital show current's month calendar
-        so that the patient can select a day.
-      4- With a specific date selected, use the days' configuration and the existing appointments
-        to show the hours available to schedule an appointment.
-      
-      Notes: when showing the month view (previous step of selecting a specific date) use the days'
-      configuration and the existing appointments to show as selectable the dates that do not have
-      all the appointments taken
+- When creating a calendar (for a doctor):
+  If the doctor already has a calendar for each hospital, it should disable the creation button
+  and show a message saying that there aren't any hospital left to create a calendar
+  (maybe the message isn't necessary)
+
+- Patient table fields:
+  . emnail: string
+  . password: string
+
+- AdminUser table fields:
+  . emnail: string
+  . password: string
+
+- Appointments table should has patientId added to its fields as each appointment belongs to a specific patient
+
+- Patient routes:
+  . /singup <--- to start creating a new user
+  . /register <--- to create a new user
+  . /singin <--- to start login
+  . /login <--- to porcess login
+
+- Navigation header format:
+-----------------------------------------------------------------------------------------------------------------------
+                                        Admin > | Appointments | ...                                / Sign Up | Log in
+-----------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+###################################################
+###################################################
+###################################################
+                      DRAFTS
+###################################################
+###################################################
+###################################################
+
+- Ya hice la validación de campos para registro. Ahora tengo que finalizar el registro
+  del usuario primero en frontend/api y después impactando en backend.
+    . Encriptar password que introduce el usuario, tanto cuando se registra un usuario
+      como cuando se intenta loguear
+
+--------------------- 0 ---------------------
+
+- BACKEND:
   
 
-Done:
+- FRONTEND:
+  - Guardar info para saber que hay un usuario logueado
+    . OP 1: usar context para setear y verificar si el usuario está o no logueado
+    . OP 2: usar localStorage
+    (https://www.digitalocean.com/community/tutorials/how-to-add-login-authentication-to-react-applications#step-3-storing-a-user-token-with-sessionstorage-and-localstorage)
 
-    - Al crear hour ranges solo crea algunos. No se si se reproduce asi nomas:
-      · RAZON: había dejado mal una parte del código y nunca se creaban realmente los hour ranges
+  - Mostrar header en vistas de sign up y sign in
 
+  - Reestructurar el flujo de trabajo ya que
+    . El paciente debe estar logueado para poder crear citas con los médicos
+    . La sección de administración debe estar oculta. Solo se debe acceder por URL
 
-
-
----------------------------------------------
-
-
-
-
+  - Ya esta el registro para pacientes:
+    . Construir el formulario de logueo
+  
+  - Crear 2 Routes personalizados para las routes que necesiten autenticación:
+    . PatientAuthRoute: para verificar si el usuario esta logueado y en caso de
+      no estarlo redirigir a la página de login para pacientes
+    . AdminAuthRoute: idem pero para usuarios admin y usando el login de admin
+    (https://stackoverflow.com/questions/43164554/how-to-implement-authenticated-routes-in-react-router-4/43171515#43171515)

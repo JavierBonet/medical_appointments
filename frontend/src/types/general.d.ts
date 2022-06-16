@@ -4,6 +4,7 @@ interface Hospital {
   address: string;
   phone: string;
   zip_code: number;
+  Doctors?: Doctor[];
 }
 
 interface OptionalHospital {
@@ -46,6 +47,8 @@ interface OptionalCalendar {
   name: string;
   doctorId?: number;
   hospitalId?: number;
+  Doctor?: Doctor;
+  Hospital?: Hospital;
 }
 
 interface Day {

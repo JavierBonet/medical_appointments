@@ -12,7 +12,7 @@ const HospitalsPage = () => {
   useEffect(() => {
     if (_hospitals.length == 0) {
       setLoading(true);
-      getHospitals()
+      getHospitals(false)
         .then((hospitals) => {
           setLoading(false);
           setHospitals(hospitals);
