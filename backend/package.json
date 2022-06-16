@@ -13,15 +13,22 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "express-session": "^1.17.3",
     "mysql2": "^2.3.3",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
     "sequelize": "^6.17.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
+    "@types/passport": "^1.0.7",
+    "@types/passport-local": "^1.0.34",
     "@types/sequelize": "^4.28.11",
     "nodemon": "^2.0.15",
     "sequelize-cli": "^6.4.1",

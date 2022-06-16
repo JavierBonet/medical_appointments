@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAppContext } from './lib/context';
 import Header from './components/commons/Header';
 
 function App() {

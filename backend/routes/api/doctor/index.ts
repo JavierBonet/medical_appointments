@@ -6,25 +6,26 @@ import {
   DoctorRepositoryInterface,
 } from '../../../repositories/doctor';
 import { DoctorsConfig } from '../../../types/global';
-import { createRouter as createAppointmentsRouter } from './appointment';
 import { createRouter as createCalendarsRouter } from './calendar';
+import { createRouter as createHospitalAssociationsRouter } from './associations/hospital';
 
 let _router: ExpressRouter;
 let _doctorsRepository: DoctorRepositoryInterface;
 
 const Router = {
-  init: function init({
-    doctorsRepository,
-    appointmentsRepository,
-    calendarsConfig,
-  }: DoctorsConfig) {
+  init: function init({ doctorsRepository, calendarsConfig }: DoctorsConfig) {
     _doctorsRepository = doctorsRepository;
     _router = ExpressRouter({ mergeParams: true });
 
-    const appointmentsRouter = createAppointmentsRouter(appointmentsRepository);
     const calendarsRouter = createCalendarsRouter(calendarsConfig);
-    _router.use('/:doctorId/appointments', appointmentsRouter);
+    const hospitalAssociationsRouter =
+      createHospitalAssociationsRouter(doctorsRepository);
+
     _router.use('/:doctorId/calendars', calendarsRouter);
+    _router.use(
+      '/:doctorId/associations/hospitals',
+      hospitalAssociationsRouter
+    );
 
     _router.get('/', (req, res) => {
       _doctorsRepository
@@ -95,9 +96,9 @@ const Router = {
 
 type RouterInterface = typeof Router;
 
-function createRouter(doctorsRepositories: DoctorsConfig) {
+function createRouter(doctorsConfig: DoctorsConfig) {
   let doctorRouter: RouterInterface = Object.create(Router);
-  doctorRouter.init(doctorsRepositories);
+  doctorRouter.init(doctorsConfig);
   return doctorRouter.getRouter();
 }
 

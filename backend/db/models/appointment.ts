@@ -27,6 +27,7 @@ class Appointment extends Model<
   declare dayOfTheWeek: string;
   declare doctorId: number;
   declare hospitalId: number;
+  declare patientId: number;
 
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
@@ -79,6 +80,14 @@ Appointment.init(
       },
     },
     hospitalId: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false,
+      validate: {
+        notNull: true,
+        notEmpty: true,
+      },
+    },
+    patientId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       validate: {

@@ -1,10 +1,12 @@
 const dotenv = require('dotenv');
+import { createAdminUsersRepository } from './repositories/admin_user';
 import { createAppointmentsRepository } from './repositories/appointment';
 import { createCalendarsRepository } from './repositories/calendar';
 import { createDaysRepository } from './repositories/day';
 import { createDoctorsRepository } from './repositories/doctor';
 import { createHospitalsRepository } from './repositories/hospital';
 import { createHourRangesRepository } from './repositories/hourRange';
+import { createPatientsRepository } from './repositories/patient';
 import Server, { ServerInterface } from './server';
 import { GeneralRouterConfig } from './types/global';
 
@@ -17,7 +19,6 @@ const config: GeneralRouterConfig = {
     apiRouterConfig: {
       doctorsConfig: {
         doctorsRepository: createDoctorsRepository(),
-        appointmentsRepository: createAppointmentsRepository(),
         calendarsConfig: {
           calendarsRepository: createCalendarsRepository(),
           daysConfig: {
@@ -26,7 +27,12 @@ const config: GeneralRouterConfig = {
           },
         },
       },
+      patientsConfig: {
+        appointmentsRepository: createAppointmentsRepository(),
+        patientsRepository: createPatientsRepository(),
+      },
       hospitalsRepository: createHospitalsRepository(),
+      adminUsersRepository: createAdminUsersRepository(),
     },
   },
 };
