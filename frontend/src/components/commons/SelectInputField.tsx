@@ -8,6 +8,7 @@ interface PropsInterface {
   options: { key: number; value: number; text: string }[];
   changeHandler: (id: number) => void;
   removeLabel?: boolean;
+  error?: string;
 }
 
 const SelectInputField = ({
@@ -17,6 +18,7 @@ const SelectInputField = ({
   options,
   changeHandler,
   removeLabel,
+  error,
 }: PropsInterface) => {
   return (
     <>
@@ -30,6 +32,7 @@ const SelectInputField = ({
         options={options}
         onChange={(_, data) => changeHandler(data.value as number)}
       />
+      {error && <div className="error-message">{error}</div>}
     </>
   );
 };

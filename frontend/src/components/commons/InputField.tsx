@@ -2,10 +2,11 @@ import React from 'react';
 
 interface PropsInterface {
   label: string;
-  type: 'text' | 'number';
+  type: React.HTMLInputTypeAttribute;
   name: string;
   value: number | string | undefined;
   changeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
 }
 
 const InputField = ({
@@ -14,6 +15,7 @@ const InputField = ({
   name,
   value,
   changeHandler,
+  error,
 }: PropsInterface) => {
   return (
     <>
@@ -24,6 +26,7 @@ const InputField = ({
         value={value}
         onChange={(e) => changeHandler(e)}
       />
+      {error && <div className="error-message">{error}</div>}
     </>
   );
 };
