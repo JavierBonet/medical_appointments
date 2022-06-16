@@ -67,6 +67,34 @@ const DoctorRepository = {
       }
     });
   },
+
+  addHospitalAssociation: function addHospitalAssociation(
+    hospitalId: number,
+    doctorId: number
+  ) {
+    Doctor.findByPk(doctorId).then((doctor) => {
+      if (doctor) {
+        doctor.addHospital(hospitalId);
+      } else {
+        throw 'Doctor not found';
+      }
+    });
+  },
+
+  replaceHospitalAssociation: function addHospitalAssociation(
+    previousHospitalId: number,
+    hospitalId: number,
+    doctorId: number
+  ) {
+    Doctor.findByPk(doctorId).then((doctor) => {
+      if (doctor) {
+        doctor.removeHospital(previousHospitalId);
+        doctor.addHospital(hospitalId);
+      } else {
+        throw 'Doctor not found';
+      }
+    });
+  },
 };
 
 export type DoctorRepositoryInterface = typeof DoctorRepository;

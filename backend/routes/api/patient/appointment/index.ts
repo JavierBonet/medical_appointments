@@ -14,7 +14,7 @@ const Router = {
     _appointmentsRepository = appointmentsRepository;
     _router = ExpressRouter({ mergeParams: true });
 
-    _router.get('/', (req: Request<{ doctorId: string }>, res) => {
+    _router.get('/', (req: Request<{ patientId: string }>, res) => {
       _appointmentsRepository
         .getAll()
         .then((appointments: Appointment[]) => {

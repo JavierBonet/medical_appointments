@@ -1,4 +1,5 @@
 import { Router as ExpressRouter } from 'express';
+import { Doctor } from '../../../repositories/doctor';
 import {
   Hospital,
   HospitalRepositoryInterface,
@@ -13,8 +14,10 @@ const Router = {
     _router = ExpressRouter();
 
     _router.get('/', (req, res) => {
+      const includeDoctors = req.query.includeDoctors;
+      const options = includeDoctors ? { include: Doctor } : {};
       _hospitalsRepository
-        .getAll()
+        .getAll(options)
         .then((hospitals: Hospital[]) => {
           res.send(hospitals).end();
         })

@@ -1,7 +1,5 @@
 import {
   Association,
-  BelongsToManyAddAssociationMixin,
-  BelongsToManyAddAssociationsMixin,
   BelongsToManyGetAssociationsMixin,
   CreationOptional,
   DataTypes,
@@ -47,8 +45,6 @@ class Hospital extends Model<
 
   declare getAppointments: HasManyGetAssociationsMixin<Appointment>;
   declare getDoctors: BelongsToManyGetAssociationsMixin<Doctor>;
-  declare addDoctor: BelongsToManyAddAssociationMixin<Doctor, number>;
-  declare addDoctors: BelongsToManyAddAssociationsMixin<Doctor, number>;
 
   declare static associations: {
     appointments: Association<Hospital, Appointment>;

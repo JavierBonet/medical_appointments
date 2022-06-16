@@ -2,8 +2,9 @@ import axios from 'axios';
 
 const baseUrl = 'http://localhost:3000/api/hospitals';
 
-function getHospitals() {
-  return axios.get<Hospital[]>(baseUrl).then((response) => {
+function getHospitals(includeDoctors: boolean) {
+  let url: string = includeDoctors ? `${baseUrl}?includeDoctors=true` : baseUrl;
+  return axios.get<Hospital[]>(url).then((response) => {
     return response.data;
   });
 }

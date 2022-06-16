@@ -8,6 +8,8 @@ import {
   Association,
   HasManyGetAssociationsMixin,
   BelongsToManyGetAssociationsMixin,
+  BelongsToManyAddAssociationMixin,
+  BelongsToManyRemoveAssociationMixin,
 } from 'sequelize';
 import Hospital from './hospital';
 import Appointment from './appointment';
@@ -34,6 +36,8 @@ class Doctor extends Model<
 
   declare getAppointments: HasManyGetAssociationsMixin<Appointment>;
   declare getHospitals: BelongsToManyGetAssociationsMixin<Hospital>;
+  declare addHospital: BelongsToManyAddAssociationMixin<Hospital, number>;
+  declare removeHospital: BelongsToManyRemoveAssociationMixin<Hospital, number>;
 
   declare static associations: {
     appointments: Association<Appointment, Doctor>;
