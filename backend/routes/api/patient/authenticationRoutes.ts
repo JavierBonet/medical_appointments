@@ -30,7 +30,7 @@ export function addAuthenticationRoutes(router: Router) {
   );
 
   router.get('/loginSucceed', (req, res) => {
-    res.send({ message: 'Successfully loged in!' });
+    res.send({ message: 'Successfully logged in!' });
   });
 
   // Just informing that the patient couldn't be found
