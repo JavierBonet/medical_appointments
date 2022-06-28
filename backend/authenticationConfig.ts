@@ -38,9 +38,9 @@ export default function authenticationConfig(
 
   passport.use(
     'admin-login',
-    new LocalStrategy((email, password, done) => {
+    new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
       adminUsersRepository
-        .getPatientByEmail(email)
+        .getAdminUserByEmail(email)
         .then((adminUser) => {
           if (adminUser) {
             bcrypt

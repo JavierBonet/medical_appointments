@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 
-interface User {
-  name: string;
-}
-
 const LOCAL_STORAGE_PATIENT_KEY = 'patient-user';
 
 function useAuth() {
   const getUser = () => {
-    let user: User | undefined = undefined;
+    let user: LocalStorageUser | undefined = undefined;
     const userString = localStorage.getItem(LOCAL_STORAGE_PATIENT_KEY);
     if (userString) {
       user = JSON.parse(userString);
@@ -19,7 +15,7 @@ function useAuth() {
 
   const [user, setUser] = useState(getUser());
 
-  const saveUser = (user: User) => {
+  const saveUser = (user: LocalStorageUser) => {
     localStorage.setItem(LOCAL_STORAGE_PATIENT_KEY, JSON.stringify(user));
     setUser(user);
   };

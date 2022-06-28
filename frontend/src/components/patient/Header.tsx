@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { BsChevronLeft } from 'react-icons/bs';
-import { MdLogout } from 'react-icons/md';
-import useAuth from '../../routes/useAuth';
+import useAuth from '../utils/useAuth';
+import LogoutButton from '../commons/LogoutButton';
 
-const Header = () => {
-  const { logout } = useAuth();
+interface PropsInterface {
+  user: LocalStorageUser | undefined;
+  logout: () => void;
+}
 
+const Header = ({ user, logout }: PropsInterface) => {
   return (
     <nav className="navigation-header">
       <div className="pages-links">
@@ -14,11 +17,7 @@ const Header = () => {
           <BsChevronLeft />
           {'Home'}
         </NavLink>
-      </div>
-      <div className="user-links">
-        <NavLink onClick={() => logout()} to="../../">
-          <MdLogout />
-        </NavLink>
+        {user && <LogoutButton logout={logout} />}
       </div>
     </nav>
   );

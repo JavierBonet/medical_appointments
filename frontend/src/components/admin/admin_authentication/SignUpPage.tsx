@@ -2,56 +2,59 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import SignUpForm from './SignUpForm';
-import CustomLoader from '../commons/CustomLoader';
-import { doesPatientAlreadyExist, savePatient } from '../../api/patients';
+import CustomLoader from '../../commons/CustomLoader';
+import {
+  doesAdminUserAlreadyExist,
+  saveAdminUser,
+} from '../../../api/adminUser';
 
-const initialPatient: OptionalPatient = {
+const initialAdminUser: OptionalAdminUser = {
   email: '',
   password: '',
   passwordConfirmation: '',
 };
 
-const defaultErrors: PatientErrors = {
+const defaultErrors: AdminUserErrors = {
   email: '',
   password: '',
   passwordConfirmation: '',
 };
 
 const SingUpPage = () => {
-  const [patient, setPatient] = useState(initialPatient);
+  const [adminUser, setAdminUser] = useState(initialAdminUser);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<PatientErrors>({ ...defaultErrors });
+  const [errors, setErrors] = useState<AdminUserErrors>({ ...defaultErrors });
   const navigate = useNavigate();
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>): void {
     const { name, value } = event.target;
-    let newPatient = { ...patient };
+    let newAdminUser = { ...adminUser };
     // As this function will only be invoked with email and password fields, I ignore ts checks
     // @ts-ignore
-    newPatient[name] = value;
-    updateErrors(newPatient);
-    setPatient(newPatient);
+    newAdminUser[name] = value;
+    updateErrors(newAdminUser);
+    setAdminUser(newAdminUser);
   }
 
   function submitHandler() {
-    const errors = updateErrors(patient);
+    const errors = updateErrors(adminUser);
 
     if (!existErrors(errors)) {
       setLoading(true);
-      doesPatientAlreadyExist(patient.email).then((itExist) => {
+      doesAdminUserAlreadyExist(adminUser.email).then((itExist) => {
         if (itExist) {
-          toast.info('Patient already registered. Please log in');
-          navigate('/patients/signin');
+          toast.info('Admin user already registered. Please log in');
+          navigate('/admin/signin');
         } else {
-          let dbPatient: OptionalDbPatient = {
-            email: patient.email,
-            password: patient.password,
+          let dbAdminUser: OptionalDbAdminUser = {
+            email: adminUser.email,
+            password: adminUser.password,
           };
 
-          savePatient(dbPatient)
+          saveAdminUser(dbAdminUser)
             .then((message) => {
               toast.success(message);
-              navigate('/');
+              navigate('/admin');
             })
             .catch((err: Error) => {
               toast.error(err.message);
@@ -62,7 +65,7 @@ const SingUpPage = () => {
     }
   }
 
-  function existErrors(errors: PatientErrors): boolean {
+  function existErrors(errors: AdminUserErrors): boolean {
     let existErrors = false;
 
     for (const key in errors) {
@@ -76,14 +79,14 @@ const SingUpPage = () => {
     return existErrors;
   }
 
-  function updateErrors(patient: OptionalPatient): PatientErrors {
+  function updateErrors(adminUser: OptionalAdminUser): AdminUserErrors {
     let newErrors = { ...defaultErrors };
 
-    newErrors.email = getEmailError(patient.email);
+    newErrors.email = getEmailError(adminUser.email);
 
-    newErrors.password = getPasswordError(patient.password);
+    newErrors.password = getPasswordError(adminUser.password);
 
-    newErrors.passwordConfirmation = getPasswordConfirmationError(patient);
+    newErrors.passwordConfirmation = getPasswordConfirmationError(adminUser);
 
     setErrors(newErrors);
     return newErrors;
@@ -115,10 +118,10 @@ const SingUpPage = () => {
     return error;
   }
 
-  function getPasswordConfirmationError(patient: OptionalPatient): string {
+  function getPasswordConfirmationError(adminUser: OptionalAdminUser): string {
     let error = '';
 
-    if (patient.password != patient.passwordConfirmation) {
+    if (adminUser.password != adminUser.passwordConfirmation) {
       error = 'Passwords should match';
     }
 
@@ -129,7 +132,7 @@ const SingUpPage = () => {
     <div className="section-container">
       <CustomLoader loading={loading} />
       <SignUpForm
-        patient={patient}
+        adminUser={adminUser}
         changeHandler={changeHandler}
         submitHandler={submitHandler}
         errors={errors}

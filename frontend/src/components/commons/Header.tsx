@@ -1,22 +1,18 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaUserPlus } from 'react-icons/fa';
-import { BsChevronRight } from 'react-icons/bs';
-import { MdVpnKey, MdLogout } from 'react-icons/md';
-import useAuth from '../../routes/useAuth';
+import { MdVpnKey } from 'react-icons/md';
+import useAuth from '../utils/useAuth';
+import LogoutButton from './LogoutButton';
 
 const Header = () => {
-  const { user, setUser, logout } = useAuth();
+  const { user, logout } = useAuth();
 
   useEffect(() => {}, [user]);
 
   return (
     <nav className="navigation-header">
       <div className="pages-links">
-        <NavLink to="/admin" className="navigation-header-item">
-          {'Admin '} <BsChevronRight />
-        </NavLink>
-        <div className="links-separator"></div>
         <NavLink to="/patients" className="navigation-header-item">
           My info
         </NavLink>
@@ -32,11 +28,7 @@ const Header = () => {
           </NavLink>
         </div>
       ) : (
-        <div className="user-links">
-          <NavLink onClick={() => logout()} to="/">
-            <MdLogout />
-          </NavLink>
-        </div>
+        <LogoutButton logout={logout} />
       )}
     </nav>
   );

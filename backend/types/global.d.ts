@@ -16,31 +16,35 @@ declare namespace NodeJS {
   }
 }
 
-interface DaysConfig {
+interface DaysRouterConfig {
   daysRepository: DayRepositoryInterface;
   hourRangesRepository: HourRangeRepositoryInterface;
 }
 
-interface CalendarConfig {
+interface CalendarRouterConfig {
   calendarsRepository: CalendarRepositoryInterface;
-  daysConfig: DaysConfig;
+  daysRouterConfig: DaysRouterConfig;
 }
 
-interface DoctorsConfig {
+interface DoctorsRouterConfig {
   doctorsRepository: DoctorRepositoryInterface;
-  calendarsConfig: CalendarConfig;
+  calendarsRouterConfig: CalendarRouterConfig;
 }
 
-interface PatientsConfig {
+interface AdminRouterConfig {
+  doctorsRouterConfig: DoctorsRouterConfig;
+  hospitalsRepository: HospitalRepositoryInterface;
+  adminUsersRepository: AdminUserRepositoryInterface;
+}
+
+interface PatientsRouterConfig {
   patientsRepository: PatientRepositoryInterface;
   appointmentsRepository: AppointmentRepositoryInterface;
 }
 
 interface ApiRouterConfig {
-  doctorsConfig: DoctorsConfig;
-  patientsConfig: PatientsConfig;
-  hospitalsRepository: HospitalRepositoryInterface;
-  adminUsersRepository: AdminUserRepositoryInterface;
+  adminRouterConfig: AdminRouterConfig;
+  patientsRouterConfig: PatientsRouterConfig;
 }
 
 interface RouterConfig {

@@ -1,4 +1,4 @@
-import { DoctorRepositoryInterface } from '../../../../../repositories/doctor';
+import { DoctorRepositoryInterface } from '../../../../../../repositories/doctor';
 
 import { Request, Router as ExpressRouter } from 'express';
 

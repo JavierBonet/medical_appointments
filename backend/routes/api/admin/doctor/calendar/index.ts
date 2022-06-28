@@ -2,23 +2,23 @@ import { Request, Router as ExpressRouter } from 'express';
 import {
   Calendar,
   CalendarRepositoryInterface,
-} from '../../../../repositories/calendar';
-import { Day } from '../../../../repositories/day';
-import { Doctor } from '../../../../repositories/doctor';
-import { Hospital } from '../../../../repositories/hospital';
-import { HourRange } from '../../../../repositories/hourRange';
-import { CalendarConfig } from '../../../../types/global';
+} from '../../../../../repositories/calendar';
+import { Day } from '../../../../../repositories/day';
+import { Doctor } from '../../../../../repositories/doctor';
+import { Hospital } from '../../../../../repositories/hospital';
+import { HourRange } from '../../../../../repositories/hourRange';
+import { CalendarRouterConfig } from '../../../../../types/global';
 import { createRouter as createDaysRouter } from './day';
 
 let _router: ExpressRouter;
 let _calendarsRepository: CalendarRepositoryInterface;
 
 const Router = {
-  init: function init(calendarsConfig: CalendarConfig) {
-    const { calendarsRepository, daysConfig } = calendarsConfig;
+  init: function init(calendarsConfig: CalendarRouterConfig) {
+    const { calendarsRepository, daysRouterConfig } = calendarsConfig;
     _calendarsRepository = calendarsRepository;
     _router = ExpressRouter({ mergeParams: true });
-    const daysRouter = createDaysRouter(daysConfig);
+    const daysRouter = createDaysRouter(daysRouterConfig);
 
     _router.use('/:calendarId/days', daysRouter);
 
@@ -102,7 +102,7 @@ const Router = {
 
 type RouterInterface = typeof Router;
 
-function createRouter(calendarsConfig: CalendarConfig) {
+function createRouter(calendarsConfig: CalendarRouterConfig) {
   let calendarRouter: RouterInterface = Object.create(Router);
   calendarRouter.init(calendarsConfig);
   return calendarRouter.getRouter();

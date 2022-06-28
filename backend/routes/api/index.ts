@@ -1,29 +1,20 @@
 import { Router as ExpressRouter } from 'express';
 import { ApiRouterConfig } from '../../types/global';
-import { createRouter as createHospitalRouter } from './hospital';
-import { createRouter as createDoctorRouter } from './doctor';
+import { createRouter as createAdminRouter } from './admin';
 import { createRouter as createPatientRouter } from './patient';
-import { createRouter as createAdminUserRouter } from './admin_user';
 
 let _router: ExpressRouter;
 
 const Router = {
   init: function init(apiRouterConfig: ApiRouterConfig) {
     _router = ExpressRouter();
-    const {
-      doctorsConfig,
-      patientsConfig,
-      hospitalsRepository,
-      adminUsersRepository,
-    } = apiRouterConfig;
-    const doctorsRouter = createDoctorRouter(doctorsConfig);
-    const patientsRouter = createPatientRouter(patientsConfig);
-    const hospitalsRouter = createHospitalRouter(hospitalsRepository);
-    const adminUsersRouter = createAdminUserRouter(adminUsersRepository);
-    _router.use('/doctors', doctorsRouter);
-    _router.use('/hospitals', hospitalsRouter);
+    const { adminRouterConfig, patientsRouterConfig } = apiRouterConfig;
+
+    const adminRouter = createAdminRouter(adminRouterConfig);
+    const patientsRouter = createPatientRouter(patientsRouterConfig);
+
+    _router.use('/admin', adminRouter);
     _router.use('/patients', patientsRouter);
-    _router.use('/admin_users', adminUsersRouter);
   },
 
   getRouter: function getRouter() {

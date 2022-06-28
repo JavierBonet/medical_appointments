@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { login } from '../../api/patients';
-import useAuth from '../../routes/useAuth';
+import useAuth from '../utils/useAuth';
 import SignInForm from './SignInForm';
+
+interface PropsInterface {
+  user: LocalStorageUser | undefined;
+  setUser: (user: LocalStorageUser) => void;
+}
 
 const initialPatient: LoginPatient = {
   email: '',
   password: '',
 };
 
-const SignInPage = () => {
-  const { user, setUser } = useAuth();
-
+const SignInPage = ({ user, setUser }: PropsInterface) => {
   const [patient, setPatient] = useState(initialPatient);
 
   const navigate = useNavigate();
-
-  let isLoggedIn = false;
 
   useEffect(() => {
     if (user) {

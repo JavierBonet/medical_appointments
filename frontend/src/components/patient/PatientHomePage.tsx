@@ -2,14 +2,15 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
 
-interface Props {}
+interface PropsInterface {
+  user: LocalStorageUser | undefined;
+  logout: () => void;
+}
 
-function PatientHomePage(props: Props) {
-  const {} = props;
-
+function PatientHomePage({ user, logout }: PropsInterface) {
   return (
     <>
-      <Header />
+      <Header user={user} logout={logout} />
       <Outlet />
     </>
   );

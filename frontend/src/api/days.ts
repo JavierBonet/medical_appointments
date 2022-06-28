@@ -1,8 +1,11 @@
 import axios from 'axios';
 import { getHourByIndex } from '../components/admin/doctor/calendar/day/dayUtils';
 
+// To always send cookies while making requests
+axios.defaults.withCredentials = true;
+
 function getBaseUrl(doctorId: string, calendarId: string) {
-  return `http://localhost:3000/api/doctors/${doctorId}/calendars/${calendarId}/days`;
+  return `http://localhost:3000/api/admin/doctors/${doctorId}/calendars/${calendarId}/days`;
 }
 
 function saveDays(

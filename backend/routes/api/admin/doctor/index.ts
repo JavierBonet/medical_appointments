@@ -1,11 +1,11 @@
 import { Router as ExpressRouter } from 'express';
-import { Appointment } from '../../../repositories/appointment';
-import { Calendar } from '../../../repositories/calendar';
+import { Appointment } from '../../../../repositories/appointment';
+import { Calendar } from '../../../../repositories/calendar';
 import {
   Doctor,
   DoctorRepositoryInterface,
-} from '../../../repositories/doctor';
-import { DoctorsConfig } from '../../../types/global';
+} from '../../../../repositories/doctor';
+import { DoctorsRouterConfig } from '../../../../types/global';
 import { createRouter as createCalendarsRouter } from './calendar';
 import { createRouter as createHospitalAssociationsRouter } from './associations/hospital';
 
@@ -13,11 +13,14 @@ let _router: ExpressRouter;
 let _doctorsRepository: DoctorRepositoryInterface;
 
 const Router = {
-  init: function init({ doctorsRepository, calendarsConfig }: DoctorsConfig) {
+  init: function init({
+    doctorsRepository,
+    calendarsRouterConfig,
+  }: DoctorsRouterConfig) {
     _doctorsRepository = doctorsRepository;
     _router = ExpressRouter({ mergeParams: true });
 
-    const calendarsRouter = createCalendarsRouter(calendarsConfig);
+    const calendarsRouter = createCalendarsRouter(calendarsRouterConfig);
     const hospitalAssociationsRouter =
       createHospitalAssociationsRouter(doctorsRepository);
 
@@ -96,7 +99,7 @@ const Router = {
 
 type RouterInterface = typeof Router;
 
-function createRouter(doctorsConfig: DoctorsConfig) {
+function createRouter(doctorsConfig: DoctorsRouterConfig) {
   let doctorRouter: RouterInterface = Object.create(Router);
   doctorRouter.init(doctorsConfig);
   return doctorRouter.getRouter();

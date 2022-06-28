@@ -30,7 +30,7 @@ const AdminUserRepository = {
     return AdminUser.findByPk(id, options);
   },
 
-  getPatientByEmail: function getPatientByEmail(email: string) {
+  getAdminUserByEmail: function getAdminUserByEmail(email: string) {
     return AdminUser.findOne({ where: { email: email } });
   },
 

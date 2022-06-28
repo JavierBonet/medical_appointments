@@ -1,40 +1,40 @@
-interface OptionalPatient {
+interface OptionalAdminUser {
   id?: number;
   email: string;
   password: string;
   passwordConfirmation: string;
 }
 
-interface Patient {
+interface AdminUser {
   id: number;
   email: string;
   password: string;
   passwordConfirmation: string;
 }
 
-interface OptionalDbPatient {
+interface OptionalDbAdminUser {
   id?: number;
   email: string;
   password: string;
 }
 
-interface DbPatient {
+interface DbAdminUser {
   id: number;
   email: string;
   password: string;
 }
 
-interface PatientErrors {
+interface AdminUserErrors {
   email: string;
   password: string;
   passwordConfirmation: string;
 }
 
-interface LoginPatient {
+interface LoginAdminUser {
   email: string;
   password: string;
 }
 
-interface LocalStorageUser {
+interface LocalStorageAdminUser {
   name: string;
 }

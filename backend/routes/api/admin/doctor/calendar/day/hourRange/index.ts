@@ -1,8 +1,5 @@
 import { Request, Router as ExpressRouter } from 'express';
-import {
-  HourRange,
-  HourRangeRepositoryInterface,
-} from '../../../../../../repositories/hourRange';
+import { HourRangeRepositoryInterface } from '../../../../../../../repositories/hourRange';
 
 let _router: ExpressRouter;
 let _hourRangesRepository: HourRangeRepositoryInterface;

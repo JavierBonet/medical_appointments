@@ -17,22 +17,24 @@ let server: ServerInterface = Object.create(Server);
 const config: GeneralRouterConfig = {
   routerConfig: {
     apiRouterConfig: {
-      doctorsConfig: {
-        doctorsRepository: createDoctorsRepository(),
-        calendarsConfig: {
-          calendarsRepository: createCalendarsRepository(),
-          daysConfig: {
-            daysRepository: createDaysRepository(),
-            hourRangesRepository: createHourRangesRepository(),
+      adminRouterConfig: {
+        doctorsRouterConfig: {
+          doctorsRepository: createDoctorsRepository(),
+          calendarsRouterConfig: {
+            calendarsRepository: createCalendarsRepository(),
+            daysRouterConfig: {
+              daysRepository: createDaysRepository(),
+              hourRangesRepository: createHourRangesRepository(),
+            },
           },
         },
+        hospitalsRepository: createHospitalsRepository(),
+        adminUsersRepository: createAdminUsersRepository(),
       },
-      patientsConfig: {
+      patientsRouterConfig: {
         appointmentsRepository: createAppointmentsRepository(),
         patientsRepository: createPatientsRepository(),
       },
-      hospitalsRepository: createHospitalsRepository(),
-      adminUsersRepository: createAdminUsersRepository(),
     },
   },
 };

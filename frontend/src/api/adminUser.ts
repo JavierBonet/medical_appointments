@@ -1,19 +1,16 @@
 import axios from 'axios';
 
-// To always send cookies while making requests
-axios.defaults.withCredentials = true;
+const baseUrl = 'http://localhost:3000/api/admin';
 
-const baseUrl = 'http://localhost:3000/api/patients';
+function getAdminUsers() {}
 
-function getPatients() {}
+function getAdminUserById(id: string) {}
 
-function getPatientById(id: string) {}
-
-function getPatientByEmail(email: string) {
+function getAdminUserByEmail(email: string) {
   const url = `${baseUrl}/getByEmail/${email}`;
 
   return axios
-    .get<DbPatient>(url)
+    .get<DbAdminUser>(url)
     .then((response) => {
       const patient = response.data;
       return patient;
@@ -27,7 +24,7 @@ function getPatientByEmail(email: string) {
     });
 }
 
-function login(patient: LoginPatient) {
+function login(patient: LoginAdminUser) {
   const url = `${baseUrl}/login`;
   const { email, password } = patient;
 
@@ -41,7 +38,7 @@ function login(patient: LoginPatient) {
     });
 }
 
-function doesPatientAlreadyExist(email: string) {
+function doesAdminUserAlreadyExist(email: string) {
   const url = `${baseUrl}/getByEmail/${email}`;
 
   return axios
@@ -58,16 +55,16 @@ function doesPatientAlreadyExist(email: string) {
     });
 }
 
-function savePatient(patient: OptionalDbPatient) {
+function saveAdminUser(patient: OptionalDbAdminUser) {
   let promise: Promise<any>;
   let successMessage = '';
   if (patient.id) {
-    promise = axios.put<Patient>(`${baseUrl}/${patient.id}`, patient);
-    successMessage = 'Patient updated successfully';
+    promise = axios.put<AdminUser>(`${baseUrl}/${patient.id}`, patient);
+    successMessage = 'Admin user updated successfully';
   } else {
     promise = axios.post(baseUrl, patient);
 
-    successMessage = 'Patient created successfully';
+    successMessage = 'Admin user created successfully';
   }
   return promise
     .then((_) => successMessage)
@@ -76,7 +73,7 @@ function savePatient(patient: OptionalDbPatient) {
     });
 }
 
-function deletePatient(id: number) {
+function deleteAdminUser(id: number) {
   return axios
     .delete<string>(`${baseUrl}/${id}`)
     .then((response) => response.data)
@@ -86,11 +83,11 @@ function deletePatient(id: number) {
 }
 
 export {
-  getPatients,
-  getPatientById,
-  getPatientByEmail,
+  getAdminUsers,
+  getAdminUserById,
+  getAdminUserByEmail,
   login,
-  doesPatientAlreadyExist,
-  savePatient,
-  deletePatient,
+  doesAdminUserAlreadyExist,
+  saveAdminUser,
+  deleteAdminUser,
 };

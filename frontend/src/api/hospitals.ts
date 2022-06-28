@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3000/api/hospitals';
+// To always send cookies while making requests
+axios.defaults.withCredentials = true;
+
+const baseUrl = 'http://localhost:3000/api/admin/hospitals';
 
 function getHospitals(includeDoctors: boolean) {
   let url: string = includeDoctors ? `${baseUrl}?includeDoctors=true` : baseUrl;

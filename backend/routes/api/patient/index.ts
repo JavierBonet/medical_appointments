@@ -7,7 +7,7 @@ import {
 } from '../../../repositories/patient';
 import { addAuthenticationRoutes } from './authenticationRoutes';
 import { hash } from 'bcrypt';
-import { PatientsConfig } from '../../../types/global';
+import { PatientsRouterConfig } from '../../../types/global';
 
 const SALT_ROUNDS = 10;
 
@@ -18,13 +18,16 @@ const Router = {
   init: function init({
     patientsRepository,
     appointmentsRepository,
-  }: PatientsConfig) {
+  }: PatientsRouterConfig) {
     _patientsRepository = patientsRepository;
     _router = ExpressRouter();
 
     // @ts-ignore
     const checkAuthenticated = (req, res, next) => {
-      if (req.isAuthenticated()) {
+      if (
+        req.isAuthenticated() &&
+        req.session.passport.user.model == 'patient'
+      ) {
         return next();
       }
 
@@ -141,9 +144,9 @@ const Router = {
 
 type RouterInterface = typeof Router;
 
-function createRouter(patientsConfig: PatientsConfig) {
+function createRouter(patientsRouterConfig: PatientsRouterConfig) {
   let patientRouter: RouterInterface = Object.create(Router);
-  patientRouter.init(patientsConfig);
+  patientRouter.init(patientsRouterConfig);
   return patientRouter.getRouter();
 }
 

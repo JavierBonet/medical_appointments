@@ -1,9 +1,9 @@
 import { Router as ExpressRouter } from 'express';
-import { Doctor } from '../../../repositories/doctor';
+import { Doctor } from '../../../../repositories/doctor';
 import {
   Hospital,
   HospitalRepositoryInterface,
-} from '../../../repositories/hospital';
+} from '../../../../repositories/hospital';
 
 let _router: ExpressRouter;
 let _hospitalsRepository: HospitalRepositoryInterface;

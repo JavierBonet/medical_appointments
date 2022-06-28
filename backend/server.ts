@@ -21,7 +21,10 @@ const Server: ServerInterface = {
     _app.use(express.json());
 
     const corsOptions = {
+      // To allow requests coming from the frontend
       origin: 'http://localhost:8080',
+      // To allow sending the cookies from the frontend
+      credentials: true,
     };
 
     _app.use(cors(corsOptions));
@@ -41,9 +44,11 @@ const Server: ServerInterface = {
 
     // Configure authentication strategies
     const patientsRepository =
-      config.routerConfig.apiRouterConfig.patientsConfig.patientsRepository;
+      config.routerConfig.apiRouterConfig.patientsRouterConfig
+        .patientsRepository;
     const adminUsersRepository =
-      config.routerConfig.apiRouterConfig.adminUsersRepository;
+      config.routerConfig.apiRouterConfig.adminRouterConfig
+        .adminUsersRepository;
     authenticationConfig(passport, patientsRepository, adminUsersRepository);
 
     // -----------------------------------------

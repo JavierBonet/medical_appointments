@@ -2,12 +2,15 @@ import axios from 'axios';
 import { getDoctor } from './doctors';
 import { getHospitals } from './hospitals';
 
+// To always send cookies while making requests
+axios.defaults.withCredentials = true;
+
 function getBaseUrl(doctorId: string) {
-  return `http://localhost:3000/api/doctors/${doctorId}/calendars`;
+  return `http://localhost:3000/api/admin/doctors/${doctorId}/calendars`;
 }
 
 function getAssociationsBaseUrl(doctorId: string) {
-  return `http://localhost:3000/api/doctors/${doctorId}/associations/hospitals`;
+  return `http://localhost:3000/api/admin/doctors/${doctorId}/associations/hospitals`;
 }
 
 function getCalendars(doctorId: string) {
