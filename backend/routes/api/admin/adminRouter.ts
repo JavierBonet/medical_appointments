@@ -1,7 +1,7 @@
 import { Router as ExpressRouter } from 'express';
 import { AdminRouterConfig } from '../../../types/global';
-import { createRouter as createHospitalRouter } from './hospital';
-import { createRouter as createDoctorRouter } from './doctor';
+import { createHospitalRouter } from './hospital/hospitalRouter';
+import { createDoctorRouter } from './doctor/doctorRouter';
 import { addAuthenticationRoutes } from './authenticationRoutes';
 import {
   AdminUser,
@@ -14,7 +14,7 @@ const SALT_ROUNDS = 10;
 let _router: ExpressRouter;
 let _adminUsersRepository: AdminUserRepositoryInterface;
 
-const Router = {
+const AdminRouter = {
   init: function init(adminRouterConfig: AdminRouterConfig) {
     const { doctorsRouterConfig, hospitalsRepository, adminUsersRepository } =
       adminRouterConfig;
@@ -134,12 +134,14 @@ const Router = {
   },
 };
 
-type AdminRouterInterface = typeof Router;
+type AdminRouterInterface = typeof AdminRouter;
 
-function createRouter(adminRouterConfig: AdminRouterConfig): ExpressRouter {
-  let router: AdminRouterInterface = Object.create(Router);
+function createAdminRouter(
+  adminRouterConfig: AdminRouterConfig
+): ExpressRouter {
+  let router: AdminRouterInterface = Object.create(AdminRouter);
   router.init(adminRouterConfig);
   return router.getRouter();
 }
 
-export { createRouter };
+export { createAdminRouter };

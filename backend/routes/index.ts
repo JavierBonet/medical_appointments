@@ -1,6 +1,6 @@
 import { Router as ExpressRouter } from 'express';
 import { RouterConfig } from '../types/global';
-import { createRouter as createApiRouter } from './api';
+import { createApiRouter } from './api/apiRouter';
 
 let _router: ExpressRouter;
 

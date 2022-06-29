@@ -1,11 +1,11 @@
 import { Router as ExpressRouter } from 'express';
 import { ApiRouterConfig } from '../../types/global';
-import { createRouter as createAdminRouter } from './admin';
-import { createRouter as createPatientRouter } from './patient';
+import { createAdminRouter } from './admin/adminRouter';
+import { createPatientRouter } from './patient/patientRouter';
 
 let _router: ExpressRouter;
 
-const Router = {
+const ApiRouter = {
   init: function init(apiRouterConfig: ApiRouterConfig) {
     _router = ExpressRouter();
     const { adminRouterConfig, patientsRouterConfig } = apiRouterConfig;
@@ -22,12 +22,12 @@ const Router = {
   },
 };
 
-type ApiRouterInterface = typeof Router;
+type ApiRouterInterface = typeof ApiRouter;
 
-function createRouter(apiRouterConfig: ApiRouterConfig): ExpressRouter {
-  let router: ApiRouterInterface = Object.create(Router);
+function createApiRouter(apiRouterConfig: ApiRouterConfig): ExpressRouter {
+  let router: ApiRouterInterface = Object.create(ApiRouter);
   router.init(apiRouterConfig);
   return router.getRouter();
 }
 
-export { createRouter };
+export { createApiRouter };

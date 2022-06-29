@@ -5,7 +5,7 @@ import { Request, Router as ExpressRouter } from 'express';
 let _router: ExpressRouter;
 let _doctorsRepository: DoctorRepositoryInterface;
 
-const Router = {
+const HospitalAssociationsRouter = {
   init: function init(doctorsRepository: DoctorRepositoryInterface) {
     _doctorsRepository = doctorsRepository;
     _router = ExpressRouter({ mergeParams: true });
@@ -45,12 +45,16 @@ const Router = {
   },
 };
 
-type RouterInterface = typeof Router;
+type RouterInterface = typeof HospitalAssociationsRouter;
 
-function createRouter(doctorsRepository: DoctorRepositoryInterface) {
-  let hospitalAssociationsRouter: RouterInterface = Object.create(Router);
+function createHospitalAssociationsRouter(
+  doctorsRepository: DoctorRepositoryInterface
+) {
+  let hospitalAssociationsRouter: RouterInterface = Object.create(
+    HospitalAssociationsRouter
+  );
   hospitalAssociationsRouter.init(doctorsRepository);
   return hospitalAssociationsRouter.getRouter();
 }
 
-export { createRouter };
+export { createHospitalAssociationsRouter };

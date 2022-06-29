@@ -4,7 +4,7 @@ import { HourRangeRepositoryInterface } from '../../../../../../../repositories/
 let _router: ExpressRouter;
 let _hourRangesRepository: HourRangeRepositoryInterface;
 
-const Router = {
+const HourRangeRouter = {
   init: function init(hourRangesRepository: HourRangeRepositoryInterface) {
     _hourRangesRepository = hourRangesRepository;
     _router = ExpressRouter({ mergeParams: true });
@@ -85,12 +85,14 @@ const Router = {
   },
 };
 
-type RouterInterface = typeof Router;
+type RouterInterface = typeof HourRangeRouter;
 
-function createRouter(hourRangeRepository: HourRangeRepositoryInterface) {
-  let hourRangeRouter: RouterInterface = Object.create(Router);
+function createHourRangeRouter(
+  hourRangeRepository: HourRangeRepositoryInterface
+) {
+  let hourRangeRouter: RouterInterface = Object.create(HourRangeRouter);
   hourRangeRouter.init(hourRangeRepository);
   return hourRangeRouter.getRouter();
 }
 
-export { createRouter };
+export { createHourRangeRouter };

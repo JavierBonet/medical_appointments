@@ -8,7 +8,7 @@ import {
 let _router: ExpressRouter;
 let _hospitalsRepository: HospitalRepositoryInterface;
 
-const Router = {
+const HospitalRouter = {
   init: function init(hospitalsRepository: HospitalRepositoryInterface) {
     _hospitalsRepository = hospitalsRepository;
     _router = ExpressRouter();
@@ -82,12 +82,12 @@ const Router = {
   },
 };
 
-type RouterInterface = typeof Router;
+type RouterInterface = typeof HospitalRouter;
 
-function createRouter(hospitalRepository: HospitalRepositoryInterface) {
-  let hospitalRouter: RouterInterface = Object.create(Router);
+function createHospitalRouter(hospitalRepository: HospitalRepositoryInterface) {
+  let hospitalRouter: RouterInterface = Object.create(HospitalRouter);
   hospitalRouter.init(hospitalRepository);
   return hospitalRouter.getRouter();
 }
 
-export { createRouter };
+export { createHospitalRouter };

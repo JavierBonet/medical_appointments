@@ -9,7 +9,7 @@ import { Hospital } from '../../../../repositories/hospital';
 let _router: ExpressRouter;
 let _appointmentsRepository: AppointmentRepositoryInterface;
 
-const Router = {
+const AppointmentRouter = {
   init: function init(appointmentsRepository: AppointmentRepositoryInterface) {
     _appointmentsRepository = appointmentsRepository;
     _router = ExpressRouter({ mergeParams: true });
@@ -81,12 +81,14 @@ const Router = {
   },
 };
 
-type RouterInterface = typeof Router;
+type RouterInterface = typeof AppointmentRouter;
 
-function createRouter(appointmentRepository: AppointmentRepositoryInterface) {
-  let appointmentRouter: RouterInterface = Object.create(Router);
+function createAppointmentRouter(
+  appointmentRepository: AppointmentRepositoryInterface
+) {
+  let appointmentRouter: RouterInterface = Object.create(AppointmentRouter);
   appointmentRouter.init(appointmentRepository);
   return appointmentRouter.getRouter();
 }
 
-export { createRouter };
+export { createAppointmentRouter };
