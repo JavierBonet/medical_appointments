@@ -14,7 +14,7 @@ const HospitalRouter = {
     _router = ExpressRouter();
 
     _router.get('/', (req, res) => {
-      const includeDoctors = req.query.includeDoctors;
+      const includeDoctors = req.query.includeDoctors == 'true';
       const options = includeDoctors ? { include: Doctor } : {};
       _hospitalsRepository
         .getAll(options)
