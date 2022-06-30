@@ -6,7 +6,7 @@ import CustomLoader from '../../commons/CustomLoader';
 import {
   doesAdminUserAlreadyExist,
   saveAdminUser,
-} from '../../../api/adminUser';
+} from '../../../api/admin/user';
 
 const initialAdminUser: OptionalAdminUser = {
   email: '',

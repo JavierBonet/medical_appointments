@@ -5,7 +5,7 @@ import {
   areAvailableHospitals,
   deleteCalendar,
   getCalendars,
-} from '../../../../api/calendars';
+} from '../../../../api/admin/calendars';
 import CustomLoader from '../../../commons/CustomLoader';
 import CalendarsList from './CalendarsList';
 

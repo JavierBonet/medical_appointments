@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { login } from '../../api/patients';
-import useAuth from '../utils/useAuth';
 import SignInForm from './SignInForm';
 
 interface PropsInterface {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getHospital, saveHospital } from '../../../api/hospitals';
+import { getHospital, saveHospital } from '../../../api/admin/hospitals';
 import { toast } from 'react-toastify';
 import HospitalForm from './HospitalForm';
 import CustomLoader from '../../commons/CustomLoader';

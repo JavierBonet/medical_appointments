@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { deleteHospital, getHospitals } from '../../../api/hospitals';
+import { deleteHospital, getHospitals } from '../../../api/admin/hospitals';
 import CustomLoader from '../../commons/CustomLoader';
 import HospitalsList from './HospitalsList';
 

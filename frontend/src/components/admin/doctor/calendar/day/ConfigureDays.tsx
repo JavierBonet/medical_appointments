@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from 'semantic-ui-react';
-import { getDays, saveDays } from '../../../../../api/days';
+import { getDays, saveDays } from '../../../../../api/admin/days';
 import SelectInputField from '../../../../commons/SelectInputField';
 import { toast } from 'react-toastify';
 import './daysConfiguration.scss';

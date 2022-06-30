@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link, Outlet } from 'react-router-dom';
-import { getDoctor, saveDoctor } from '../../../api/doctors';
+import { getDoctor, saveDoctor } from '../../../api/admin/doctors';
 import { toast } from 'react-toastify';
 import DoctorForm from './DoctorForm';
 import CustomLoader from '../../commons/CustomLoader';
-import CalendarsPage from './calendar/CalendarsPage';
 
 const initialDoctor: OptionalDoctor = {
   name: '',

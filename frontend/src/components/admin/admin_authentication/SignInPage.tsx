@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { login } from '../../../api/adminUser';
-// import { login } from '../../api/patients';
-import useAuth from '../utils/useAuth';
+import { login } from '../../../api/admin/user';
 import SignInForm from './SignInForm';
 
 const initialPatient: LoginAdminUser = {

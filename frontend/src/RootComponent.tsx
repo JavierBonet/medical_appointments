@@ -12,7 +12,6 @@ import DoctorPage from './components/admin/doctor/DoctorPage';
 import CalendarsPage from './components/admin/doctor/calendar/CalendarsPage';
 import CalendarPage from './components/admin/doctor/calendar/CalendarPage';
 import AppointmentPage from './components/appointment/AppointmentPage';
-import AppointmentsHome from './components/appointment/AppointmentsHome';
 import SignUpPage from './components/patient_authentication/SignUpPage';
 import SignInPage from './components/patient_authentication/SignInPage';
 import { default as AdminSignInPage } from './components/admin/admin_authentication/SignInPage';

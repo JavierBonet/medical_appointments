@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Outlet } from 'react-router-dom';
-import { getCalendar, saveCalendar } from '../../../../api/calendars';
+import {
+  getCalendar,
+  saveCalendar,
+  getAvailableHospitals,
+} from '../../../../api/admin/calendars';
 import { toast } from 'react-toastify';
 import CalendarForm from './CalendarForm';
 import CustomLoader from '../../../commons/CustomLoader';
-import { getAvailableHospitals } from '../../../../api/calendars';
 import ConfigureDays from './day/ConfigureDays';
 
 const initialCalendar: OptionalCalendar = {
