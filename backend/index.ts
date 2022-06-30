@@ -14,12 +14,15 @@ dotenv.config();
 
 let server: ServerInterface = Object.create(Server);
 
+const doctorsRepository = createDoctorsRepository();
+const hospitalsRepository = createHospitalsRepository();
+
 const config: GeneralRouterConfig = {
   routerConfig: {
     apiRouterConfig: {
       adminRouterConfig: {
         doctorsRouterConfig: {
-          doctorsRepository: createDoctorsRepository(),
+          doctorsRepository,
           calendarsRouterConfig: {
             calendarsRepository: createCalendarsRepository(),
             daysRouterConfig: {
@@ -28,12 +31,14 @@ const config: GeneralRouterConfig = {
             },
           },
         },
-        hospitalsRepository: createHospitalsRepository(),
+        hospitalsRepository,
         adminUsersRepository: createAdminUsersRepository(),
       },
       patientsRouterConfig: {
-        appointmentsRepository: createAppointmentsRepository(),
         patientsRepository: createPatientsRepository(),
+        appointmentsRepository: createAppointmentsRepository(),
+        doctorsRepository,
+        hospitalsRepository,
       },
     },
   },

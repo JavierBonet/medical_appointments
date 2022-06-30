@@ -40,6 +40,8 @@ interface AdminRouterConfig {
 interface PatientsRouterConfig {
   patientsRepository: PatientRepositoryInterface;
   appointmentsRepository: AppointmentRepositoryInterface;
+  doctorsRepository: DoctorRepositoryInterface;
+  hospitalsRepository: HospitalRepositoryInterface;
 }
 
 interface ApiRouterConfig {

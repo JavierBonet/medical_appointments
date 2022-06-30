@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getHospitals } from '../../api/admin/hospitals';
+import { getHospitals } from '../../api/hospitals';
 import SelectInputField from '../commons/SelectInputField';
 import { toast } from 'react-toastify';
 import { getDoctorOptions, getHospitalOptions } from './utils';

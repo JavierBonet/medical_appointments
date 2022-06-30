@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getHourByIndex } from '../components/admin/doctor/calendar/day/dayUtils';
+import { getHourByIndex } from '../../components/admin/doctor/calendar/day/dayUtils';
 
 // To always send cookies while making requests
 axios.defaults.withCredentials = true;

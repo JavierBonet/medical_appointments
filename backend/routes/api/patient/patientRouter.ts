@@ -1,6 +1,8 @@
 import { Router as ExpressRouter } from 'express';
 import { Appointment } from '../../../repositories/appointment';
 import { createAppointmentRouter } from './appointment/appointmentRouter';
+import { createDoctorRouter } from './doctor/doctorRouter';
+import { createHospitalRouter } from './hospital/hospitalRouter';
 import {
   Patient,
   PatientRepositoryInterface,
@@ -18,6 +20,8 @@ const PatientRouter = {
   init: function init({
     patientsRepository,
     appointmentsRepository,
+    doctorsRepository,
+    hospitalsRepository,
   }: PatientsRouterConfig) {
     _patientsRepository = patientsRepository;
     _router = ExpressRouter();
@@ -38,13 +42,17 @@ const PatientRouter = {
     };
 
     const appointmentRouter = createAppointmentRouter(appointmentsRepository);
+    const doctorRouter = createDoctorRouter(doctorsRepository);
+    const hospitalRouter = createHospitalRouter(hospitalsRepository);
     // checkAuthenticated verifies that a user is logged in to access
-    // appointments routes
+    // appointments, doctors and hospitals routes
     _router.use(
       '/:patientId/appointments',
       checkAuthenticated,
       appointmentRouter
     );
+    _router.use('/doctors', checkAuthenticated, doctorRouter);
+    _router.use('/hospitals', checkAuthenticated, hospitalRouter);
 
     // Add authentication routes
     addAuthenticationRoutes(_router);
