@@ -13,7 +13,11 @@ const initialDoctor: OptionalDoctor = {
   Calendars: [],
 };
 
-const DoctorPage = () => {
+interface PropsInterface {
+  logout: () => void;
+}
+
+const DoctorPage = ({ logout }: PropsInterface) => {
   const [doctor, setDoctor] = useState(initialDoctor);
   const [loading, setLoading] = useState(false);
   const params = useParams();
@@ -29,10 +33,16 @@ const DoctorPage = () => {
           setLoading(false);
           setDoctor(doctor);
         })
-        .catch((err) => {
+        .catch((error) => {
           setLoading(false);
-          navigate('../doctors');
-          toast.warning(err);
+          if (error === 401) {
+            logout();
+            navigate('/admin/signin');
+            toast.warning('Please log in');
+          } else {
+            navigate('../doctors');
+            toast.warning(error);
+          }
         });
     }
   }, []);
@@ -73,9 +83,11 @@ const DoctorPage = () => {
               saveHandler={saveHandler}
             />
           </div>
-          <div className="second-column">
-            <Outlet />
-          </div>
+          {doctor.id && (
+            <div className="second-column">
+              <Outlet />
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { deleteDoctor, getDoctors } from '../../../api/admin/doctors';
 import CustomLoader from '../../commons/CustomLoader';
 import DoctorsList from './DoctorsList';
 
-const DoctorsPage = () => {
+interface PropsInterface {
+  logout: () => void;
+}
+
+const DoctorsPage = ({ logout }: PropsInterface) => {
   const [_doctors, setDoctors] = useState([] as Doctor[]);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (_doctors.length == 0) {
@@ -17,9 +23,15 @@ const DoctorsPage = () => {
           setLoading(false);
           setDoctors(doctors);
         })
-        .catch((errorMessage) => {
+        .catch((error) => {
           setLoading(false);
-          toast.error(errorMessage);
+          if (error === 401) {
+            logout();
+            navigate('/admin/signin');
+            toast.warning('Please log in');
+          } else {
+            toast.warning(error);
+          }
         });
     }
   }, []);

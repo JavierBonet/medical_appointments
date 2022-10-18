@@ -12,7 +12,11 @@ const initialHospital: OptionalHospital = {
   zip_code: 0,
 };
 
-const HospitalPage = () => {
+interface PropsInterface {
+  logout: () => void;
+}
+
+const HospitalPage = ({ logout }: PropsInterface) => {
   const [hospital, setHospital] = useState(initialHospital);
   const [loading, setLoading] = useState(false);
   const params = useParams();
@@ -28,10 +32,16 @@ const HospitalPage = () => {
           setLoading(false);
           setHospital(hospital);
         })
-        .catch((err) => {
+        .catch((error) => {
           setLoading(false);
-          navigate('../hospitals');
-          toast.warning(err);
+          if (error === 401) {
+            logout();
+            navigate('/admin/signin');
+            toast.warning('Please log in');
+          } else {
+            navigate('../hospitals');
+            toast.warning(error);
+          }
         });
     }
   }, []);

@@ -6,9 +6,17 @@ axios.defaults.withCredentials = true;
 const baseUrl = 'http://localhost:3000/api/admin/doctors';
 
 function getDoctors() {
-  return axios.get<Doctor[]>(baseUrl).then((response) => {
-    return response.data;
-  });
+  return axios
+    .get<Doctor[]>(baseUrl)
+    .then((response) => response.data)
+    .catch((error) => {
+      const statusCode = error.response.status;
+      if (statusCode === 401) {
+        throw statusCode;
+      } else {
+        throw error.response.data.message;
+      }
+    });
 }
 
 function getDoctor(id: string) {
@@ -16,7 +24,12 @@ function getDoctor(id: string) {
     .get<Doctor>(`${baseUrl}/${id}`)
     .then((response) => response.data)
     .catch((error) => {
-      throw error.response.data.message;
+      const statusCode = error.response.status;
+      if (statusCode === 401) {
+        throw statusCode;
+      } else {
+        throw error.response.data.message;
+      }
     });
 }
 

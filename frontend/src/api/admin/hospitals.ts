@@ -7,9 +7,19 @@ const baseUrl = 'http://localhost:3000/api/admin/hospitals';
 
 function getHospitals(includeDoctors: boolean) {
   let url: string = includeDoctors ? `${baseUrl}?includeDoctors=true` : baseUrl;
-  return axios.get<Hospital[]>(url).then((response) => {
-    return response.data;
-  });
+  return axios
+    .get<Hospital[]>(url)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      const statusCode = error.response.status;
+      if (statusCode === 401) {
+        throw statusCode;
+      } else {
+        throw error.response.data.message;
+      }
+    });
 }
 
 function getHospital(id: string) {
@@ -17,7 +27,12 @@ function getHospital(id: string) {
     .get<Hospital>(`${baseUrl}/${id}`)
     .then((response) => response.data)
     .catch((error) => {
-      throw error.response.data.message;
+      const statusCode = error.response.status;
+      if (statusCode === 401) {
+        throw statusCode;
+      } else {
+        throw error.response.data.message;
+      }
     });
 }
 
