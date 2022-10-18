@@ -42,6 +42,7 @@ interface PatientsRouterConfig {
   appointmentsRepository: AppointmentRepositoryInterface;
   doctorsRepository: DoctorRepositoryInterface;
   hospitalsRepository: HospitalRepositoryInterface;
+  calendarsRepository: CalendarRepositoryInterface;
 }
 
 interface ApiRouterConfig {

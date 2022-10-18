@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "webpack --config webpack.config.dev.js --mode development",
     "start-dev": "webpack-dev-server --config webpack.config.dev.js --mode development --open"
   },
@@ -28,11 +28,13 @@
   },
   "devDependencies": {
     "@babel/core": "^7.16.12",
+    "@babel/plugin-transform-runtime": "^7.19.1",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
     "@types/axios": "^0.14.0",
+    "@types/jest": "^29.0.3",
     "@types/lodash": "^4.14.180",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
@@ -41,6 +43,7 @@
     "css-loader": "^6.5.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
+    "jest": "^29.0.3",
     "react-refresh": "^0.11.0",
     "sass": "^1.49.0",
     "sass-loader": "^12.4.0",

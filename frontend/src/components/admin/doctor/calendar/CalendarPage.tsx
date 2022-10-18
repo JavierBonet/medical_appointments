@@ -21,7 +21,7 @@ const defaultErrors = {
 
 const CalendarPage = () => {
   const [calendar, setCalendar] = useState(initialCalendar);
-  const [hospitals, setHospitals] = useState([] as Hospital[]);
+  const [hospitals, setHospitals] = useState<Hospital[]>([]);
   const [previousHospitalId, setPreviousHospitalId] = useState<
     number | undefined
   >(undefined);
@@ -65,23 +65,6 @@ const CalendarPage = () => {
           })
           .catch((err) => toast.warning(err));
       }
-    }
-
-    if (doctorId) {
-      getAvailableHospitals(doctorId)
-        .then((hospitals) => {
-          let newHospitals = hospitals;
-
-          if (calendarId) {
-            const calendarHospital = calendar.Hospital;
-            if (calendarHospital) {
-              newHospitals.unshift(calendarHospital);
-            }
-          }
-
-          setHospitals(newHospitals);
-        })
-        .catch((err) => toast.warning(err));
     }
   }, []);
 
@@ -150,9 +133,11 @@ const CalendarPage = () => {
     return newErrors;
   }
 
-  const hospitalOptions = hospitals.map((hospital) => {
-    return { key: hospital.id, value: hospital.id, text: hospital.name };
-  });
+  const hospitalOptions = hospitals.map((hospital) => ({
+    key: hospital.id,
+    value: hospital.id,
+    text: hospital.name,
+  }));
 
   return (
     <div className="section-container">

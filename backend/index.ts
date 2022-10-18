@@ -16,6 +16,7 @@ let server: ServerInterface = Object.create(Server);
 
 const doctorsRepository = createDoctorsRepository();
 const hospitalsRepository = createHospitalsRepository();
+const calendarsRepository = createCalendarsRepository();
 
 const config: GeneralRouterConfig = {
   routerConfig: {
@@ -24,7 +25,7 @@ const config: GeneralRouterConfig = {
         doctorsRouterConfig: {
           doctorsRepository,
           calendarsRouterConfig: {
-            calendarsRepository: createCalendarsRepository(),
+            calendarsRepository,
             daysRouterConfig: {
               daysRepository: createDaysRepository(),
               hourRangesRepository: createHourRangesRepository(),
@@ -39,6 +40,7 @@ const config: GeneralRouterConfig = {
         appointmentsRepository: createAppointmentsRepository(),
         doctorsRepository,
         hospitalsRepository,
+        calendarsRepository,
       },
     },
   },

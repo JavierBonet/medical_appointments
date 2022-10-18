@@ -10,29 +10,29 @@ import {
   getDeletedHourRanges,
   getEndHourRangeOptions,
   getHourRangesUpdated,
-  getIndexByValue,
   getRemainingHourRangesQuantity,
   getStartHourRangeOptions,
 } from './dayUtils';
+import DaysOfTheWeek from './DaysOfTheWeek';
 
-const initialDaysMap: DaysMap = {
+const emptyDaysMap = (): DaysMap => ({
   monday: [],
   tuesday: [],
   wednesday: [],
   thursday: [],
   friday: [],
-};
+});
 
 const ConfigureDays = () => {
-  const [days, setDays] = useState(initialDaysMap);
-  const [selectedDay, setSelectedDay] = useState('monday' as WeekDay);
+  const [days, setDays] = useState(emptyDaysMap());
+  const [selectedDay, setSelectedDay] = useState<WeekDay>('monday');
   const [lastSelectedHourIndex, setLastSelectedHourIndex] = useState(0);
-  const [dayIdByNameMap, setDayIdByNameMap] = useState<Map<WeekDay, number>>(
-    new Map()
+  const [dayIdByNameMap, setDayIdByNameMap] = useState(
+    new Map<WeekDay, number>()
   );
-  const [hourRangesToDelete, setHourRangesToDelete] = useState<
-    Map<WeekDay, number[]>
-  >(new Map());
+  const [hourRangesToDelete, setHourRangesToDelete] = useState(
+    new Map<WeekDay, number[]>()
+  );
 
   const params = useParams();
 
@@ -41,9 +41,9 @@ const ConfigureDays = () => {
     const calendarId = params.calendarId;
     if (doctorId && calendarId) {
       getDays(doctorId, calendarId).then((dbDays) => {
-        if (dbDays.length == 5) {
+        if (dbDays.length === 5) {
           const days = dbDaysToDays(dbDays);
-          const map: Map<WeekDay, number> = new Map();
+          const map = new Map<WeekDay, number>();
 
           dbDays.forEach((dbDay) => map.set(dbDay.name as WeekDay, dbDay.id));
           setDays(days);
@@ -54,19 +54,21 @@ const ConfigureDays = () => {
 
     return () => {
       setDays({} as DaysMap);
-      setDayIdByNameMap({} as Map<WeekDay, number>);
+      setDayIdByNameMap(new Map<WeekDay, number>());
+      setHourRangesToDelete(new Map<WeekDay, number[]>());
     };
   }, []);
 
   useEffect(() => {
-    const currentDay = days[selectedDay];
-    // console.log(currentDay);
+    if (days) {
+      const currentDay = days[selectedDay];
 
-    const length = currentDay.length;
-    if (length != 0) {
-      setLastSelectedHourIndex(currentDay[length - 1].end.selected);
-    } else {
-      setLastSelectedHourIndex(0);
+      const length = currentDay.length;
+      if (length != 0) {
+        setLastSelectedHourIndex(currentDay[length - 1].end.selected);
+      } else {
+        setLastSelectedHourIndex(0);
+      }
     }
   }, [selectedDay]);
 
@@ -150,7 +152,6 @@ const ConfigureDays = () => {
             }
 
             setHourRangesToDelete(newHourRangesToDelete);
-            console.log(newHourRangesToDelete);
           }
         }
       }
@@ -160,7 +161,6 @@ const ConfigureDays = () => {
       const lastIndex =
         newHourRangesInfo[newHourRangesInfo.length - 1].end.selected;
       setLastSelectedHourIndex(lastIndex);
-      // console.log(newDays);
     };
   }
 
@@ -168,24 +168,25 @@ const ConfigureDays = () => {
     const doctorId = params.doctorId;
     const calendarId = params.calendarId;
     if (doctorId && calendarId) {
-      // Crear days.ts en carpeta api y poner el método saveDays ahí
       saveDays(doctorId, calendarId, days, dayIdByNameMap, hourRangesToDelete)
         .then((message) => toast.success(message))
         .catch((errorMessage) => toast.error(errorMessage));
     }
   }
 
-  function deleteHandler(id: number) {
+  function deleteHandler(id?: number) {
     let newDays = { ...days };
     newDays[selectedDay].pop();
 
     let newHourRangesToDelete = new Map(hourRangesToDelete);
 
     let currentHourRangesToDelete = newHourRangesToDelete.get(selectedDay);
-    if (currentHourRangesToDelete) {
-      currentHourRangesToDelete.push(id);
-    } else {
-      newHourRangesToDelete.set(selectedDay, [id]);
+    if (id) {
+      if (currentHourRangesToDelete) {
+        currentHourRangesToDelete.push(id);
+      } else {
+        newHourRangesToDelete.set(selectedDay, [id]);
+      }
     }
 
     setDays(newDays);
@@ -203,79 +204,47 @@ const ConfigureDays = () => {
               disabled={
                 getRemainingHourRangesQuantity(lastSelectedHourIndex + 1) < 2
               }
-              onClick={() => addHourRangeHandler()}
+              onClick={addHourRangeHandler}
             >
               Add
             </Button>
           </div>
-          <div className="days">
-            <div className="day" onClick={() => daySelectionHandler('monday')}>
-              Monday
-            </div>
-            <div className="day" onClick={() => daySelectionHandler('tuesday')}>
-              Tuesday
-            </div>
-            <div
-              className="day"
-              onClick={() => daySelectionHandler('wednesday')}
-            >
-              Wednesday
-            </div>
-            <div
-              className="day"
-              onClick={() => daySelectionHandler('thursday')}
-            >
-              Thursday
-            </div>
-            <div className="day" onClick={() => daySelectionHandler('friday')}>
-              Friday
-            </div>
-          </div>
+          <DaysOfTheWeek daySelectionHandler={daySelectionHandler} />
         </div>
         <div className="body">
-          {days[selectedDay] ? (
-            days[selectedDay].map((hourRangeInfo, index) => {
-              return (
-                <div
-                  key={hourRangeInfo.end.selected}
-                  className="day-hour-ranges"
-                >
-                  <SelectInputField
-                    label="Start"
-                    name="start"
-                    options={hourRangeInfo.start.options}
-                    selected={hourRangeInfo.start.selected}
-                    changeHandler={selectChangeHandler(index, 'start')}
-                    removeLabel={true}
-                  />
-                  <SelectInputField
-                    label="End"
-                    name="end"
-                    options={hourRangeInfo.end.options}
-                    selected={hourRangeInfo.end.selected}
-                    changeHandler={selectChangeHandler(index, 'end')}
-                    removeLabel={true}
-                  />
-                  {days[selectedDay].length - 1 == index && (
-                    <Button
-                      negative
-                      onClick={() =>
-                        hourRangeInfo.id ? deleteHandler(hourRangeInfo.id) : {}
-                      }
-                    >
-                      delete
-                    </Button>
-                  )}
-                </div>
-              );
-            })
-          ) : (
-            <></>
-          )}
+          {days[selectedDay].length !== 0 &&
+            days[selectedDay].map((hourRangeInfo, index) => (
+              <div key={hourRangeInfo.end.selected} className="day-hour-ranges">
+                <SelectInputField
+                  label="Start"
+                  name="start"
+                  options={hourRangeInfo.start.options}
+                  selected={hourRangeInfo.start.selected}
+                  changeHandler={selectChangeHandler(index, 'start')}
+                  removeLabel={true}
+                />
+                <SelectInputField
+                  label="End"
+                  name="end"
+                  options={hourRangeInfo.end.options}
+                  selected={hourRangeInfo.end.selected}
+                  changeHandler={selectChangeHandler(index, 'end')}
+                  removeLabel={true}
+                />
+                {days[selectedDay].length - 1 == index && (
+                  <Button
+                    negative
+                    onClick={() => deleteHandler(hourRangeInfo.id)}
+                  >
+                    delete
+                  </Button>
+                )}
+              </div>
+            ))}
         </div>
       </div>
       <div className="save-button">
-        <Button onClick={() => saveHandler()}>Save</Button>
+        <Button onClick={saveHandler}>Save</Button>
       </div>
     </>
   );

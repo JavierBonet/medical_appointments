@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+// To always send cookies while making requests
+axios.defaults.withCredentials = true;
+
 const baseUrl = 'http://localhost:3000/api/admin';
 
 function getAdminUsers() {}

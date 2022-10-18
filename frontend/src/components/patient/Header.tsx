@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { BsChevronLeft } from 'react-icons/bs';
-import useAuth from '../utils/useAuth';
 import LogoutButton from '../commons/LogoutButton';
 
 interface PropsInterface {
@@ -16,6 +15,15 @@ const Header = ({ user, logout }: PropsInterface) => {
         <NavLink to="/" className="navigation-header-item">
           <BsChevronLeft />
           {'Home'}
+        </NavLink>
+        <div className="links-separator"></div>
+        <NavLink
+          to="/patient"
+          className={({ isActive }) =>
+            isActive ? 'active-link' : 'navigation-header-item'
+          }
+        >
+          {'Appointments'}
         </NavLink>
         {user && <LogoutButton logout={logout} />}
       </div>

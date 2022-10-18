@@ -3,6 +3,7 @@ import { Appointment } from '../../../repositories/appointment';
 import { createAppointmentRouter } from './appointment/appointmentRouter';
 import { createDoctorRouter } from './doctor/doctorRouter';
 import { createHospitalRouter } from './hospital/hospitalRouter';
+import { createCalendarRouter } from './calendar/calendarRouter';
 import {
   Patient,
   PatientRepositoryInterface,
@@ -22,6 +23,7 @@ const PatientRouter = {
     appointmentsRepository,
     doctorsRepository,
     hospitalsRepository,
+    calendarsRepository,
   }: PatientsRouterConfig) {
     _patientsRepository = patientsRepository;
     _router = ExpressRouter();
@@ -35,7 +37,7 @@ const PatientRouter = {
         return next();
       }
 
-      res.status(400).send({
+      res.status(401).send({
         message:
           'Please login using email and password. Login endpoint: /api/patients/login.',
       });
@@ -44,15 +46,13 @@ const PatientRouter = {
     const appointmentRouter = createAppointmentRouter(appointmentsRepository);
     const doctorRouter = createDoctorRouter(doctorsRepository);
     const hospitalRouter = createHospitalRouter(hospitalsRepository);
+    const calendarRouter = createCalendarRouter(calendarsRepository);
     // checkAuthenticated verifies that a user is logged in to access
     // appointments, doctors and hospitals routes
-    _router.use(
-      '/:patientId/appointments',
-      checkAuthenticated,
-      appointmentRouter
-    );
+    _router.use('/appointments', checkAuthenticated, appointmentRouter);
     _router.use('/doctors', checkAuthenticated, doctorRouter);
     _router.use('/hospitals', checkAuthenticated, hospitalRouter);
+    _router.use('/calendar', checkAuthenticated, calendarRouter);
 
     // Add authentication routes
     addAuthenticationRoutes(_router);

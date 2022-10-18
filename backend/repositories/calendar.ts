@@ -32,6 +32,22 @@ const CalendarRepository = {
     return Calendar.findByPk(id, options);
   },
 
+  getCalendarByDoctorAndHospitalId: function getCalendarByDoctorAndHospitalId(
+    doctorId: number,
+    hospitalId: number
+  ) {
+    return Calendar.findOne({
+      where: { doctorId, hospitalId },
+      include: [
+        {
+          model: Day,
+          include: [{ model: HourRange }],
+        },
+      ],
+      order: [[Day, HourRange, 'id', 'ASC']],
+    });
+  },
+
   createCalendar: function createCalendar(calendar: CreationAttributes) {
     return Calendar.create(calendar);
   },

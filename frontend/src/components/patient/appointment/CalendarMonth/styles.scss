@@ -1,0 +1,73 @@
+.appointment-date-and-hour {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 25px;
+  margin-top: 25px;
+}
+
+.appointment-date {
+  display: grid;
+  place-items: center;
+}
+
+// ACOMODAR LOS ESTILOS PARA QUE LOS TÍTULOS 'SELECT DATE' Y LA FECHA SELECCIONADA QUEDEN A LA MISMA ALTURA Y
+// EL CONTENEDOR CON LOS HORARIOS QUEDE CENTRADO VERTICALMENTE
+
+.patient-appointments-calendar {
+  display: grid;
+  grid-template-rows: repeat('auto-fill', 50px);
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  margin-top: 25px;
+  padding: 15px;
+  background-color: aquamarine;
+  border: solid 3px rgb(29, 250, 176);
+  border-radius: 5px;
+
+  .calendar-date {
+    width: 40px;
+    height: 40px;
+    border: solid 1px blue;
+    border-radius: 5px;
+    background-color: lightblue;
+    caret-color: transparent;
+    
+    display: grid;
+    place-items: center;
+
+    &:hover {
+      cursor: pointer;
+      filter: brightness(80%);
+    }
+  }
+
+  .disabled, .disabled-date {  
+    border: solid 1px rgb(98, 98, 99);
+    background-color: rgb(173, 180, 182);
+
+    &:hover {
+      cursor: default;
+      filter: none;
+    }
+  }
+
+  .selected {
+    filter: brightness(140%);
+    border: 2px solid blue;
+  }
+
+  .centered {
+    text-align: center;
+  }
+}
+
+
+.fade-in {
+  animation: fadeIn 2.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}

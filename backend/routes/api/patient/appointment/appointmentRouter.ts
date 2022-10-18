@@ -16,7 +16,7 @@ const AppointmentRouter = {
 
     _router.get('/', (req: Request<{ patientId: string }>, res) => {
       _appointmentsRepository
-        .getAll()
+        .getAll({ include: [Doctor, Hospital] })
         .then((appointments: Appointment[]) => {
           res.send(appointments).end();
         })
@@ -41,11 +41,20 @@ const AppointmentRouter = {
         });
     });
 
-    _router.post('/', (req, res) => {
+    _router.post('/', (req: any, res) => {
+      const patientId = req.session.passport.user.id as number;
+
+      if (!patientId) {
+        res.status(500).send({ message: 'User not logged in!!!' }).end;
+      }
+
+      // Set the patientId field using current user's id
+      const appointment = { ...req.body, patientId };
+
       _appointmentsRepository
-        .createAppointment(req.body)
-        .then((appointment) => {
-          res.status(201).send(appointment).end();
+        .createAppointment(appointment)
+        .then((dbAppointment) => {
+          res.status(201).send(dbAppointment).end();
         })
         .catch((err: Error) => {
           res.status(400).send(err.message).end();

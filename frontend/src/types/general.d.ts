@@ -40,6 +40,7 @@ interface Calendar {
   hospitalId: number;
   Doctor: Doctor;
   Hospital: Hospital;
+  Days: Day[];
 }
 
 interface OptionalCalendar {
