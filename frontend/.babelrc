@@ -9,5 +9,8 @@
     ],
     "@babel/preset-typescript"
   ],
-  "plugins": ["@emotion"]
+  "plugins": [
+    "@emotion",
+    "@babel/plugin-transform-runtime"
+  ]
 }

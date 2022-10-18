@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getHourByIndex } from '../../components/admin/doctor/calendar/day/dayUtils';
+import { create } from './hourRanges';
 
 // To always send cookies while making requests
 axios.defaults.withCredentials = true;
@@ -24,12 +25,22 @@ function saveDays(
     Object.keys(days).forEach((dayName, index) => {
       let HourRanges: NoDayHourRangeAttributes[] = [];
 
-      days[dayName as WeekDay].forEach((hourRangeInfo) => {
+      const dayHourRanges = days[dayName as WeekDay];
+
+      for (let i = 0; i < dayHourRanges.length; i++) {
+        const hourRangeInfo = dayHourRanges[i];
         HourRanges.push({
           start: getHourByIndex(hourRangeInfo.start.selected),
           end: getHourByIndex(hourRangeInfo.end.selected),
         });
-      });
+      }
+
+      // days[dayName as WeekDay].forEach((hourRangeInfo) => {
+      //   HourRanges.push({
+      //     start: getHourByIndex(hourRangeInfo.start.selected),
+      //     end: getHourByIndex(hourRangeInfo.end.selected),
+      //   });
+      // });
 
       const dbDay = {
         name: dayName,
@@ -39,7 +50,18 @@ function saveDays(
       };
 
       axios
-        .post(getBaseUrl(doctorId, calendarId), dbDay)
+        .post<Day>(getBaseUrl(doctorId, calendarId), dbDay)
+        .then(async (response) => {
+          const dayId = response.data.id;
+          const hourRanges = dbDay.HourRanges;
+          for (let i = 0; i < hourRanges.length; i++) {
+            const hourRange: OptionalHourRange = {
+              ...hourRanges[i],
+              dayId: dayId,
+            };
+            await create(doctorId, calendarId, '' + dayId, hourRange);
+          }
+        })
         .catch((err: Error) => {
           message = err.message;
           errorHappened = true;
@@ -73,13 +95,7 @@ function saveDays(
           }
         });
 
-        if (hourRangesToCreate.length > 0) {
-          console.log('to create 1 ', hourRangesToCreate);
-        }
-
         hourRangesToCreate.forEach((hourRange) => {
-          console.log('HR C - ', hourRange);
-
           axios
             .post(
               `${getBaseUrl(doctorId, calendarId)}/${dayId}/hourRanges`,
@@ -90,10 +106,6 @@ function saveDays(
               errorHappened = true;
             });
         });
-
-        if (hourRangesToCreate.length > 0) {
-          console.log('to create ', hourRangesToCreate);
-        }
 
         hourRangesToUpdate.forEach((hourRange) => {
           axios
