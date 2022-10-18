@@ -36,5 +36,5 @@ interface LoginPatient {
 }
 
 interface LocalStorageUser {
-  name: string;
+  email: string;
 }

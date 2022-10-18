@@ -81,7 +81,7 @@ const DoctorRepository = {
     });
   },
 
-  replaceHospitalAssociation: function addHospitalAssociation(
+  replaceHospitalAssociation: function replaceHospitalAssociation(
     previousHospitalId: number,
     hospitalId: number,
     doctorId: number

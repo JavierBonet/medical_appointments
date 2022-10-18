@@ -40,7 +40,7 @@ const CalendarsPage = () => {
           setAreHospitalsLeft(areHospitalsLeft);
         })
         .catch((errorMessage) => {
-          toast.error(errorMessage);
+          toast.warning(errorMessage);
         })
         .finally(() => {
           setLoading(false);
