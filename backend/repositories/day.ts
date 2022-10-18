@@ -29,7 +29,7 @@ const DayRepository = {
   },
 
   createDay: function createDay(day: CreationAttributes) {
-    return Day.create(day, { include: [{ model: HourRange }] });
+    return Day.create(day);
   },
 
   updateDay: function updateDay(id: number, day: Attributes) {
