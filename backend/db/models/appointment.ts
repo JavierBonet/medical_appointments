@@ -22,7 +22,7 @@ class Appointment extends Model<
   InferCreationAttributes<Appointment>
 > {
   declare id: CreationOptional<number>;
-  declare date: Date;
+  declare date: string;
   declare hour: string;
   declare dayOfTheWeek: string;
   declare doctorId: number;
@@ -48,7 +48,7 @@ Appointment.init(
       primaryKey: true,
     },
     date: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notNull: true,
