@@ -1,34 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { getHospitals } from '../../api/hospitals';
-import SelectInputField from '../commons/SelectInputField';
+import { getHospitals } from '../../../api/hospitals';
+import SelectInputField from '../../commons/SelectInputField';
 import { toast } from 'react-toastify';
 import { getDoctorOptions, getHospitalOptions } from './utils';
-import CustomLoader from '../commons/CustomLoader';
+import CustomLoader from '../../commons/CustomLoader';
 import CalendarMonth from './CalendarMonth';
+import { UNAUTHORIZED_STATUS_CODE } from '../../utils/responseStatusCodes';
+import { useNavigate } from 'react-router-dom';
+import './AppointmentPage/styles.scss';
 
-// const initialHospital: OptionalHospital = {
-//   name: '',
-//   address: '',
-//   phone: '',
-//   zip_code: 0,
-// };
+interface PropsInterface {
+  logout: () => void;
+}
 
-// const initialDoctor: OptionalDoctor = {
-//   name: '',
-//   surname: '',
-//   speciality: '',
-//   Calendars: [],
-// };
-
-const AppointmentPage = () => {
+const AppointmentPage = ({ logout }: PropsInterface) => {
   const [hospitalId, setHospitalId] = useState<number | undefined>(undefined);
   const [doctorId, setDoctorId] = useState<number | undefined>(undefined);
-  const [loading, setLoading] = useState(false);
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const [hospitalOptions, setHospitalOptions] = useState<SelectOption[]>([]);
   const [doctorOptions, setDoctorOptions] = useState<SelectOption[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (hospitals.length == 0) {
@@ -39,8 +33,14 @@ const AppointmentPage = () => {
           const hs = getHospitalOptions(_hospitals);
           setHospitalOptions(hs);
         })
-        .catch((err) => {
-          toast.warning('Error when loading hospitals. Try again later.');
+        .catch(({ statusCode, message }) => {
+          if (statusCode === UNAUTHORIZED_STATUS_CODE) {
+            logout();
+            navigate('/patient/signin');
+            toast.info('You are not logged in. Please do it.');
+          } else {
+            toast.warning(message);
+          }
         })
         .finally(() => {
           setLoading(false);
@@ -58,9 +58,6 @@ const AppointmentPage = () => {
         setDoctorOptions(doctorOptions);
       }
     }
-    /*
-    getDoctorsAssociatedWithHospital
-    */
   }
 
   function handleDoctorSelection(id: number) {
@@ -75,9 +72,8 @@ const AppointmentPage = () => {
           <CustomLoader loading={loading} />
         </>
       ) : (
-        <>
-          {/* <h1>{hospital.name ? `${hospital.name}` : 'New Appointment'}</h1> */}
-          <div className="section-container">
+        <div className="section-container">
+          <div className="fit-content">
             <SelectInputField
               label="Hospital"
               name="hospitalId"
@@ -85,19 +81,22 @@ const AppointmentPage = () => {
               options={hospitalOptions}
               changeHandler={handleHospitalSelection}
             />
-            {hospitalId && (
+          </div>
+          {hospitalId && (
+            <div className="fit-content">
               <SelectInputField
                 label="Doctor"
                 name="doctorId"
                 selected={doctorId}
-                options={[]}
+                options={doctorOptions}
                 changeHandler={handleDoctorSelection}
               />
-            )}
-            {doctorId && <CalendarMonth />}
-            {/* if a specific date is selected, replace calendar month view with date's available appointments view */}
-          </div>
-        </>
+            </div>
+          )}
+          {doctorId && hospitalId && (
+            <CalendarMonth hospitalId={hospitalId} doctorId={doctorId} />
+          )}
+        </div>
       )}
     </div>
   );
