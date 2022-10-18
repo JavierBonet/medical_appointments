@@ -24,11 +24,14 @@ const AdminRouter = {
 
     // @ts-ignore
     const checkAuthenticated = (req, res, next) => {
-      if (req.isAuthenticated() && req.session.passport.user.model == 'admin') {
+      if (
+        req.isAuthenticated() &&
+        req.session.passport.user.model == 'admin-user'
+      ) {
         return next();
       }
 
-      res.status(400).send({
+      res.status(401).send({
         message:
           'Please login using email and password. Login endpoint: /api/admin/login.',
       });
