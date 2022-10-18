@@ -51,33 +51,21 @@ References:
 ###################################################
 ###################################################
 
-- Ya hice la validación de campos para registro. Ahora tengo que finalizar el registro
-  del usuario primero en frontend/api y después impactando en backend.
-    . Encriptar password que introduce el usuario, tanto cuando se registra un usuario
-      como cuando se intenta loguear
+
 
 --------------------- 0 ---------------------
 
-- BACKEND:
+BACKEND:
+
+  [ ] Agregar servicios para simplificar routers
+
+  [ ] Agregar campos name and surname para Patients
+
+FRONTEND:
+
+  [ ] En frontend queda guardado el localStorage pero al reiniciar el backend se pierde la sesión, entonces debería pedirse
+      el logueo de nuevo
+
+  [ ] Agregar campos name and surname para Patients
+
   
-
-- FRONTEND:
-  - Guardar info para saber que hay un usuario logueado
-    . OP 1: usar context para setear y verificar si el usuario está o no logueado
-    . OP 2: usar localStorage
-    (https://www.digitalocean.com/community/tutorials/how-to-add-login-authentication-to-react-applications#step-3-storing-a-user-token-with-sessionstorage-and-localstorage)
-
-  - Mostrar header en vistas de sign up y sign in
-
-  - Reestructurar el flujo de trabajo ya que
-    . El paciente debe estar logueado para poder crear citas con los médicos
-    . La sección de administración debe estar oculta. Solo se debe acceder por URL
-
-  - Ya esta el registro para pacientes:
-    . Construir el formulario de logueo
-  
-  - Crear 2 Routes personalizados para las routes que necesiten autenticación:
-    . PatientAuthRoute: para verificar si el usuario esta logueado y en caso de
-      no estarlo redirigir a la página de login para pacientes
-    . AdminAuthRoute: idem pero para usuarios admin y usando el login de admin
-    (https://stackoverflow.com/questions/43164554/how-to-implement-authenticated-routes-in-react-router-4/43171515#43171515)
