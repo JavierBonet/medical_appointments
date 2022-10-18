@@ -41,7 +41,7 @@ const SingUpPage = () => {
       doesPatientAlreadyExist(patient.email).then((itExist) => {
         if (itExist) {
           toast.info('Patient already registered. Please log in');
-          navigate('/patients/signin');
+          navigate('/patient/signin');
         } else {
           let dbPatient: OptionalDbPatient = {
             email: patient.email,

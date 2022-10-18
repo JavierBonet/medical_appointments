@@ -1,16 +1,16 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import useAuth from '../components/utils/useAuth';
+import { toast } from 'react-toastify';
 
 interface RoutesProps {
+  user: LocalStorageUser | undefined;
   redirectPath: string;
   children?: JSX.Element;
 }
 
-const PatientAuthRoute = ({ redirectPath, children }: RoutesProps) => {
-  const { user } = useAuth();
-
+const PatientAuthRoute = ({ user, redirectPath, children }: RoutesProps) => {
   if (!user) {
+    toast.warning('Please log in');
     return <Navigate to={redirectPath} />;
   }
 

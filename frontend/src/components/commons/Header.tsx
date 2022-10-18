@@ -1,29 +1,29 @@
-import { useEffect } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaUserPlus } from 'react-icons/fa';
 import { MdVpnKey } from 'react-icons/md';
-import useAuth from '../utils/useAuth';
 import LogoutButton from './LogoutButton';
 
-const Header = () => {
-  const { user, logout } = useAuth();
+interface PropsInterface {
+  user: LocalStorageUser | undefined;
+  logout: () => void;
+}
 
-  useEffect(() => {}, [user]);
-
+const Header = ({ user, logout }: PropsInterface) => {
   return (
     <nav className="navigation-header">
       <div className="pages-links">
-        <NavLink to="/patients" className="navigation-header-item">
-          My info
+        <NavLink to="/patient" className="navigation-header-item">
+          {user ? 'Appointments' : 'My info'}
         </NavLink>
       </div>
       {!user ? (
         <div className="user-links">
-          <NavLink to="/patients/signup">
+          <NavLink to="/patient/signup">
             <FaUserPlus />
           </NavLink>
           <div className="links-separator"></div>
-          <NavLink to="/patients/signin">
+          <NavLink to="/patient/signin">
             <MdVpnKey />
           </NavLink>
         </div>

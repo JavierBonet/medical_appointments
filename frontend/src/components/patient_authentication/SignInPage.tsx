@@ -22,7 +22,7 @@ const SignInPage = ({ user, setUser }: PropsInterface) => {
   useEffect(() => {
     if (user) {
       toast.info('You have already logged in');
-      navigate('/patients');
+      navigate('/patient');
     }
   }, []);
 
@@ -33,9 +33,9 @@ const SignInPage = ({ user, setUser }: PropsInterface) => {
   }
 
   function submitHandler() {
-    login(patient).then((loginSucceed) => {
-      if (loginSucceed) {
-        setUser({ name: patient.email });
+    login(patient).then((loginSuccessful) => {
+      if (loginSuccessful) {
+        setUser({ email: patient.email });
         toast.success('Logged in successfully');
         navigate(-1);
       } else {
