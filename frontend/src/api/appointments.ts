@@ -2,8 +2,14 @@ import axios from 'axios';
 
 const baseUrl: string = 'http://localhost:3000/api/patients/appointments';
 
-function getAppointments(): Promise<Appointment[]> {
+function getPatientAppointments(): Promise<Appointment[]> {
   return axios.get<Appointment[]>(baseUrl).then((response) => response.data);
+}
+
+function getAppointments(hospitalId: number, doctorId: number) {
+  return axios
+    .get<Appointment[]>(`${baseUrl}/${hospitalId}/${doctorId}`)
+    .then((response) => response.data);
 }
 
 function saveAppointment(appointment: OptionalAppointment) {
@@ -21,4 +27,9 @@ function deleteAppointment(appointmentId: number) {
     });
 }
 
-export { getAppointments, saveAppointment, deleteAppointment };
+export {
+  getPatientAppointments,
+  getAppointments,
+  saveAppointment,
+  deleteAppointment,
+};

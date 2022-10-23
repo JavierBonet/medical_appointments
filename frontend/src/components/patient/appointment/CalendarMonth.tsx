@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { saveAppointment } from '../../../api/appointments';
+import { getAppointments, saveAppointment } from '../../../api/appointments';
 import { getCalendarByDoctorAndHospitalId } from '../../../api/calendars';
 import CalendarDate from './CalendarDate';
 import './CalendarMonth/styles.scss';
 import {
   dbWeekDayToSystemDay,
   getAppointmentHours,
+  getAppointmentsByDateMap,
 } from './CalendarMonth/utils';
 import { getCalendarDates, getDayOfTheMonth } from './utils';
 
@@ -15,11 +16,11 @@ import { getCalendarDates, getDayOfTheMonth } from './utils';
  * get the calendar for a doctor and hospital (define a calendars.ts api for public)
  */
 interface PropsInterface {
-  hospitalId: number;
-  doctorId: number;
+  hospital: Hospital;
+  doctor: Doctor;
 }
 
-const CalendarMonth = ({ hospitalId, doctorId }: PropsInterface) => {
+const CalendarMonth = ({ hospital, doctor }: PropsInterface) => {
   const [calendar, setCalendar] = useState<Calendar | undefined>(undefined);
   const [calendarDatesByWeek, setCalendarDatesByWeek] = useState<
     (CalendarDate | undefined)[][]
@@ -29,48 +30,34 @@ const CalendarMonth = ({ hospitalId, doctorId }: PropsInterface) => {
   const [selectedDateElement, setSelectedDateElement] = useState<
     HTMLDivElement | undefined
   >(undefined);
+  const [appointmentsByDate, setAppointmentsByDate] = useState<
+    Map<string, Appointment[]>
+  >(new Map());
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (doctorId && hospitalId) {
-      getCalendarByDoctorAndHospitalId(doctorId, hospitalId)
-        .then((calendar) => {
-          setCalendar(calendar);
-          const daysToInclude = new Set(
-            calendar.Days.filter((day) => day.HourRanges.length !== 0).map(
-              (day) => dbWeekDayToSystemDay(day.number)
-            )
-          );
-          setCalendarDatesByWeek(getCalendarDates(daysToInclude));
-        })
-        .catch((err) => console.log('err calendar'));
+    getCalendarByDoctorAndHospitalId(doctor.id, hospital.id)
+      .then((calendar) => {
+        setCalendar(calendar);
+      })
+      .catch((err) => console.log('err calendar'));
+  }, [doctor, hospital]);
 
-      /**
-       * El calendario tiene días
-       * los días tiene rangos horarios
-       * 1- CalendarMonth: En base a los días y horarios, tomar el calendario del mes actual
-       * y mostrar un calendario (armado por mi, con html y css) con los
-       * días en que se pueden agendar turnos.
-       *
-       * 2- Una vez tenga eso, al hacer click en un día, se tiene que desplegar CalendarDate
-       * donde se deben visualizar los turnos que se pueden agendar
-       *
-       * 3- Por último, cuando se seleccione un horario, mostrar un mensaje preguntando si esta seguro
-       * de agendar el turno en ese hospital, con ese doctor, en ese día y horario
-       *
-       * EN LO ANTERIOR NO INCLUÍ LA INFO DE LOS TURNOS YA AGENDADOS. TENGO QUE TENERLOS EN CUENTA
-       * PARA CALCULAR LOS DÍAS Y HORARIOS YA UTILIZADOS
-       *
-       */
-    }
-  }, [doctorId]);
+  useEffect(() => {
+    getAppointments(hospital.id, doctor.id).then((_appointments) => {
+      if (calendar) {
+        const appointmentsByDate = getAppointmentsByDateMap(_appointments);
+        setAppointmentsByDate(appointmentsByDate);
+        setCalendarDatesByWeek(getCalendarDates(calendar, appointmentsByDate));
+      }
+    });
+  }, [calendar]);
 
   function onDateSelection(
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     date: Date | undefined
   ) {
-    // if (!isDateSelected) {
     setSelectedDate(date);
     if (calendar && date) {
       const day = calendar.Days.find(
@@ -90,31 +77,28 @@ const CalendarMonth = ({ hospitalId, doctorId }: PropsInterface) => {
       target.classList.add('selected');
       setSelectedDateElement(target);
     }
-    //   const calendar = document.getElementsByClassName(
-    //     'patient-appointments-calendar'
-    //   )[0];
-    //   calendar.classList.remove('fade-in');
-    //   calendar.classList.add('fade-out');
-    // }
-    /**
-     * El día seleccionado se corresponde con uno de los días configurados para el calendario,
-     * por lo tanto ese día tiene rangos horarios configurados. En base a esos rangos horarios
-     * tengo que calcular los horarios disponibles para los turnos.
-     *
-     * TENER EN CUENTA QUE LOS TURNOS QUE CALCULE ARRIBA NO VAN A SER TODOS LOS DISPONIBLES
-     * PORQUE FALTA TENER EN CUENTA LOS TURNOS YA CREADOS Y USAR SU HORARIO PARA ELIMINAR
-     * OPCIONES
-     */
   }
 
   function saveHandler(date: Date, hour: string) {
+    if (
+      !confirm(
+        `Are you sure to schedule an appointment at ${
+          hospital.name
+        } hospital with doctor ${
+          doctor.name
+        } at ${hour}, ${date.toLocaleDateString()}?`
+      )
+    ) {
+      return;
+    }
+
     const dayOfTheWeek = date.toLocaleDateString('en', { weekday: 'long' });
     const appointment = {
       date: date.toLocaleDateString(),
       hour,
       dayOfTheWeek,
-      doctorId,
-      hospitalId,
+      doctorId: doctor.id,
+      hospitalId: hospital.id,
     };
 
     saveAppointment(appointment)
@@ -187,6 +171,9 @@ const CalendarMonth = ({ hospitalId, doctorId }: PropsInterface) => {
             <CalendarDate
               date={selectedDate}
               hours={appointmentHours}
+              existingAppointments={appointmentsByDate.get(
+                selectedDate.toLocaleDateString()
+              )}
               saveHandler={saveHandler}
             />
           )}

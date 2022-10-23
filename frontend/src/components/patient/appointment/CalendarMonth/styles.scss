@@ -10,9 +10,6 @@
   place-items: center;
 }
 
-// ACOMODAR LOS ESTILOS PARA QUE LOS TÍTULOS 'SELECT DATE' Y LA FECHA SELECCIONADA QUEDEN A LA MISMA ALTURA Y
-// EL CONTENEDOR CON LOS HORARIOS QUEDE CENTRADO VERTICALMENTE
-
 .patient-appointments-calendar {
   display: grid;
   grid-template-rows: repeat('auto-fill', 50px);
@@ -41,16 +38,16 @@
     }
   }
 
-  .disabled, .disabled-date {  
-    border: solid 1px rgb(98, 98, 99);
+  .disabled {  
     background-color: rgb(173, 180, 182);
-
+    border: solid 1px rgb(98, 98, 99);
+    
     &:hover {
       cursor: default;
       filter: none;
     }
   }
-
+  
   .selected {
     filter: brightness(140%);
     border: 2px solid blue;

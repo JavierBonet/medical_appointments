@@ -37,7 +37,7 @@ const SignInPage = ({ user, setUser }: PropsInterface) => {
       if (loginSuccessful) {
         setUser({ email: patient.email });
         toast.success('Logged in successfully');
-        navigate(-1);
+        navigate('/patient');
       } else {
         toast.warn('Email or password are wrong');
       }

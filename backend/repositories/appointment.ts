@@ -11,6 +11,14 @@ const AppointmentRepository = {
     return Appointment.findAll(options);
   },
 
+  getAllByHospitalAndDoctor: function getAllByHospitalAndDoctor(
+    hospitalId: number,
+    doctorId: number,
+    options?: FindOptions<InferAttributes<Appointment, { omit: never }>>
+  ) {
+    return Appointment.findAll({ ...options, where: { hospitalId, doctorId } });
+  },
+
   getAppointmentById: function getAppointmentlById(
     id: number,
     options?:

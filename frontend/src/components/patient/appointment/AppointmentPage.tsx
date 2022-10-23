@@ -16,6 +16,8 @@ interface PropsInterface {
 const AppointmentPage = ({ logout }: PropsInterface) => {
   const [hospitalId, setHospitalId] = useState<number | undefined>(undefined);
   const [doctorId, setDoctorId] = useState<number | undefined>(undefined);
+  const [hospital, setHospital] = useState<Hospital | undefined>(undefined);
+  const [doctor, setDoctor] = useState<Doctor | undefined>(undefined);
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -47,6 +49,26 @@ const AppointmentPage = ({ logout }: PropsInterface) => {
         });
     }
   }, []);
+
+  useEffect(() => {
+    const selectedHospital = hospitals.find(
+      (hospital) => hospital.id == hospitalId
+    );
+    if (selectedHospital) {
+      setHospital(selectedHospital);
+    }
+  }, [hospitalId]);
+
+  useEffect(() => {
+    if (hospital) {
+      const selectedDoctor = hospital.Doctors?.find(
+        (doctor) => doctor.id == doctorId
+      );
+      if (selectedDoctor) {
+        setDoctor(selectedDoctor);
+      }
+    }
+  }, [doctorId]);
 
   function handleHospitalSelection(id: number) {
     setHospitalId(id);
@@ -93,8 +115,8 @@ const AppointmentPage = ({ logout }: PropsInterface) => {
               />
             </div>
           )}
-          {doctorId && hospitalId && (
-            <CalendarMonth hospitalId={hospitalId} doctorId={doctorId} />
+          {doctor && hospital && (
+            <CalendarMonth hospital={hospital} doctor={doctor} />
           )}
         </div>
       )}

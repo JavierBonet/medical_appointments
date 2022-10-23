@@ -14,9 +14,23 @@ const AppointmentRouter = {
     _appointmentsRepository = appointmentsRepository;
     _router = ExpressRouter({ mergeParams: true });
 
-    _router.get('/', (req: Request<{ patientId: string }>, res) => {
+    _router.get('/', (req, res) => {
       _appointmentsRepository
         .getAll({ include: [Doctor, Hospital] })
+        .then((appointments: Appointment[]) => {
+          res.send(appointments).end();
+        })
+        .catch((err: Error) => {
+          res.status(400).send(err.message).end();
+        });
+    });
+
+    _router.get('/:hospitalId/:doctorId', (req, res) => {
+      const hospitalId = parseInt(req.params.hospitalId);
+      const doctorId = parseInt(req.params.doctorId);
+
+      _appointmentsRepository
+        .getAllByHospitalAndDoctor(hospitalId, doctorId)
         .then((appointments: Appointment[]) => {
           res.send(appointments).end();
         })

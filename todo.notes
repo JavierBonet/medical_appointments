@@ -19,7 +19,8 @@ TODO:
 
     - Patient side:
       [ ] Change font for days of the week in calendar
-      
+
+      [ ] When trying to access the appointments page and the login page is showned because the user is not logged in, two toasts are appearing      
 
   - Features:
 
@@ -34,12 +35,18 @@ TODO:
 
         [√] Create save button handler that will call to saveAppointment
 
-        [ ] Create an appointment
+        [ ] Change CalendarDate to CalendarDateAvailableAppointments
+
+        [ ] Create CalendarDate to hold the logic that shows a date in CalendarMonth
+
+        [√] In AppointmentPage obtain hospital and doctor in order to pass it to CalendarMonth 
+            so it has the information to show their names in the message when creating an appointment
+
+        [√] Create an appointment
           1- Select hospital
           2- Select doctor that works in that hospital
           3- Using the calendar corresponding to that doctor and hospital show current's month calendar
-            so that the patient can select a day.
-            (*)
+            so that the patient can select a day. (*)
           4- With a specific date selected, use the days' configuration and the existing appointments
             to show the hours available to schedule an appointment.
           

@@ -42,4 +42,35 @@ function addQuarterToHour(fullHour: string): string {
   return `${newHour}:${newMinutes}`;
 }
 
-export { getAppointmentHours, dbWeekDayToSystemDay };
+/**
+ * Creates a mapping between dates and appointments grouped by date
+ * @param appointments Appointments list
+ * @returns Mapping between dates and appointments grouped by date
+ */
+function getAppointmentsByDateMap(
+  appointments: Appointment[]
+): Map<string, Appointment[]> {
+  let appointmentsMap = new Map<string, Appointment[]>();
+
+  appointments.forEach((appointment) => {
+    const date = appointment.date;
+    let newAppointments = appointmentsMap.get(date);
+
+    if (!newAppointments) {
+      newAppointments = [];
+    }
+
+    newAppointments.push(appointment);
+
+    appointmentsMap.set(date, newAppointments);
+  });
+
+  return appointmentsMap;
+}
+
+export {
+  getAppointmentHours,
+  dbWeekDayToSystemDay,
+  addQuarterToHour,
+  getAppointmentsByDateMap,
+};

@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { deleteAppointment, getAppointments } from '../../../api/appointments';
+import {
+  deleteAppointment,
+  getPatientAppointments,
+} from '../../../api/appointments';
 import CustomLoader from '../../commons/CustomLoader';
 import AppointmentsList from './AppointmentsList';
 
@@ -19,7 +22,7 @@ const AppointmentsPage = ({ logout }: PropsInterface) => {
 
   useEffect(() => {
     if (appointments.length == 0) {
-      getAppointments()
+      getPatientAppointments()
         .then((appointments) => {
           setAppointments(appointments);
           setLoading(false);
@@ -32,6 +35,7 @@ const AppointmentsPage = ({ logout }: PropsInterface) => {
             toast.info('You are not logged in. Please do it.');
           } else {
             toast(message);
+            setLoading(false);
           }
         });
     }
