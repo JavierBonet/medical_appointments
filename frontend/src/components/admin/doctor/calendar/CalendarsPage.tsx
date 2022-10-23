@@ -49,6 +49,10 @@ const CalendarsPage = () => {
   }, [_calendars]);
 
   function deleteHandler(id: number) {
+    if (!confirm('Are you sure to delete the calendar?')) {
+      return;
+    }
+
     if (doctorId) {
       setLoading(true);
       deleteCalendar(doctorId, id)
