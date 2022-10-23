@@ -119,27 +119,13 @@ const CalendarMonth = ({ hospital, doctor }: PropsInterface) => {
               <h2>Select date</h2>
             </div>
             <div className="patient-appointments-calendar fade-in">
-              <div className="centered">
-                <h2>S</h2>
-              </div>
-              <div className="centered">
-                <h2>M</h2>
-              </div>
-              <div className="centered">
-                <h2>T</h2>
-              </div>
-              <div className="centered">
-                <h2>W</h2>
-              </div>
-              <div className="centered">
-                <h2>T</h2>
-              </div>
-              <div className="centered">
-                <h2>F</h2>
-              </div>
-              <div className="centered">
-                <h2>S</h2>
-              </div>
+              <div className="calendar-header">S</div>
+              <div className="calendar-header">M</div>
+              <div className="calendar-header">T</div>
+              <div className="calendar-header">W</div>
+              <div className="calendar-header">T</div>
+              <div className="calendar-header">F</div>
+              <div className="calendar-header">S</div>
               {calendarDatesByWeek.map((weekDates) =>
                 weekDates.map((calendarDate, index) =>
                   calendarDate ? (

@@ -15,10 +15,8 @@ TODO:
   
     - Admin side:
 
-      [ ] Add alert question before removen calendar from a doctor
 
     - Patient side:
-      [ ] Change font for days of the week in calendar
 
       [ ] When trying to access the appointments page and the login page is showned because the user is not logged in, two toasts are appearing      
 
@@ -69,6 +67,9 @@ DONE:
     · RAZON: había dejado mal una parte del código y nunca se creaban realmente los hour ranges
 
   - FRONTEND:
+    [√] Add alert question before removen calendar from a doctor
+
+    [√] Change font for days of the week in calendar
 
     [√] Add routes inside /patient to get appointments and to enable appointment creation
   
