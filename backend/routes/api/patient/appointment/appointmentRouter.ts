@@ -5,43 +5,36 @@ import {
 } from '../../../../repositories/appointment';
 import { Doctor } from '../../../../repositories/doctor';
 import { Hospital } from '../../../../repositories/hospital';
+import { AppointmentService } from '../../../../services/patient/appointmentService';
 
 let _router: ExpressRouter;
-let _appointmentsRepository: AppointmentRepositoryInterface;
+let _appointmentService: AppointmentService;
 
 const AppointmentRouter = {
   init: function init(appointmentsRepository: AppointmentRepositoryInterface) {
-    _appointmentsRepository = appointmentsRepository;
+    _appointmentService = new AppointmentService(appointmentsRepository);
     _router = ExpressRouter({ mergeParams: true });
 
     _router.get('/', (req, res) => {
-      _appointmentsRepository
+      _appointmentService
         .getAll({ include: [Doctor, Hospital] })
-        .then((appointments: Appointment[]) => {
-          res.send(appointments).end();
-        })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+        .then((appointments: Appointment[]) => res.send(appointments).end())
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
 
     _router.get('/:hospitalId/:doctorId', (req, res) => {
       const hospitalId = parseInt(req.params.hospitalId);
       const doctorId = parseInt(req.params.doctorId);
 
-      _appointmentsRepository
+      _appointmentService
         .getAllByHospitalAndDoctor(hospitalId, doctorId)
-        .then((appointments: Appointment[]) => {
-          res.send(appointments).end();
-        })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+        .then((appointments: Appointment[]) => res.send(appointments).end())
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
 
     _router.get('/:appointmentId', (req, res) => {
       const appointmentId = parseInt(req.params.appointmentId);
-      _appointmentsRepository
+      _appointmentService
         .getAppointmentById(appointmentId, { include: [Doctor, Hospital] })
         .then((appointment) => {
           if (appointment) {
@@ -50,53 +43,39 @@ const AppointmentRouter = {
             res.status(404).send({ message: 'Appointment not found' }).end();
           }
         })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
 
     _router.post('/', (req: any, res) => {
       const patientId = req.session.passport.user.id as number;
 
       if (!patientId) {
-        res.status(500).send({ message: 'User not logged in!!!' }).end;
+        res.status(500).send({ message: 'User not logged in!!!' }).end();
       }
 
       // Set the patientId field using current user's id
       const appointment = { ...req.body, patientId };
 
-      _appointmentsRepository
-        .createAppointment(appointment)
-        .then((dbAppointment) => {
-          res.status(201).send(dbAppointment).end();
-        })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+      _appointmentService
+        .create(appointment)
+        .then((dbAppointment) => res.status(201).send(dbAppointment).end())
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
 
     _router.put('/:appointmentId', (req, res) => {
       const appointmentId = parseInt(req.params.appointmentId);
-      _appointmentsRepository
-        .updateAppointment(appointmentId, req.body)
-        .then((data) => {
-          res.send(data.message).end();
-        })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+      _appointmentService
+        .update(appointmentId, req.body)
+        .then((data) => res.send(data.message).end())
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
 
     _router.delete('/:appointmentId', (req, res) => {
       const appointmentId = parseInt(req.params.appointmentId);
-      _appointmentsRepository
-        .deleteAppointment(appointmentId)
-        .then((data) => {
-          res.send(data.message).end();
-        })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+      _appointmentService
+        .delete(appointmentId)
+        .then((data) => res.send(data.message).end())
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
   },
   getRouter: function getRouter() {

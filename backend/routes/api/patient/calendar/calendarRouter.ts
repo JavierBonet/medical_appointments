@@ -1,18 +1,19 @@
 import { Router as ExpressRouter } from 'express';
 import { CalendarRepositoryInterface } from '../../../../repositories/calendar';
+import { CalendarService } from '../../../../services/patient/calendarService';
 
 let _router: ExpressRouter;
-let _calendarsRepository: CalendarRepositoryInterface;
+let _calendarService: CalendarService;
 
 const CalendarRouter = {
   init: function init(calendarsRepository: CalendarRepositoryInterface) {
-    _calendarsRepository = calendarsRepository;
+    _calendarService = new CalendarService(calendarsRepository);
     _router = ExpressRouter({ mergeParams: true });
 
     _router.get('/:hospitalId/:doctorId', (req, res) => {
       const doctorId = parseInt(req.params.doctorId);
       const hospitalId = parseInt(req.params.hospitalId);
-      _calendarsRepository
+      _calendarService
         .getCalendarByDoctorAndHospitalId(doctorId, hospitalId)
         .then((calendar) => {
           if (calendar) {
@@ -21,9 +22,7 @@ const CalendarRouter = {
             res.status(404).send({ message: 'Calendar not found' }).end();
           }
         })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
   },
 

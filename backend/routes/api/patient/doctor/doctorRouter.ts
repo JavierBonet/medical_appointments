@@ -4,24 +4,21 @@ import {
   Doctor,
   DoctorRepositoryInterface,
 } from '../../../../repositories/doctor';
+import { DoctorService } from '../../../../services/patient/doctorService';
 
 let _router: ExpressRouter;
-let _doctorsRepository: DoctorRepositoryInterface;
+let _doctorService: DoctorService;
 
 const DoctorRouter = {
   init: function init(doctorsRepository: DoctorRepositoryInterface) {
-    _doctorsRepository = doctorsRepository;
+    _doctorService = new DoctorService(doctorsRepository);
     _router = ExpressRouter({ mergeParams: true });
 
     _router.get('/', (req, res) => {
-      _doctorsRepository
+      _doctorService
         .getAll({ include: Appointment })
-        .then((doctors: Doctor[]) => {
-          res.send(doctors).end();
-        })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+        .then((doctors: Doctor[]) => res.send(doctors).end())
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
   },
 

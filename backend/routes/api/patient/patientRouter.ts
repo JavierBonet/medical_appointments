@@ -4,18 +4,13 @@ import { createAppointmentRouter } from './appointment/appointmentRouter';
 import { createDoctorRouter } from './doctor/doctorRouter';
 import { createHospitalRouter } from './hospital/hospitalRouter';
 import { createCalendarRouter } from './calendar/calendarRouter';
-import {
-  Patient,
-  PatientRepositoryInterface,
-} from '../../../repositories/patient';
+import { Patient } from '../../../repositories/patient';
 import { addAuthenticationRoutes } from './authenticationRoutes';
-import { hash } from 'bcrypt';
 import { PatientsRouterConfig } from '../../../types/global';
-
-const SALT_ROUNDS = 10;
+import { PatientService } from '../../../services/patient/patientService';
 
 let _router: ExpressRouter;
-let _patientsRepository: PatientRepositoryInterface;
+let _patientService: PatientService;
 
 const PatientRouter = {
   init: function init({
@@ -25,7 +20,7 @@ const PatientRouter = {
     hospitalsRepository,
     calendarsRepository,
   }: PatientsRouterConfig) {
-    _patientsRepository = patientsRepository;
+    _patientService = new PatientService(patientsRepository);
     _router = ExpressRouter();
 
     // @ts-ignore
@@ -60,20 +55,16 @@ const PatientRouter = {
     _router.get('/', (req, res) => {
       const includeAppointments = req.query.includeAppointments;
       const options = includeAppointments ? { include: Appointment } : {};
-      _patientsRepository
+      _patientService
         .getAll(options)
-        .then((patients: Patient[]) => {
-          res.send(patients).end();
-        })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+        .then((patients: Patient[]) => res.send(patients).end())
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
 
     _router.get('/:patientId', (req, res) => {
       const patientId = parseInt(req.params.patientId);
-      _patientsRepository
-        .getPatientById(patientId, { include: Appointment })
+      _patientService
+        .get(patientId, { include: Appointment })
         .then((patient) => {
           if (patient) {
             res.send(patient).end();
@@ -81,15 +72,15 @@ const PatientRouter = {
             res.status(404).send({ message: 'Patient not found' }).end();
           }
         })
-        .catch((err: Error) => {
-          res.status(400).send({ message: err.message }).end();
-        });
+        .catch((err: Error) =>
+          res.status(400).send({ message: err.message }).end()
+        );
     });
 
     _router.get('/getByEmail/:email', (req, res) => {
       const email = req.params.email;
-      _patientsRepository
-        .getPatientByEmail(email)
+      _patientService
+        .getByEmail(email)
         .then((patient) => {
           if (patient) {
             res.send(patient).end();
@@ -97,52 +88,39 @@ const PatientRouter = {
             res.status(404).send({ message: 'Patient not found' }).end();
           }
         })
-        .catch((err: Error) => {
-          res.status(400).send({ message: err.message }).end();
-        });
+        .catch((err: Error) =>
+          res.status(400).send({ message: err.message }).end()
+        );
     });
 
-    _router.post('/', (req, res) => {
-      let patientWithEncryptedPassword = {
+    _router.post('/', async (req, res) => {
+      const patient = {
         email: req.body.email,
-        password: '',
+        password: req.body.password,
       };
-      const plainPassword = req.body.password;
-      hash(plainPassword, SALT_ROUNDS, function (err, hash) {
-        patientWithEncryptedPassword.password = hash;
-        _patientsRepository
-          .createPatient(patientWithEncryptedPassword)
-          .then((patient) => {
-            res.status(201).send(patient).end();
-          })
-          .catch((err: Error) => {
-            res.status(400).send(err.message).end();
-          });
-      });
+
+      _patientService
+        .create(patient)
+        .then((_patient) => res.status(201).send(_patient).end())
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
 
     _router.put('/:patientId', (req, res) => {
       const patientId = parseInt(req.params.patientId);
-      _patientsRepository
-        .updatePatient(patientId, req.body)
-        .then((data) => {
-          res.send(data.message).end();
-        })
-        .catch((err: Error) => {
-          res.status(400).send({ message: err.message }).end();
-        });
+      _patientService
+        .update(patientId, req.body)
+        .then((data) => res.send(data.message).end())
+        .catch((err: Error) =>
+          res.status(400).send({ message: err.message }).end()
+        );
     });
 
     _router.delete('/:patientId', (req, res) => {
       const patientId = parseInt(req.params.patientId);
-      _patientsRepository
-        .deletePatient(patientId)
-        .then((data) => {
-          res.send(data.message).end();
-        })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+      _patientService
+        .delete(patientId)
+        .then((data) => res.send(data.message).end())
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
   },
   getRouter: function getRouter() {
