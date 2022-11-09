@@ -1,13 +1,15 @@
-import { DoctorRepositoryInterface } from '../../../../../../repositories/doctor';
-
 import { Request, Router as ExpressRouter } from 'express';
+import { DoctorRepositoryInterface } from '../../../../../../repositories/doctor';
+import { HospitalAssociationsService } from '../../../../../../services/admin/hospitalAssociationsService';
 
 let _router: ExpressRouter;
-let _doctorsRepository: DoctorRepositoryInterface;
+let _hospitalAssociationsService: HospitalAssociationsService;
 
 const HospitalAssociationsRouter = {
   init: function init(doctorsRepository: DoctorRepositoryInterface) {
-    _doctorsRepository = doctorsRepository;
+    _hospitalAssociationsService = new HospitalAssociationsService(
+      doctorsRepository
+    );
     _router = ExpressRouter({ mergeParams: true });
 
     _router.post(
@@ -15,7 +17,7 @@ const HospitalAssociationsRouter = {
       (req: Request<{ doctorId: string; hospitalId: string }>, res) => {
         const doctorId = parseInt(req.params.doctorId);
         const hospitalId = parseInt(req.params.hospitalId);
-        _doctorsRepository.addHospitalAssociation(hospitalId, doctorId);
+        _hospitalAssociationsService.create(hospitalId, doctorId);
       }
     );
 
@@ -32,7 +34,7 @@ const HospitalAssociationsRouter = {
         const doctorId = parseInt(req.params.doctorId);
         const hospitalId = parseInt(req.params.hospitalId);
         const previousHospitalId = parseInt(req.params.previousHospitalId);
-        _doctorsRepository.replaceHospitalAssociation(
+        _hospitalAssociationsService.update(
           previousHospitalId,
           hospitalId,
           doctorId

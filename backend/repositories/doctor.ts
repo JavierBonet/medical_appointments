@@ -1,9 +1,4 @@
-import {
-  FindOptions,
-  InferAttributes,
-  NonNullFindOptions,
-  ValidationError,
-} from 'sequelize';
+import { FindOptions, InferAttributes, ValidationError } from 'sequelize';
 import Doctor, { Attributes, CreationAttributes } from '../db/models/doctor';
 
 const DoctorRepository = {

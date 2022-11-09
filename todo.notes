@@ -4,7 +4,7 @@ TODO:
 
   - BACKEND:
 
-    [ ] Re-structure code to use services instead of handling all the logic in the routers    
+    [ ] Error when trying to update a calendar name 
 
     [ ] Add test files
 
@@ -126,6 +126,8 @@ DONE:
     
 
   - BACKEND:
+
+    [√] Re-structure code to use services instead of handling all the logic in the routers
 
     [√] Agregar routes públicas (fuera de /admin) a las que se pueda consultar al momento de crear los appointments.
       Tal vez dentro de /patient. Por ejemplo: si quiero obtener los hospitales estando logeado como paciente, debería poder obtenerlos

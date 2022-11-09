@@ -8,16 +8,17 @@ import {
 import { DoctorsRouterConfig } from '../../../../types/global';
 import { createCalendarRouter } from './calendar/calendarRouter';
 import { createHospitalAssociationsRouter } from './associations/hospital/hospitalAssociationsRouter';
+import { DoctorService } from '../../../../services/admin/doctorService';
 
 let _router: ExpressRouter;
-let _doctorsRepository: DoctorRepositoryInterface;
+let _doctorService: DoctorService;
 
 const DoctorRouter = {
   init: function init({
     doctorsRepository,
     calendarsRouterConfig,
   }: DoctorsRouterConfig) {
-    _doctorsRepository = doctorsRepository;
+    _doctorService = new DoctorService(doctorsRepository);
     _router = ExpressRouter({ mergeParams: true });
 
     const calendarRouter = createCalendarRouter(calendarsRouterConfig);
@@ -31,20 +32,16 @@ const DoctorRouter = {
     );
 
     _router.get('/', (req, res) => {
-      _doctorsRepository
+      _doctorService
         .getAll({ include: Appointment })
-        .then((doctors: Doctor[]) => {
-          res.send(doctors).end();
-        })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+        .then((doctors: Doctor[]) => res.send(doctors).end())
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
 
     _router.get('/:doctorId', (req, res) => {
       const doctorId = parseInt(req.params.doctorId);
-      _doctorsRepository
-        .getDoctorById(doctorId, { include: Calendar })
+      _doctorService
+        .getById(doctorId, { include: Calendar })
         .then((doctor) => {
           if (doctor) {
             res.send(doctor).end();
@@ -52,44 +49,30 @@ const DoctorRouter = {
             res.status(404).send({ message: 'Doctor not found' }).end();
           }
         })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
 
     _router.post('/', (req, res) => {
-      _doctorsRepository
-        .createDoctor(req.body)
-        .then((doctor) => {
-          res.status(201).send(doctor).end();
-        })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+      _doctorService
+        .create(req.body)
+        .then((doctor) => res.status(201).send(doctor).end())
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
 
     _router.put('/:doctorId', (req, res) => {
       const doctorId = parseInt(req.params.doctorId);
-      _doctorsRepository
-        .updateDoctor(doctorId, req.body)
-        .then((data) => {
-          res.send(data.message).end();
-        })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+      _doctorService
+        .update(doctorId, req.body)
+        .then((data) => res.send(data.message).end())
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
 
     _router.delete('/:doctorId', (req, res) => {
       const doctorId = parseInt(req.params.doctorId);
-      _doctorsRepository
-        .deleteDoctor(doctorId)
-        .then((data) => {
-          res.send(data.message).end();
-        })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+      _doctorService
+        .delete(doctorId)
+        .then((data) => res.send(data.message).end())
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
   },
   getRouter: function getRouter() {

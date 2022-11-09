@@ -3,16 +3,11 @@ import { AdminRouterConfig } from '../../../types/global';
 import { createHospitalRouter } from './hospital/hospitalRouter';
 import { createDoctorRouter } from './doctor/doctorRouter';
 import { addAuthenticationRoutes } from './authenticationRoutes';
-import {
-  AdminUser,
-  AdminUserRepositoryInterface,
-} from '../../../repositories/admin_user';
-import { hash } from 'bcrypt';
-
-const SALT_ROUNDS = 10;
+import { AdminUser } from '../../../repositories/admin_user';
+import { AdminUserService } from '../../../services/admin/adminService';
 
 let _router: ExpressRouter;
-let _adminUsersRepository: AdminUserRepositoryInterface;
+let _adminUserService: AdminUserService;
 
 const AdminRouter = {
   init: function init(adminRouterConfig: AdminRouterConfig) {
@@ -20,7 +15,7 @@ const AdminRouter = {
       adminRouterConfig;
 
     _router = ExpressRouter();
-    _adminUsersRepository = adminUsersRepository;
+    _adminUserService = new AdminUserService(adminUsersRepository);
 
     // @ts-ignore
     const checkAuthenticated = (req, res, next) => {
@@ -46,20 +41,16 @@ const AdminRouter = {
     addAuthenticationRoutes(_router);
 
     _router.get('/', (req, res) => {
-      _adminUsersRepository
+      _adminUserService
         .getAll()
-        .then((adminUsers: AdminUser[]) => {
-          res.send(adminUsers).end();
-        })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+        .then((adminUsers: AdminUser[]) => res.send(adminUsers).end())
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
 
     _router.get('/:adminUserId', (req, res) => {
       const adminUserId = parseInt(req.params.adminUserId);
-      _adminUsersRepository
-        .getAdminUserById(adminUserId)
+      _adminUserService
+        .getById(adminUserId)
         .then((adminUser) => {
           if (adminUser) {
             res.send(adminUser).end();
@@ -67,15 +58,15 @@ const AdminRouter = {
             res.status(404).send({ message: 'Admin user not found' }).end();
           }
         })
-        .catch((err: Error) => {
-          res.status(400).send({ message: err.message }).end();
-        });
+        .catch((err: Error) =>
+          res.status(400).send({ message: err.message }).end()
+        );
     });
 
     _router.get('/getByEmail/:email', (req, res) => {
       const email = req.params.email;
-      _adminUsersRepository
-        .getAdminUserByEmail(email)
+      _adminUserService
+        .getByEmail(email)
         .then((adminUser) => {
           if (adminUser) {
             res.send(adminUser).end();
@@ -83,52 +74,41 @@ const AdminRouter = {
             res.status(404).send({ message: 'Admin user not found' }).end();
           }
         })
-        .catch((err: Error) => {
-          res.status(400).send({ message: err.message }).end();
-        });
+        .catch((err: Error) =>
+          res.status(400).send({ message: err.message }).end()
+        );
     });
 
     _router.post('/', (req, res) => {
-      let patientWithEncryptedPassword = {
+      const adminUser = {
         email: req.body.email,
-        password: '',
+        password: req.body.password,
       };
-      const plainPassword = req.body.password;
-      hash(plainPassword, SALT_ROUNDS, function (err, hash) {
-        patientWithEncryptedPassword.password = hash;
-        _adminUsersRepository
-          .createAdminUser(patientWithEncryptedPassword)
-          .then((patient) => {
-            res.status(201).send(patient).end();
-          })
-          .catch((err: Error) => {
-            res.status(400).send(err.message).end();
-          });
-      });
+
+      _adminUserService
+        .create(adminUser)
+        .then((adminUserWithEncryptedPassword) =>
+          res.status(201).send(adminUserWithEncryptedPassword).end()
+        )
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
 
     _router.put('/:adminUserId', (req, res) => {
       const adminUserId = parseInt(req.params.adminUserId);
-      _adminUsersRepository
-        .updateAdminUser(adminUserId, req.body)
-        .then((data) => {
-          res.send(data.message).end();
-        })
-        .catch((err: Error) => {
-          res.status(400).send({ message: err.message }).end();
-        });
+      _adminUserService
+        .update(adminUserId, req.body)
+        .then((data) => res.send(data.message).end())
+        .catch((err: Error) =>
+          res.status(400).send({ message: err.message }).end()
+        );
     });
 
     _router.delete('/:adminUserId', (req, res) => {
       const adminUserId = parseInt(req.params.adminUserId);
-      _adminUsersRepository
-        .deleteAdminUser(adminUserId)
-        .then((data) => {
-          res.send(data.message).end();
-        })
-        .catch((err: Error) => {
-          res.status(400).send(err.message).end();
-        });
+      _adminUserService
+        .delete(adminUserId)
+        .then((data) => res.send(data.message).end())
+        .catch((err: Error) => res.status(400).send(err.message).end());
     });
   },
 
