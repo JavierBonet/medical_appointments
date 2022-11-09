@@ -33,12 +33,8 @@ function login(patient: LoginPatient) {
 
   return axios
     .post(url, { email, password })
-    .then((response) => {
-      return true;
-    })
-    .catch((error) => {
-      return false;
-    });
+    .then((response) => true)
+    .catch((error) => false);
 }
 
 function doesPatientAlreadyExist(email: string) {
@@ -46,9 +42,7 @@ function doesPatientAlreadyExist(email: string) {
 
   return axios
     .get(url)
-    .then(() => {
-      return true;
-    })
+    .then(() => true)
     .catch((error) => {
       if (error.response.status == 404) {
         return false;

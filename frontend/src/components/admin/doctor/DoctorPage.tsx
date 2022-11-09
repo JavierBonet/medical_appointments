@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link, Outlet } from 'react-router-dom';
+import { useParams, useNavigate, Outlet } from 'react-router-dom';
 import { getDoctor, saveDoctor } from '../../../api/admin/doctors';
 import { toast } from 'react-toastify';
 import DoctorForm from './DoctorForm';
