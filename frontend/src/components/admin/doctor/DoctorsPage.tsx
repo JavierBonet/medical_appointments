@@ -10,7 +10,7 @@ interface PropsInterface {
 }
 
 const DoctorsPage = ({ logout }: PropsInterface) => {
-  const [_doctors, setDoctors] = useState([] as Doctor[]);
+  const [_doctors, setDoctors] = useState<Doctor[]>([]);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();

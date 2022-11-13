@@ -10,7 +10,7 @@ import CustomLoader from '../../../commons/CustomLoader';
 import CalendarsList from './CalendarsList';
 
 const CalendarsPage = () => {
-  const [_calendars, setCalendars] = useState([] as Calendar[]);
+  const [_calendars, setCalendars] = useState<Calendar[]>([]);
   const [loading, setLoading] = useState(false);
   const [areHospitalsLeft, setAreHospitalsLeft] = useState(true);
   const params = useParams();
