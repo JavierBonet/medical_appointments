@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Outlet } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   getCalendar,
   saveCalendar,
@@ -46,18 +46,23 @@ const CalendarPage = () => {
           .then((calendar) => {
             getAvailableHospitals(doctorId)
               .then((hospitals) => {
-                hospitals.unshift(calendar.Hospital);
+                if (
+                  !hospitals.some(
+                    (hospital) => hospital.id === calendar.hospitalId
+                  )
+                ) {
+                  hospitals.unshift(calendar.Hospital);
+                }
                 setHospitals(hospitals);
               })
               .catch((err) => toast.warning(err));
-            setLoading(false);
             setCalendar(calendar);
           })
           .catch((err) => {
-            setLoading(false);
             navigate('..');
             toast.warning(err);
-          });
+          })
+          .finally(() => setLoading(false));
       } else {
         getAvailableHospitals(doctorId)
           .then((hospitals) => {
@@ -91,14 +96,13 @@ const CalendarPage = () => {
         setLoading(true);
         saveCalendar(doctorId, calendar, previousHospitalId)
           .then((message) => {
-            setLoading(false);
             navigate('..');
             toast.success(message);
           })
           .catch((errorMessage) => {
-            setLoading(false);
             toast.error(errorMessage);
-          });
+          })
+          .finally(() => setLoading(false));
       }
     } else {
       updateErrors(calendar);

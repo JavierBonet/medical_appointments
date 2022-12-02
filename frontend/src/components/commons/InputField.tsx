@@ -21,6 +21,7 @@ const InputField = ({
     <>
       <label htmlFor={name}>{label}</label>
       <input
+        id={name}
         type={type}
         name={name}
         value={value}

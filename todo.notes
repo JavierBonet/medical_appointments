@@ -22,6 +22,8 @@ TODO:
 
   - Features:
 
+    [ ] Move ConfigureDays logic to a custom hook
+
     [√] Enable appointment creation by the patient
       
       [√]  FRONTEND:

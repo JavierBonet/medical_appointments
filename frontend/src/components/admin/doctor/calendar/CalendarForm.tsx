@@ -21,7 +21,7 @@ const CalendarForm = ({
   errors,
 }: PropsInterface) => {
   return (
-    <Form onSubmit={() => saveHandler()}>
+    <Form onSubmit={saveHandler}>
       <Form.Field required>
         <InputField
           label="Name"

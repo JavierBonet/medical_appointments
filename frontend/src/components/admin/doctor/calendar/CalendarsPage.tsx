@@ -18,7 +18,7 @@ const CalendarsPage = () => {
   const doctorId = params.doctorId;
 
   useEffect(() => {
-    if (doctorId && _calendars.length == 0) {
+    if (doctorId && _calendars.length === 0) {
       setLoading(true);
       getCalendars(doctorId)
         .then((calendars) => {
@@ -31,10 +31,13 @@ const CalendarsPage = () => {
           setLoading(false);
         });
     }
+
+    return () => setLoading(false);
   }, []);
 
   useEffect(() => {
     if (doctorId) {
+      setLoading(true);
       areAvailableHospitals(doctorId)
         .then((areHospitalsLeft) => {
           setAreHospitalsLeft(areHospitalsLeft);
@@ -57,21 +60,20 @@ const CalendarsPage = () => {
       setLoading(true);
       deleteCalendar(doctorId, id)
         .then((message) => {
-          const calendars = _calendars.filter((calendar) => calendar.id != id);
+          const calendars = _calendars.filter((calendar) => calendar.id !== id);
           setCalendars(calendars);
-          setLoading(false);
           toast.success(message);
         })
         .catch((errorMessage) => {
-          setLoading(false);
           toast.error(errorMessage);
-        });
+        })
+        .finally(() => setLoading(false));
     }
   }
 
   return (
     <div className="section-container">
-      {_calendars.length == 0 ? (
+      {_calendars.length === 0 ? (
         <h1> No Calendars available</h1>
       ) : (
         <>

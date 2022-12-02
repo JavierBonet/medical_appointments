@@ -1,8 +1,33 @@
 import { getCalendarDates, getDayOfTheMonth } from '../utils';
 
-describe('Utils', () => {
+const doctor: Doctor = {
+  id: 1,
+  name: '',
+  surname: '',
+  speciality: '',
+  Calendars: [],
+};
+const hospital: Hospital = {
+  id: 1,
+  name: 'hospital 1',
+  address: '',
+  phone: '21341',
+  zip_code: 2000,
+};
+
+const calendar: Calendar = {
+  id: 0,
+  name: '',
+  doctorId: 0,
+  hospitalId: 0,
+  Doctor: doctor,
+  Hospital: hospital,
+  Days: [],
+};
+
+describe.skip('Utils', () => {
   it("getCalendarDates should succeed - CREATED JUST TO TEST THE FUNCTION'S OUTPUT", () => {
-    let datesByWeek = getCalendarDates(new Set());
+    let datesByWeek = getCalendarDates(calendar, new Map());
     let firstWeek = datesByWeek[0];
     // console.log(firstWeek[0]);
     // console.log(firstWeek[1]);

@@ -27,4 +27,8 @@ module.exports = {
 
   // Module file extensions for importing
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+
+  moduleNameMapper: {
+    '^.+\\.(css|scss|less)$': '<rootDir>/tests_config/CSSStub.js',
+  },
 };

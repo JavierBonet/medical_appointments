@@ -24,6 +24,7 @@ const SelectInputField = ({
     <>
       {!removeLabel && <label htmlFor={name}>{label}</label>}
       <Dropdown
+        data-testid={name}
         placeholder={label}
         fluid
         search
