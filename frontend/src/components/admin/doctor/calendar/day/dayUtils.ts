@@ -157,8 +157,6 @@ function getHourRangesUpdated(
 }
 
 function dbDaysToDays(dbDays: Day[]): DaysMap {
-  console.log(dbDays);
-
   let daysMap: DaysMap = {
     monday: [],
     tuesday: [],
@@ -178,7 +176,6 @@ function dbDaysToDays(dbDays: Day[]): DaysMap {
     ) {
       daysMap[dayName] = dbHourRangesToHourRangeInfos(dbDay.HourRanges);
     }
-    // console.log(daysMap['friday']);
   });
 
   return daysMap;
