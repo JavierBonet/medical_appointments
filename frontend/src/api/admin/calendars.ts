@@ -67,20 +67,22 @@ function saveCalendar(
       calendar
     );
 
-    /**
-     * When updating a calendar, I have to:
-     * - Create a new relation between the doctor and the hospital
-     * - Remove the previously created relation
-     */
-    axios.put(
-      `${getAssociationsBaseUrl(doctorId)}/${oldHospitalId}/${hospitalId}`
-    );
+    if (oldHospitalId) {
+      /*
+       * When changing calendar related hospital, I have to:
+       * - Create a new relation between the doctor and the new hospital
+       * - Remove the previously created relation
+       */
+      axios.put(
+        `${getAssociationsBaseUrl(doctorId)}/${oldHospitalId}/${hospitalId}`
+      );
+    }
 
     successMessage = 'Calendar updated successfully';
   } else {
     promise = axios.post(getBaseUrl(doctorId), calendar);
 
-    /**
+    /*
      * When creating a new calendar, I have to create a new relation between
      * the doctor and the hospital (calendar.hospitalId)
      */

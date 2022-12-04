@@ -4,8 +4,6 @@ TODO:
 
   - BACKEND:
 
-    [ ] Error when trying to update a calendar name 
-
     [ ] Add test files
 
 
@@ -129,6 +127,8 @@ DONE:
 
   - BACKEND:
 
+    [√] Error when trying to update a calendar name 
+    
     [√] Re-structure code to use services instead of handling all the logic in the routers
 
     [√] Agregar routes públicas (fuera de /admin) a las que se pueda consultar al momento de crear los appointments.
