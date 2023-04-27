@@ -21,9 +21,19 @@ TODO:
 
   - Features:
 
+    
+
+DONE:
+- Features:
+
+  [√] Move ConfigureDays logic to a custom hook
+
+  [√] Al crear hour ranges solo crea algunos. No se si se reproduce asi nomas:
+    · RAZON: había dejado mal una parte del código y nunca se creaban realmente los hour ranges
+
+  - FRONTEND:
     [√] Enable appointment creation by the patient
       
-      [√]  FRONTEND:
         [√] Add appointments.ts to api folder and define required methods:
           - getAppointments(doctorId, hospitalId, month): Appointment[]
           - saveAppointment(doctorId, hospitalId, appointment)
@@ -32,9 +42,9 @@ TODO:
 
         [√] Create save button handler that will call to saveAppointment
 
-        [ ] Change CalendarDate to CalendarDateAvailableAppointments
+        [√] Change CalendarDate to CalendarDateAvailableAppointments
 
-        [ ] Create CalendarDate to hold the logic that shows a date in CalendarMonth
+        [√] Create CalendarDate to hold the logic that shows a date in CalendarMonth
 
         [√] In AppointmentPage obtain hospital and doctor in order to pass it to CalendarMonth 
             so it has the information to show their names in the message when creating an appointment
@@ -56,21 +66,8 @@ TODO:
               group them by appointment date
               only show those which count is less than (((the total amount of appointments that can exist)))
 
-
-
-
-
-DONE:
-- Features:
-
-  [√] Move ConfigureDays logic to a custom hook
-
-  [√] Al crear hour ranges solo crea algunos. No se si se reproduce asi nomas:
-    · RAZON: había dejado mal una parte del código y nunca se creaban realmente los hour ranges
-
-  - FRONTEND:
     [√] Fix logout button behavior as it is redirecting to the home page even if the use selects 'cancel'
-    
+
     [√] Add test files
     
     [√] Add alert question before removen calendar from a doctor

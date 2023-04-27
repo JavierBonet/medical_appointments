@@ -1,0 +1,35 @@
+
+.patient-appointments-calendar {
+  
+  .calendar-date {
+    width: 40px;
+    height: 40px;
+    border: solid 1px blue;
+    border-radius: 5px;
+    background-color: lightblue;
+    caret-color: transparent;
+    
+    display: grid;
+    place-items: center;
+
+    &:hover {
+      cursor: pointer;
+      filter: brightness(80%);
+    }
+  }
+
+  .disabled {  
+    background-color: rgb(173, 180, 182);
+    border: solid 1px rgb(98, 98, 99);
+    
+    &:hover {
+      cursor: default;
+      filter: none;
+    }
+  }
+  
+  .selected {
+    filter: brightness(140%);
+    border: 2px solid blue;
+  }
+}

@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { getAppointments, saveAppointment } from '../../../api/appointments';
 import { getCalendarByDoctorAndHospitalId } from '../../../api/calendars';
-import CalendarDate from './CalendarDate';
-import './CalendarMonth/styles.scss';
 import { dbWeekDayToSystemDay, getAppointmentHours, getAppointmentsByDateMap } from './CalendarMonth/utils';
-import { getCalendarDates, getDayOfTheMonth } from './utils';
+import { getCalendarDates } from './utils';
+import CalendarDate from './CalendarMonth/CalendarDate';
+import CalendarDateAvailableAppointments from './CalendarMonth/CalendarDateAvailableAppointments';
+import './CalendarMonth/styles.scss';
 
 /**
  * get the calendar for a doctor and hospital (define a calendars.ts api for public)
@@ -45,6 +46,12 @@ const CalendarMonth = ({ hospital, doctor }: PropsInterface) => {
   }, [calendar]);
 
   function onDateSelection(event: React.MouseEvent<HTMLDivElement, MouseEvent>, date: Date | undefined) {
+    if (selectedDate && selectedDate === date) {
+      setSelectedDate(undefined);
+      selectedDateElement?.classList.remove('selected');
+      return;
+    }
+
     setSelectedDate(date);
     if (calendar && date) {
       const day = calendar.Days.find((dayOfTheWeek) => dbWeekDayToSystemDay(dayOfTheWeek.number) === date.getDay());
@@ -64,13 +71,10 @@ const CalendarMonth = ({ hospital, doctor }: PropsInterface) => {
   }
 
   function saveHandler(date: Date, hour: string) {
-    if (
-      !confirm(
-        `Are you sure to schedule an appointment at ${hospital.name} hospital with doctor ${
-          doctor.name
-        } at ${hour}, ${date.toLocaleDateString()}?`
-      )
-    ) {
+    const message = `Are you sure to schedule an appointment at ${hospital.name} hospital with doctor ${
+      doctor.name
+    } at ${hour}, ${date.toLocaleDateString()}?`;
+    if (!confirm(message)) {
       return;
     }
 
@@ -109,32 +113,14 @@ const CalendarMonth = ({ hospital, doctor }: PropsInterface) => {
               <div className="calendar-header">F</div>
               <div className="calendar-header">S</div>
               {calendarDatesByWeek.map((weekDates) =>
-                weekDates.map((calendarDate, index) =>
-                  calendarDate ? (
-                    calendarDate.enabled ? (
-                      <div
-                        className="calendar-date"
-                        key={index}
-                        onClick={(event) => onDateSelection(event, calendarDate.date)}
-                      >
-                        {getDayOfTheMonth(calendarDate.date)}
-                      </div>
-                    ) : (
-                      <div className="calendar-date disabled" key={index}>
-                        {getDayOfTheMonth(calendarDate.date)}
-                      </div>
-                    )
-                  ) : (
-                    <div className="calendar-date disabled" key={index}>
-                      {' '}
-                    </div>
-                  )
-                )
+                weekDates.map((calendarDate, index) => (
+                  <CalendarDate calendarDate={calendarDate} index={index} onDateSelection={onDateSelection} />
+                ))
               )}
             </div>
           </div>
           {selectedDate && (
-            <CalendarDate
+            <CalendarDateAvailableAppointments
               date={selectedDate}
               hours={appointmentHours}
               existingAppointments={appointmentsByDate.get(selectedDate.toLocaleDateString())}
