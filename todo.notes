@@ -11,7 +11,6 @@ TODO:
 
   - FRONTEND:
 
-    [ ] Fix logout button behavior as it is redirecting to the home page even if the use selects 'cancel'
   
     - Admin side:
 
@@ -70,6 +69,8 @@ DONE:
     · RAZON: había dejado mal una parte del código y nunca se creaban realmente los hour ranges
 
   - FRONTEND:
+    [√] Fix logout button behavior as it is redirecting to the home page even if the use selects 'cancel'
+    
     [√] Add test files
     
     [√] Add alert question before removen calendar from a doctor

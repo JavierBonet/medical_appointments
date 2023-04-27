@@ -1,7 +1,7 @@
 import React from 'react';
 import { MdLogout } from 'react-icons/md';
-import { NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import './LogoutButton/styles.scss';
 
 interface Props {
   logout: () => void;
@@ -17,9 +17,9 @@ function LogoutButton({ logout }: Props) {
 
   return (
     <div className="user-links">
-      <NavLink onClick={() => patientLogout()} to="../../">
+      <div className="logout-button" onClick={patientLogout}>
         <MdLogout />
-      </NavLink>
+      </div>
     </div>
   );
 }
