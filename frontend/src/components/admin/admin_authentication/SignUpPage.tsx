@@ -3,10 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import SignUpForm from './SignUpForm';
 import CustomLoader from '../../commons/CustomLoader';
-import {
-  doesAdminUserAlreadyExist,
-  saveAdminUser,
-} from '../../../api/admin/user';
+import { doesAdminUserAlreadyExist, saveAdminUser } from '../../../api/admin/user';
 
 const initialAdminUser: OptionalAdminUser = {
   email: '',
@@ -41,8 +38,8 @@ const SingUpPage = () => {
 
     if (!existErrors(errors)) {
       setLoading(true);
-      doesAdminUserAlreadyExist(adminUser.email).then((itExist) => {
-        if (itExist) {
+      doesAdminUserAlreadyExist(adminUser.email).then((exists) => {
+        if (exists) {
           toast.info('Admin user already registered. Please log in');
           navigate('/admin/signin');
         } else {
@@ -94,8 +91,7 @@ const SingUpPage = () => {
 
   function getEmailError(email: string): string {
     let error = '';
-    const emailRegex =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
     if (!email) {
       error = 'You should set an email';

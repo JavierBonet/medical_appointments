@@ -8,15 +8,12 @@ interface PropsInterface {
   saveHandler: () => void;
 }
 
-const HospitalForm = ({
-  hospital,
-  changeHandler,
-  saveHandler,
-}: PropsInterface) => {
+const HospitalForm = ({ hospital, changeHandler, saveHandler }: PropsInterface) => {
   return (
     <Form onSubmit={() => saveHandler()}>
       <Form.Field>
         <InputField
+          id={'hospital-name'}
           label="Name"
           type="text"
           name="name"
@@ -26,6 +23,7 @@ const HospitalForm = ({
       </Form.Field>
       <Form.Field>
         <InputField
+          id={'hospital-address'}
           label="Address"
           type="text"
           name="address"
@@ -35,6 +33,7 @@ const HospitalForm = ({
       </Form.Field>
       <Form.Field>
         <InputField
+          id={'hospital-phone'}
           label="Phone"
           type="text"
           name="phone"
@@ -44,6 +43,7 @@ const HospitalForm = ({
       </Form.Field>
       <Form.Field>
         <InputField
+          id={'hospital-zip-code'}
           label="Zip code"
           type="number"
           name="zip_code"

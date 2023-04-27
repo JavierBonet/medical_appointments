@@ -2,8 +2,8 @@ import React from 'react';
 import { Dropdown } from 'semantic-ui-react';
 
 interface PropsInterface {
+  id: string;
   label: string;
-  name: string;
   selected?: number;
   options: { key: number; value: number; text: string }[];
   changeHandler: (id: number) => void;
@@ -11,20 +11,13 @@ interface PropsInterface {
   error?: string;
 }
 
-const SelectInputField = ({
-  label,
-  name,
-  selected,
-  options,
-  changeHandler,
-  removeLabel,
-  error,
-}: PropsInterface) => {
+const SelectInputField = ({ id, label, selected, options, changeHandler, removeLabel, error }: PropsInterface) => {
   return (
     <>
-      {!removeLabel && <label htmlFor={name}>{label}</label>}
+      {!removeLabel && <label htmlFor={id}>{label}</label>}
       <Dropdown
-        data-testid={name}
+        id={id}
+        data-testid={id}
         placeholder={label}
         fluid
         search

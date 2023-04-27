@@ -51,7 +51,42 @@ References:
 ###################################################
 ###################################################
 
+CalendarsPage tests:
+  Renderiza:
+    - la lista de calendarios
+      - Al editar muestra:
+        - el formulario con el nombre del calendario
+        - ConfigureDays muestra:
+          - por cada día de la semana se muestran los rangos horarios en que atiende el médico
+    - botón 'nuevo calendario'
 
+  Casos a probar:
+    · Caso 1: el usuario puede crear un calendario
+      - Cuando el usuario hace click en 'nuevo calendario' se muestran el formulario vacío. Una vez completado y
+      clickeado en 'save', se muestra el listado de los calendarios incluido el creado
+    · Caso 2: el usuario puede editar un calendario
+    - Cuando el usuario hace click en 'editar' se muestra el formulario con el nombre del calendario.
+      - Cuando no se configuró previamente el calendario, los días de la semana no tienen que contener rangos horarios
+      - Cuando existe una configuración de los rangos horarios, se tienen que mostrar las correspondientes al clickear
+      en cada día
+
+ConfigureDays tests:
+  Renderiza:
+    - por cada día de la semana se muestran los rangos horarios en que atiende el médico
+  
+  Casos a probar:
+    · Caso 1: el usuario puede agregar un rangos horarios y setear sus valores. Esto incluye el seteo de uno de ellos
+    tal que se deshabilite el botón 'add'
+    · Caso 2: el usuario puede eliminar rangos horarios
+    · Caso 3: con rangos ya seteados, cuando el usuario modifica el horario de fin de un rango horario que se encuentra
+    antes que otros y lo setea a un horario posterior al de inicio del siguiente rango horario, entonces se debe actualizar
+    el inicio del siguiente rango horario
+
+    - Cuando se hace click en 'add' se debe agregar un nuevo rango horario que tenga como inicio el horario
+    que sigue al horario de fin del rango anterior y como fin el horario siguiente al propio de inicio
+    - Cuando se selecciona el horario mas tarde en uno de los rangos, 'add' debe quedar deshabilitado
+    - Cuando se modifica el fin del rango anterior se debe actualizar al siguiente horario el inicio del siguiente rango
+    - Cuando se hace click en 'delete' se debe borrar el rango correspondiente
 
 --------------------- 0 ---------------------
 

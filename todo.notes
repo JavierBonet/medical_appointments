@@ -2,14 +2,16 @@
 
 TODO:
 
+  - BOTH:
+    [ ] Use jwt
+
   - BACKEND:
 
     [ ] Add test files
 
-
   - FRONTEND:
 
-    [ ] Add test files
+    [ ] Fix logout button behavior as it is redirecting to the home page even if the use selects 'cancel'
   
     - Admin side:
 
@@ -19,8 +21,6 @@ TODO:
       [ ] When trying to access the appointments page and the login page is showned because the user is not logged in, two toasts are appearing      
 
   - Features:
-
-    [ ] Move ConfigureDays logic to a custom hook
 
     [√] Enable appointment creation by the patient
       
@@ -62,11 +62,16 @@ TODO:
 
 
 DONE:
+- Features:
+
+  [√] Move ConfigureDays logic to a custom hook
 
   [√] Al crear hour ranges solo crea algunos. No se si se reproduce asi nomas:
     · RAZON: había dejado mal una parte del código y nunca se creaban realmente los hour ranges
 
   - FRONTEND:
+    [√] Add test files
+    
     [√] Add alert question before removen calendar from a doctor
 
     [√] Change font for days of the week in calendar

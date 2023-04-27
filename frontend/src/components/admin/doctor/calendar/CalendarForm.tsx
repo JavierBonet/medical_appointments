@@ -24,6 +24,7 @@ const CalendarForm = ({
     <Form onSubmit={saveHandler}>
       <Form.Field required>
         <InputField
+          id={'calendar-name'}
           label="Name"
           type="text"
           name="name"
@@ -34,8 +35,8 @@ const CalendarForm = ({
       </Form.Field>
       <Form.Field required>
         <SelectInputField
+          id="hospitalId"
           label="Hospital"
-          name="hospitalId"
           selected={calendar.hospitalId}
           options={hospitalOptions}
           changeHandler={(id: number) => selectChangeHandler('hospitalId', id)}

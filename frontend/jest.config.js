@@ -23,7 +23,7 @@ module.exports = {
   // Test spec file resolution pattern
   // Matches parent folder `__tests__` and filename
   // should contain `test` or `spec`.
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
+  testRegex: '/__tests__/.+(\\.|/)(test|spec)\\.tsx?$',
 
   // Module file extensions for importing
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
@@ -31,4 +31,5 @@ module.exports = {
   moduleNameMapper: {
     '^.+\\.(css|scss|less)$': '<rootDir>/tests_config/CSSStub.js',
   },
+  coveragePathIgnorePatterns: ['<rootDir>/src/api/'],
 };

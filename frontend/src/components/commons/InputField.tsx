@@ -1,6 +1,7 @@
 import React from 'react';
 
 interface PropsInterface {
+  id: string;
   label: string;
   type: React.HTMLInputTypeAttribute;
   name: string;
@@ -9,24 +10,11 @@ interface PropsInterface {
   error?: string;
 }
 
-const InputField = ({
-  label,
-  type,
-  name,
-  value,
-  changeHandler,
-  error,
-}: PropsInterface) => {
+const InputField = ({ id, label, type, name, value, changeHandler, error }: PropsInterface) => {
   return (
     <>
-      <label htmlFor={name}>{label}</label>
-      <input
-        id={name}
-        type={type}
-        name={name}
-        value={value}
-        onChange={(e) => changeHandler(e)}
-      />
+      <label htmlFor={id}>{label}</label>
+      <input id={id} type={type} name={name} value={value} onChange={(e) => changeHandler(e)} />
       {error && <div className="error-message">{error}</div>}
     </>
   );

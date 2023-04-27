@@ -8,15 +8,12 @@ interface PropsInterface {
   submitHandler: () => void;
 }
 
-const SignInForm = ({
-  currentUser,
-  changeHandler,
-  submitHandler,
-}: PropsInterface) => {
+const SignInForm = ({ currentUser, changeHandler, submitHandler }: PropsInterface) => {
   return (
     <Form onSubmit={submitHandler}>
       <Form.Field>
         <InputField
+          id={'admin-user-email'}
           label="Email"
           type="email"
           name="email"
@@ -26,6 +23,7 @@ const SignInForm = ({
       </Form.Field>
       <Form.Field>
         <InputField
+          id={'admin-user-password'}
           label="Password"
           type="password"
           name="password"

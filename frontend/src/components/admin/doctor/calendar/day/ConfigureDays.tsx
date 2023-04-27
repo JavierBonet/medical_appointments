@@ -1,31 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { Button } from 'semantic-ui-react';
-import { getDays, saveDays } from '../../../../../api/admin/days';
+import { getRemainingHourRangesQuantity } from './dayUtils';
 import SelectInputField from '../../../../commons/SelectInputField';
-import { toast } from 'react-toastify';
-import './daysConfiguration.scss';
-import {
-  dbDaysToDays,
-  getDeletedHourRanges,
-  getEndHourRangeOptions,
-  getHourRangesUpdated,
-  getRemainingHourRangesQuantity,
-  getStartHourRangeOptions,
-} from './dayUtils';
 import DaysOfTheWeek from './DaysOfTheWeek';
 import useDaysConfiguration from './ConfigureDays/useDaysConfiguration';
+import './daysConfiguration.scss';
 
 const ConfigureDays = () => {
   const {
     state: { days, selectedDay, lastSelectedHourIndex },
-    actions: {
-      daySelectionHandler,
-      addHourRangeHandler,
-      selectChangeHandler,
-      saveHandler,
-      deleteHandler,
-    },
+    actions: { daySelectionHandler, addHourRangeHandler, selectChangeHandler, saveHandler, deleteHandler },
   } = useDaysConfiguration();
 
   return (
@@ -36,9 +19,7 @@ const ConfigureDays = () => {
           <div className="add-hour-range-button">
             <Button
               positive
-              disabled={
-                getRemainingHourRangesQuantity(lastSelectedHourIndex + 1) < 2
-              }
+              disabled={getRemainingHourRangesQuantity(lastSelectedHourIndex + 1) < 2}
               onClick={addHourRangeHandler}
             >
               Add
@@ -49,28 +30,25 @@ const ConfigureDays = () => {
         <div className="body">
           {days[selectedDay].length !== 0 &&
             days[selectedDay].map((hourRangeInfo, index) => (
-              <div key={hourRangeInfo.end.selected} className="day-hour-ranges">
+              <div key={hourRangeInfo.end.selected} className="day-hour-ranges" data-testid="day-hour-range">
                 <SelectInputField
+                  id="start"
                   label="Start"
-                  name="start"
                   options={hourRangeInfo.start.options}
                   selected={hourRangeInfo.start.selected}
                   changeHandler={selectChangeHandler(index, 'start')}
                   removeLabel={true}
                 />
                 <SelectInputField
+                  id="end"
                   label="End"
-                  name="end"
                   options={hourRangeInfo.end.options}
                   selected={hourRangeInfo.end.selected}
                   changeHandler={selectChangeHandler(index, 'end')}
                   removeLabel={true}
                 />
                 {days[selectedDay].length - 1 == index && (
-                  <Button
-                    negative
-                    onClick={() => deleteHandler(hourRangeInfo.id)}
-                  >
+                  <Button negative onClick={() => deleteHandler(hourRangeInfo.id)}>
                     delete
                   </Button>
                 )}

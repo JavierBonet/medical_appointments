@@ -22,18 +22,12 @@ function AppointmentsList({ appointments, deleteHandler }: PropsInterface) {
         {appointments.map((appointment) => {
           return (
             <Table.Row key={appointment.id}>
-              <Table.Cell textAlign="center">
-                {appointment.Hospital.name}
-              </Table.Cell>
+              <Table.Cell textAlign="center">{appointment.Hospital.name}</Table.Cell>
               <Table.Cell textAlign="center">{`${appointment.Doctor.name} ${appointment.Doctor.surname}`}</Table.Cell>
               <Table.Cell textAlign="center">{appointment.date}</Table.Cell>
               <Table.Cell textAlign="center">{appointment.hour}</Table.Cell>
-              <Table.Cell
-                className="delete-button"
-                onClick={() => deleteHandler(appointment.id)}
-                textAlign="center"
-              >
-                Cancel
+              <Table.Cell className="delete-button" onClick={() => deleteHandler(appointment.id)} textAlign="center">
+                Delete
               </Table.Cell>
             </Table.Row>
           );

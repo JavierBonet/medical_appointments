@@ -1,4 +1,4 @@
-const hours = [
+export const hours = [
   '7:00',
   '7:15',
   '7:30',
@@ -61,7 +61,7 @@ const hours = [
   '21:45',
 ];
 
-let indexByHourMap: { [hour: string]: number } = {};
+export let indexByHourMap: { [hour: string]: number } = {};
 
 hours.forEach((hour, index) => (indexByHourMap[hour] = index));
 
@@ -100,10 +100,7 @@ function getIndexByValue(options: SelectOption[], value: number) {
   return index;
 }
 
-function getHourRangesUpdated(
-  hourRangeInfos: HourRangeInfo[],
-  previousHourRange: HourRangeInfo
-): HourRangeInfo[] {
+function getHourRangesUpdated(hourRangeInfos: HourRangeInfo[], previousHourRange: HourRangeInfo): HourRangeInfo[] {
   let updatedHourRangeInfos = [...hourRangeInfos];
   const length = hourRangeInfos.length;
   let previousSelectedEnd = previousHourRange.end.selected;
@@ -140,15 +137,11 @@ function getHourRangesUpdated(
 
         previousSelectedEnd = hourRange.end.selected;
       } else {
-        // no hacer nada
-        stop = true;
+        // Don't change anything
+        break;
       }
     } else {
       updatedHourRangeInfos.splice(i);
-      stop = true;
-    }
-
-    if (stop) {
       break;
     }
   }
@@ -181,9 +174,7 @@ function dbDaysToDays(dbDays: Day[]): DaysMap {
   return daysMap;
 }
 
-function dbHourRangesToHourRangeInfos(
-  dbHourRanges: HourRange[]
-): HourRangeInfo[] {
+function dbHourRangesToHourRangeInfos(dbHourRanges: HourRange[]): HourRangeInfo[] {
   let hourRangeInfos: HourRangeInfo[] = [];
 
   let previousEnd: number;
@@ -223,19 +214,12 @@ function getHourByIndex(index: number): string {
   return hours[index];
 }
 
-function getDeletedHourRanges(
-  previousHourRangesInfo: HourRangeInfo[],
-  newHourRangesInfo: HourRangeInfo[]
-): number[] {
+function getDeletedHourRanges(previousHourRangesInfo: HourRangeInfo[], newHourRangesInfo: HourRangeInfo[]): number[] {
   let hourRangesToDelete: number[] = [];
 
-  let removedHourRanges = previousHourRangesInfo.slice(
-    newHourRangesInfo.length
-  );
+  let removedHourRanges = previousHourRangesInfo.slice(newHourRangesInfo.length);
 
-  hourRangesToDelete = removedHourRanges
-    .map((hourRange) => (hourRange.id ? hourRange.id : -1))
-    .filter((id) => id >= 0);
+  hourRangesToDelete = removedHourRanges.map((hourRange) => (hourRange.id ? hourRange.id : -1)).filter((id) => id >= 0);
 
   return hourRangesToDelete;
 }

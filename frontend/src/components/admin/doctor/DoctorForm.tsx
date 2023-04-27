@@ -13,6 +13,7 @@ const DoctorForm = ({ doctor, changeHandler, saveHandler }: PropsInterface) => {
     <Form onSubmit={() => saveHandler()} className="form">
       <Form.Field>
         <InputField
+          id={'doctor-name'}
           label="Name"
           type="text"
           name="name"
@@ -22,6 +23,7 @@ const DoctorForm = ({ doctor, changeHandler, saveHandler }: PropsInterface) => {
       </Form.Field>
       <Form.Field>
         <InputField
+          id={'doctor-surname'}
           label="Surname"
           type="text"
           name="surname"
@@ -31,6 +33,7 @@ const DoctorForm = ({ doctor, changeHandler, saveHandler }: PropsInterface) => {
       </Form.Field>
       <Form.Field>
         <InputField
+          id={'doctor-age'}
           label="Age"
           type="number"
           name="age"
@@ -40,6 +43,7 @@ const DoctorForm = ({ doctor, changeHandler, saveHandler }: PropsInterface) => {
       </Form.Field>
       <Form.Field>
         <InputField
+          id={'doctor-speciality'}
           label="Speciality"
           type="text"
           name="speciality"

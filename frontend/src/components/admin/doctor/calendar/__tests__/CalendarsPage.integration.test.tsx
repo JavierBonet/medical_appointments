@@ -1,16 +1,8 @@
-import {
-  render as rtlRender,
-  RenderOptions,
-  screen,
-} from '@testing-library/react';
+import { render as rtlRender, RenderOptions, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { useParams } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import {
-  areAvailableHospitals,
-  deleteCalendar,
-  getCalendars,
-} from '../../../../../api/admin/calendars';
+import { areAvailableHospitals, deleteCalendar, getCalendars } from '../../../../../api/admin/calendars';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import CalendarsPage from '../CalendarsPage';
@@ -18,7 +10,7 @@ import CalendarsPage from '../CalendarsPage';
 function renderWithToastify(ui: JSX.Element, options?: RenderOptions) {
   return rtlRender(
     <>
-      <ToastContainer autoClose={500} position="top-center" closeOnClick />
+      <ToastContainer />
       {ui}
     </>,
     options
@@ -210,10 +202,7 @@ describe('CalendarsPage', () => {
 
             // Assert
             expect(mockDeleteCalendar).toHaveBeenCalledTimes(1);
-            expect(mockDeleteCalendar).toHaveBeenCalledWith(
-              doctorId,
-              calendarId2
-            );
+            expect(mockDeleteCalendar).toHaveBeenCalledWith(doctorId, calendarId2);
           });
 
           describe('and delete service succeed', () => {
@@ -244,10 +233,7 @@ describe('CalendarsPage', () => {
 
               // Assert
               expect(mockDeleteCalendar).toHaveBeenCalledTimes(1);
-              expect(mockDeleteCalendar).toHaveBeenCalledWith(
-                doctorId,
-                calendarId2
-              );
+              expect(mockDeleteCalendar).toHaveBeenCalledWith(doctorId, calendarId2);
               expect(calendarNameElement).not.toBeInTheDocument();
             });
           });
@@ -280,10 +266,7 @@ describe('CalendarsPage', () => {
 
               // Assert
               expect(mockDeleteCalendar).toHaveBeenCalledTimes(1);
-              expect(mockDeleteCalendar).toHaveBeenCalledWith(
-                doctorId,
-                calendarId2
-              );
+              expect(mockDeleteCalendar).toHaveBeenCalledWith(doctorId, calendarId2);
               expect(calendarNameElement).toBeInTheDocument();
             });
           });

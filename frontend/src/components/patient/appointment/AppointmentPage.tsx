@@ -51,9 +51,7 @@ const AppointmentPage = ({ logout }: PropsInterface) => {
   }, []);
 
   useEffect(() => {
-    const selectedHospital = hospitals.find(
-      (hospital) => hospital.id == hospitalId
-    );
+    const selectedHospital = hospitals.find((hospital) => hospital.id == hospitalId);
     if (selectedHospital) {
       setHospital(selectedHospital);
     }
@@ -61,9 +59,7 @@ const AppointmentPage = ({ logout }: PropsInterface) => {
 
   useEffect(() => {
     if (hospital) {
-      const selectedDoctor = hospital.Doctors?.find(
-        (doctor) => doctor.id == doctorId
-      );
+      const selectedDoctor = hospital.Doctors?.find((doctor) => doctor.id == doctorId);
       if (selectedDoctor) {
         setDoctor(selectedDoctor);
       }
@@ -97,8 +93,8 @@ const AppointmentPage = ({ logout }: PropsInterface) => {
         <div className="section-container">
           <div className="fit-content">
             <SelectInputField
+              id="hospitalId"
               label="Hospital"
-              name="hospitalId"
               selected={hospitalId}
               options={hospitalOptions}
               changeHandler={handleHospitalSelection}
@@ -107,17 +103,15 @@ const AppointmentPage = ({ logout }: PropsInterface) => {
           {hospitalId && (
             <div className="fit-content">
               <SelectInputField
+                id="doctorId"
                 label="Doctor"
-                name="doctorId"
                 selected={doctorId}
                 options={doctorOptions}
                 changeHandler={handleDoctorSelection}
               />
             </div>
           )}
-          {doctor && hospital && (
-            <CalendarMonth hospital={hospital} doctor={doctor} />
-          )}
+          {doctor && hospital && <CalendarMonth hospital={hospital} doctor={doctor} />}
         </div>
       )}
     </div>

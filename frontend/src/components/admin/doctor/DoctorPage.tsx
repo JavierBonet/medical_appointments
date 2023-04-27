@@ -29,12 +29,8 @@ const DoctorPage = ({ logout }: PropsInterface) => {
     if (doctorId) {
       setLoading(true);
       getDoctor(doctorId)
-        .then((doctor) => {
-          setLoading(false);
-          setDoctor(doctor);
-        })
+        .then((doctor) => setDoctor(doctor))
         .catch((error) => {
-          setLoading(false);
           if (error === 401) {
             logout();
             navigate('/admin/signin');
@@ -43,8 +39,11 @@ const DoctorPage = ({ logout }: PropsInterface) => {
             navigate('../doctors');
             toast.warning(error);
           }
-        });
+        })
+        .finally(() => setLoading(false));
     }
+
+    return () => setLoading(false);
   }, []);
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
@@ -72,23 +71,19 @@ const DoctorPage = ({ logout }: PropsInterface) => {
           <CustomLoader loading={loading} />
         </>
       ) : (
-        <div className="two-columns">
-          <div className="first-column">
-            <h1>
-              {doctor.name ? `${doctor.name} ${doctor.surname}` : 'New doctor'}
-            </h1>
-            <DoctorForm
-              doctor={doctor}
-              changeHandler={changeHandler}
-              saveHandler={saveHandler}
-            />
-          </div>
-          {doctor.id && (
-            <div className="second-column">
-              <Outlet />
+        <>
+          <div className="two-columns">
+            <div className="first-column">
+              <h1>{doctor.name ? `${doctor.name} ${doctor.surname}` : 'New doctor'}</h1>
+              <DoctorForm doctor={doctor} changeHandler={changeHandler} saveHandler={saveHandler} />
             </div>
-          )}
-        </div>
+            {doctor.id && (
+              <div className="second-column">
+                <Outlet />
+              </div>
+            )}
+          </div>
+        </>
       )}
     </div>
   );

@@ -18,6 +18,7 @@ const SignUpForm = ({
   return (
     <Form onSubmit={() => submitHandler()}>
       <InputField
+        id={'patient-email'}
         label="Email"
         type="text"
         name="email"
@@ -26,6 +27,7 @@ const SignUpForm = ({
         error={errors.email}
       />
       <InputField
+        id={'patient-password'}
         label="Password"
         type="password"
         name="password"
@@ -34,6 +36,7 @@ const SignUpForm = ({
         error={errors.password}
       />
       <InputField
+        id={'patient-password-confirmation'}
         label="Password confirmation"
         type="password"
         name="passwordConfirmation"

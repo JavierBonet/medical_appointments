@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import {
-  getCalendar,
-  saveCalendar,
-  getAvailableHospitals,
-} from '../../../../api/admin/calendars';
+import { getCalendar, saveCalendar, getAvailableHospitals } from '../../../../api/admin/calendars';
 import { toast } from 'react-toastify';
 import CalendarForm from './CalendarForm';
 import CustomLoader from '../../../commons/CustomLoader';
@@ -22,9 +18,7 @@ const defaultErrors = {
 const CalendarPage = () => {
   const [calendar, setCalendar] = useState(initialCalendar);
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
-  const [previousHospitalId, setPreviousHospitalId] = useState<
-    number | undefined
-  >(undefined);
+  const [previousHospitalId, setPreviousHospitalId] = useState<number | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<CalendarErrors>({ ...defaultErrors });
   const params = useParams();
@@ -46,11 +40,7 @@ const CalendarPage = () => {
           .then((calendar) => {
             getAvailableHospitals(doctorId)
               .then((hospitals) => {
-                if (
-                  !hospitals.some(
-                    (hospital) => hospital.id === calendar.hospitalId
-                  )
-                ) {
+                if (!hospitals.some((hospital) => hospital.id === calendar.hospitalId)) {
                   hospitals.unshift(calendar.Hospital);
                 }
                 setHospitals(hospitals);
@@ -81,7 +71,7 @@ const CalendarPage = () => {
   }
 
   function selectChangeHandler(field: string, id: number) {
-    setPreviousHospitalId(calendar.hospitalId);
+    setPreviousHospitalId(id);
     let newCalendar = { ...calendar, [field]: id };
     updateErrors(newCalendar);
     setCalendar(newCalendar);

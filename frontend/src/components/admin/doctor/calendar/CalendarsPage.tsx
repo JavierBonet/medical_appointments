@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import {
-  areAvailableHospitals,
-  deleteCalendar,
-  getCalendars,
-} from '../../../../api/admin/calendars';
+import { areAvailableHospitals, deleteCalendar, getCalendars } from '../../../../api/admin/calendars';
 import CustomLoader from '../../../commons/CustomLoader';
 import CalendarsList from './CalendarsList';
 
@@ -74,7 +70,7 @@ const CalendarsPage = () => {
   return (
     <div className="section-container">
       {_calendars.length === 0 ? (
-        <h1> No Calendars available</h1>
+        <h1>No Calendars available</h1>
       ) : (
         <>
           <h1>Calendars</h1>
@@ -88,9 +84,7 @@ const CalendarsPage = () => {
           New calendar
         </Link>
       ) : (
-        <div className="info-message">
-          This doctor already has a calendar for each hospital
-        </div>
+        <div className="info-message">This doctor already has a calendar for each hospital</div>
       )}
     </div>
   );

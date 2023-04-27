@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "build": "webpack --config webpack.config.dev.js --mode development",
     "start-dev": "webpack-dev-server --config webpack.config.dev.js --mode development --open"
   },
@@ -32,6 +32,7 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
+    "@faker-js/faker": "^7.6.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
@@ -54,6 +55,7 @@
     "sass-loader": "^12.4.0",
     "style-loader": "^3.3.1",
     "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1",
     "typescript": "^4.5.5",
     "webpack": "^5.67.0",
     "webpack-cli": "^4.9.2",

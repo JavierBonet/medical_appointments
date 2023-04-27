@@ -1,17 +1,9 @@
-import {
-  render as rtlRender,
-  RenderOptions,
-  screen,
-} from '@testing-library/react';
+import { render as rtlRender, RenderOptions, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { act } from 'react-dom/test-utils';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import {
-  getCalendar,
-  saveCalendar,
-  getAvailableHospitals,
-} from '../../../../../api/admin/calendars';
+import { getCalendar, saveCalendar, getAvailableHospitals } from '../../../../../api/admin/calendars';
 import CalendarPage from '../CalendarPage';
 import userEvent from '@testing-library/user-event';
 
@@ -78,7 +70,7 @@ const calendar: Calendar = {
 function renderWithToastify(ui: JSX.Element, options?: RenderOptions) {
   const newUI = (
     <>
-      <ToastContainer autoClose={500} position="top-center" closeOnClick />
+      <ToastContainer />
       {ui}
     </>
   );
@@ -168,10 +160,7 @@ describe('CalendarPage', () => {
 
               it('should save the calendar', async () => {
                 // Arrange
-                mockGetAvailableHospitals.mockResolvedValue([
-                  hospital1,
-                  hospital2,
-                ]);
+                mockGetAvailableHospitals.mockResolvedValue([hospital1, hospital2]);
                 mockSaveCalendar.mockResolvedValue(successMessage);
 
                 // Act
@@ -207,11 +196,7 @@ describe('CalendarPage', () => {
 
                 // Assert
                 expect(mockSaveCalendar).toHaveBeenCalledTimes(1);
-                expect(mockSaveCalendar).toHaveBeenCalledWith(
-                  doctorId,
-                  expectedCalendar,
-                  calendar.hospitalId
-                );
+                expect(mockSaveCalendar).toHaveBeenCalledWith(doctorId, expectedCalendar, expectedCalendar.hospitalId);
               });
 
               describe('and save succeed', () => {
@@ -345,10 +330,7 @@ describe('CalendarPage', () => {
           describe('and there are no errors', () => {
             it('should save the calendar', async () => {
               // Arrange
-              mockGetAvailableHospitals.mockResolvedValue([
-                hospital1,
-                hospital2,
-              ]);
+              mockGetAvailableHospitals.mockResolvedValue([hospital1, hospital2]);
               mockSaveCalendar.mockResolvedValue(successMessage);
 
               // Act
@@ -376,26 +358,21 @@ describe('CalendarPage', () => {
 
               await userEvent.click(createButton);
 
+              const expectedCalendar = {
+                name,
+                doctorId: parseInt(doctorId),
+                hospitalId: hospital2.id,
+              };
+
               // Assert
               expect(mockSaveCalendar).toHaveBeenCalledTimes(1);
-              expect(mockSaveCalendar).toHaveBeenCalledWith(
-                doctorId,
-                {
-                  name,
-                  doctorId: parseInt(doctorId),
-                  hospitalId: hospital2.id,
-                },
-                undefined
-              );
+              expect(mockSaveCalendar).toHaveBeenCalledWith(doctorId, expectedCalendar, expectedCalendar.hospitalId);
             });
 
             describe('and save succeed', () => {
               it('should navigate back and show success message', async () => {
                 // Arrange
-                mockGetAvailableHospitals.mockResolvedValue([
-                  hospital1,
-                  hospital2,
-                ]);
+                mockGetAvailableHospitals.mockResolvedValue([hospital1, hospital2]);
                 mockSaveCalendar.mockResolvedValue(successMessage);
 
                 // Act
@@ -435,10 +412,7 @@ describe('CalendarPage', () => {
             describe('and save fails', () => {
               it('should show error message', async () => {
                 // Arrange
-                mockGetAvailableHospitals.mockResolvedValue([
-                  hospital1,
-                  hospital2,
-                ]);
+                mockGetAvailableHospitals.mockResolvedValue([hospital1, hospital2]);
                 mockSaveCalendar.mockRejectedValue(errorMessage);
 
                 // Act

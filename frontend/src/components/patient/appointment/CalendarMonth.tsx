@@ -5,11 +5,7 @@ import { getAppointments, saveAppointment } from '../../../api/appointments';
 import { getCalendarByDoctorAndHospitalId } from '../../../api/calendars';
 import CalendarDate from './CalendarDate';
 import './CalendarMonth/styles.scss';
-import {
-  dbWeekDayToSystemDay,
-  getAppointmentHours,
-  getAppointmentsByDateMap,
-} from './CalendarMonth/utils';
+import { dbWeekDayToSystemDay, getAppointmentHours, getAppointmentsByDateMap } from './CalendarMonth/utils';
 import { getCalendarDates, getDayOfTheMonth } from './utils';
 
 /**
@@ -22,17 +18,11 @@ interface PropsInterface {
 
 const CalendarMonth = ({ hospital, doctor }: PropsInterface) => {
   const [calendar, setCalendar] = useState<Calendar | undefined>(undefined);
-  const [calendarDatesByWeek, setCalendarDatesByWeek] = useState<
-    (CalendarDate | undefined)[][]
-  >([]);
+  const [calendarDatesByWeek, setCalendarDatesByWeek] = useState<(CalendarDate | undefined)[][]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [appointmentHours, setAppointmentHours] = useState<string[]>([]);
-  const [selectedDateElement, setSelectedDateElement] = useState<
-    HTMLDivElement | undefined
-  >(undefined);
-  const [appointmentsByDate, setAppointmentsByDate] = useState<
-    Map<string, Appointment[]>
-  >(new Map());
+  const [selectedDateElement, setSelectedDateElement] = useState<HTMLDivElement | undefined>(undefined);
+  const [appointmentsByDate, setAppointmentsByDate] = useState<Map<string, Appointment[]>>(new Map());
 
   const navigate = useNavigate();
 
@@ -41,7 +31,7 @@ const CalendarMonth = ({ hospital, doctor }: PropsInterface) => {
       .then((calendar) => {
         setCalendar(calendar);
       })
-      .catch((err) => console.log('err calendar'));
+      .catch((err) => console.log(`err calendar: ${err}`));
   }, [doctor, hospital]);
 
   useEffect(() => {
@@ -54,16 +44,10 @@ const CalendarMonth = ({ hospital, doctor }: PropsInterface) => {
     });
   }, [calendar]);
 
-  function onDateSelection(
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    date: Date | undefined
-  ) {
+  function onDateSelection(event: React.MouseEvent<HTMLDivElement, MouseEvent>, date: Date | undefined) {
     setSelectedDate(date);
     if (calendar && date) {
-      const day = calendar.Days.find(
-        (dayOfTheWeek) =>
-          dbWeekDayToSystemDay(dayOfTheWeek.number) === date.getDay()
-      );
+      const day = calendar.Days.find((dayOfTheWeek) => dbWeekDayToSystemDay(dayOfTheWeek.number) === date.getDay());
 
       if (day) {
         setAppointmentHours(getAppointmentHours(day.HourRanges));
@@ -82,9 +66,7 @@ const CalendarMonth = ({ hospital, doctor }: PropsInterface) => {
   function saveHandler(date: Date, hour: string) {
     if (
       !confirm(
-        `Are you sure to schedule an appointment at ${
-          hospital.name
-        } hospital with doctor ${
+        `Are you sure to schedule an appointment at ${hospital.name} hospital with doctor ${
           doctor.name
         } at ${hour}, ${date.toLocaleDateString()}?`
       )
@@ -133,9 +115,7 @@ const CalendarMonth = ({ hospital, doctor }: PropsInterface) => {
                       <div
                         className="calendar-date"
                         key={index}
-                        onClick={(event) =>
-                          onDateSelection(event, calendarDate.date)
-                        }
+                        onClick={(event) => onDateSelection(event, calendarDate.date)}
                       >
                         {getDayOfTheMonth(calendarDate.date)}
                       </div>
@@ -157,9 +137,7 @@ const CalendarMonth = ({ hospital, doctor }: PropsInterface) => {
             <CalendarDate
               date={selectedDate}
               hours={appointmentHours}
-              existingAppointments={appointmentsByDate.get(
-                selectedDate.toLocaleDateString()
-              )}
+              existingAppointments={appointmentsByDate.get(selectedDate.toLocaleDateString())}
               saveHandler={saveHandler}
             />
           )}

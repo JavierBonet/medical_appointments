@@ -14,7 +14,7 @@ function getDoctorOptions(doctors: Doctor[]): SelectOption[] {
   let options: SelectOption[] = [];
 
   doctors.forEach((doctor) => {
-    options.push({ key: doctor.id, value: doctor.id, text: doctor.name });
+    options.push({ key: doctor.id, value: doctor.id, text: `${doctor.name} ${doctor.surname}` });
   });
 
   return options;
@@ -33,13 +33,10 @@ function getCalendarDates(
   let datesByWeek: (CalendarDate | undefined)[][] = [];
 
   const daysToInclude = new Set(
-    calendar.Days.filter((day) => day.HourRanges.length !== 0).map((day) =>
-      dbWeekDayToSystemDay(day.number)
-    )
+    calendar.Days.filter((day) => day.HourRanges.length !== 0).map((day) => dbWeekDayToSystemDay(day.number))
   );
 
-  const maxAppointmentQuantityByWeekDay =
-    getMaxAppointmentQuantityByWeekDay(calendar);
+  const maxAppointmentQuantityByWeekDay = getMaxAppointmentQuantityByWeekDay(calendar);
 
   const today = new Date();
   const currentYear = today.getFullYear();
@@ -78,20 +75,11 @@ function getCalendarDates(
       datesOfTheWeek = newWeek;
     }
 
-    const appointmentsQuantity = appointmentsByDate.get(
-      nextDate.toLocaleDateString()
-    )?.length;
-    const maxAppointmentsQuantity =
-      maxAppointmentQuantityByWeekDay.get(nextWeekDay);
+    const appointmentsQuantity = appointmentsByDate.get(nextDate.toLocaleDateString())?.length;
+    const maxAppointmentsQuantity = maxAppointmentQuantityByWeekDay.get(nextWeekDay);
 
     datesOfTheWeek[nextWeekDay] = {
-      enabled: isDateEnable(
-        nextDate,
-        today,
-        daysToInclude,
-        appointmentsQuantity,
-        maxAppointmentsQuantity
-      ),
+      enabled: isDateEnable(nextDate, today, daysToInclude, appointmentsQuantity, maxAppointmentsQuantity),
       date: nextDate,
     };
 
@@ -117,18 +105,13 @@ function isDateEnable(
   appointmentsQuantity: number | undefined,
   maxAppointmentsQuantity: number | undefined
 ): boolean {
-  let areThereAppoointmentsToTake = true;
+  let areThereAppointmentsToTake = true;
 
   if (appointmentsQuantity && maxAppointmentsQuantity) {
-    areThereAppoointmentsToTake =
-      appointmentsQuantity < maxAppointmentsQuantity;
+    areThereAppointmentsToTake = appointmentsQuantity < maxAppointmentsQuantity;
   }
 
-  return (
-    daysToInclude.has(date.getDay()) &&
-    currentDate.getDate() <= date.getDate() &&
-    areThereAppoointmentsToTake
-  );
+  return daysToInclude.has(date.getDay()) && currentDate.getDate() <= date.getDate() && areThereAppointmentsToTake;
 }
 
 function getDayOfTheMonth(date: Date): string {
@@ -141,9 +124,7 @@ function getMonth(date: Date): string {
   return month < 10 ? '0' + month : '' + month;
 }
 
-function getMaxAppointmentQuantityByWeekDay(
-  calendar: Calendar
-): Map<number, number> {
+function getMaxAppointmentQuantityByWeekDay(calendar: Calendar): Map<number, number> {
   const maxAppointmentQuantityByWeekDay = new Map<number, number>();
 
   calendar.Days.forEach((day) => {
@@ -156,10 +137,7 @@ function getMaxAppointmentQuantityByWeekDay(
 }
 
 function getMaxAppointmentQuantity(hourRanges: HourRange[]): number {
-  return hourRanges.reduce(
-    (accum, hourRange) => accum + getAppointmentsQuantity(hourRange),
-    0
-  );
+  return hourRanges.reduce((accum, hourRange) => accum + getAppointmentsQuantity(hourRange), 0);
 }
 
 function getAppointmentsQuantity(hourRange: HourRange): number {
@@ -176,10 +154,4 @@ function getAppointmentsQuantity(hourRange: HourRange): number {
   return count;
 }
 
-export {
-  getHospitalOptions,
-  getDoctorOptions,
-  getCalendarDates,
-  getDayOfTheMonth,
-  getMonth,
-};
+export { getHospitalOptions, getDoctorOptions, getCalendarDates, getDayOfTheMonth, getMonth };

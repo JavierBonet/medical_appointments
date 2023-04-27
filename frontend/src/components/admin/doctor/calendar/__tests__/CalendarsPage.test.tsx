@@ -1,24 +1,15 @@
-import {
-  render,
-  render as rtlRender,
-  RenderOptions,
-  screen,
-} from '@testing-library/react';
+import { render, render as rtlRender, RenderOptions, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { useParams } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import {
-  areAvailableHospitals,
-  deleteCalendar,
-  getCalendars,
-} from '../../../../../api/admin/calendars';
+import { areAvailableHospitals, deleteCalendar, getCalendars } from '../../../../../api/admin/calendars';
 import '@testing-library/jest-dom';
 import CalendarsPage from '../CalendarsPage';
 
 function renderWithToastify(ui: JSX.Element, options?: RenderOptions) {
   return rtlRender(
     <>
-      <ToastContainer autoClose={500} position="top-center" closeOnClick />
+      <ToastContainer />
       {ui}
     </>,
     options
@@ -103,9 +94,7 @@ describe('CalendarsPage', () => {
             rtlRender(<CalendarsPage />);
           });
 
-          const explanationMessage = screen.getByText(
-            /This doctor already has a calendar for each hospital/i
-          );
+          const explanationMessage = screen.getByText(/This doctor already has a calendar for each hospital/i);
 
           // Assert
           expect(explanationMessage).toBeInTheDocument();
@@ -120,15 +109,12 @@ describe('CalendarsPage', () => {
         mockAreAvailableHospitals.mockRejectedValue(errorMessage);
         mockGetCalendars.mockResolvedValue([]);
 
-        screen.debug();
         // Act
         await act(async () => {
           renderWithToastify(<CalendarsPage />);
         });
 
-        const errorMessageElement = (
-          await screen.findAllByText(errorMessage)
-        )[0];
+        const errorMessageElement = (await screen.findAllByText(errorMessage))[0];
 
         // Assert
         expect(errorMessageElement).toBeInTheDocument();
