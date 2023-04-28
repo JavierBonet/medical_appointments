@@ -67,12 +67,11 @@ describe('App', () => {
         render(<App user={user} logout={mockPatientLogout} />, user, jest.fn());
 
         const mainLink = await screen.findByRole('link', { name: /appointments/i });
-        const links = screen.getAllByRole('link');
-        const logoutLink = links[1];
+        const buttons = screen.getAllByRole('button');
+        const logoutButton = buttons.find((button) => button.getAttribute('class') === 'logout-button');
 
         expect(mainLink).toBeInTheDocument();
-        expect(logoutLink).toBeInTheDocument();
-        expect(logoutLink).toHaveAttribute('href', '/');
+        expect(logoutButton).toBeInTheDocument();
       });
 
       it('should allow to log out', () => {

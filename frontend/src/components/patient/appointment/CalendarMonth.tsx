@@ -114,7 +114,7 @@ const CalendarMonth = ({ hospital, doctor }: PropsInterface) => {
               <div className="calendar-header">S</div>
               {calendarDatesByWeek.map((weekDates) =>
                 weekDates.map((calendarDate, index) => (
-                  <CalendarDate calendarDate={calendarDate} index={index} onDateSelection={onDateSelection} />
+                  <CalendarDate calendarDate={calendarDate} onDateSelection={onDateSelection} key={index} />
                 ))
               )}
             </div>

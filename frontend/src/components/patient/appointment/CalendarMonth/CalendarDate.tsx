@@ -3,25 +3,21 @@ import './CalendarDate/styles.scss';
 
 interface PropsInterface {
   calendarDate: CalendarDate | undefined;
-  index: number;
   onDateSelection: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, date: Date | undefined) => void;
 }
 
-const CalendarDate = ({ calendarDate, index, onDateSelection }: PropsInterface) => {
+const CalendarDate = ({ calendarDate, onDateSelection }: PropsInterface) => {
+  const dayOfTheMonth = calendarDate ? getDayOfTheMonth(calendarDate.date) : undefined;
   return calendarDate ? (
     calendarDate.enabled ? (
-      <div className="calendar-date" key={index} onClick={(event) => onDateSelection(event, calendarDate.date)}>
-        {getDayOfTheMonth(calendarDate.date)}
+      <div className="calendar-date" onClick={(event) => onDateSelection(event, calendarDate.date)}>
+        {dayOfTheMonth}
       </div>
     ) : (
-      <div className="calendar-date disabled" key={index}>
-        {getDayOfTheMonth(calendarDate.date)}
-      </div>
+      <div className="calendar-date disabled">{dayOfTheMonth}</div>
     )
   ) : (
-    <div className="calendar-date disabled" key={index}>
-      {' '}
-    </div>
+    <div className="calendar-date disabled"> </div>
   );
 };
 

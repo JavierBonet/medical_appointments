@@ -158,8 +158,8 @@ describe('PatientHomePage', () => {
 
         await userEvent.click(doctorOption);
 
-        const dateSelectionHeader = await screen.findByRole('heading', { name: /select date/i });
-        expect(dateSelectionHeader).toBeInTheDocument();
+        const mondayHeader = await screen.findByText('M');
+        expect(mondayHeader).toBeInTheDocument();
 
         const dates = container.querySelectorAll('.calendar-date:not(.disabled)');
         const appointmentDay = dates[0];

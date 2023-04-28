@@ -17,9 +17,9 @@ function LogoutButton({ logout }: Props) {
 
   return (
     <div className="user-links">
-      <div className="logout-button" onClick={patientLogout}>
+      <button className="logout-button" onClick={patientLogout}>
         <MdLogout />
-      </div>
+      </button>
     </div>
   );
 }

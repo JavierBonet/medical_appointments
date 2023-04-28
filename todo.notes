@@ -5,6 +5,8 @@ TODO:
   - BOTH:
     [ ] Use jwt
 
+    [ ] Add pre commit hooks. use husky for example
+
   - BACKEND:
 
     [ ] Add test files

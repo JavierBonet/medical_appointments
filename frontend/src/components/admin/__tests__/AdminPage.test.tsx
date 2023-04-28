@@ -281,14 +281,10 @@ describe('AdminPage', () => {
         const successMessage = 'You have logged out';
         window.confirm = jest.fn().mockReturnValue(true);
 
-        const { container } = render(
-          <AdminPage adminUser={adminUser} logout={mockAdminLogout} />,
-          adminUser,
-          jest.fn()
-        );
+        render(<AdminPage adminUser={adminUser} logout={mockAdminLogout} />, adminUser, jest.fn());
 
-        const logoutButtonDiv = container.querySelector('.user-links');
-        const logoutButton = within(logoutButtonDiv as HTMLElement).getByRole('link');
+        const buttons = screen.getAllByRole('button');
+        const logoutButton = buttons.find((button) => button.getAttribute('class') === 'logout-button') as HTMLElement;
         await userEvent.click(logoutButton);
 
         const toast = await screen.findByText(successMessage);
