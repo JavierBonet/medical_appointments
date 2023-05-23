@@ -70,7 +70,7 @@ interface HourRangeParameters {
 function createHourRange({ dayId, previousHourRange, startIndex }: HourRangeParameters): HourRange {
   if (!startIndex) {
     startIndex = previousHourRange
-      ? indexByHourMap[previousHourRange.end + 1]
+      ? indexByHourMap[previousHourRange.end] + 1
       : Math.floor(Math.random() * hours.length);
   }
 
@@ -95,7 +95,7 @@ function createDay(calendarId: number, alreadySelectedDays: Set<number>): Day {
 
   const hourRanges: HourRange[] = [];
   const id = generateId();
-  let previousHourRange: HourRange | undefined = undefined;
+  let previousHourRange: HourRange | undefined;
   const startIndex = Math.floor(Math.random() * 26);
 
   for (let i = 0; i <= Math.floor(Math.random() * 4) + 1; i++) {
@@ -127,7 +127,7 @@ export function createCalendar({ doctor, hospital, id }: CalendarParameters): Ca
 
   const days: Day[] = [];
 
-  const alreadySelectedDays: Set<number> = new Set();
+  const alreadySelectedDays = new Set<number>();
 
   for (let i = 0; i <= Math.floor(Math.random() * 4); i++) {
     const day = createDay(id, alreadySelectedDays);

@@ -26,6 +26,7 @@ module.exports = {
     ],
     '@typescript-eslint/semi': ['error', 'always'],
     '@typescript-eslint/no-unused-vars': ['warn'],
+    '@typescript-eslint/prefer-nullish-coalescing': 'warn',
     'comma-dangle': 'off',
     '@typescript-eslint/comma-dangle': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
@@ -38,5 +39,9 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/restrict-template-expressions': 'off',
     'react/display-name': 'off',
+    '@typescript-eslint/consistent-type-assertions': 'off',
+    'import/no-named-default': 'off',
+    '@typescript-eslint/return-await': 'off',
+    '@typescript-eslint/no-throw-literal': 'off',
   },
 };

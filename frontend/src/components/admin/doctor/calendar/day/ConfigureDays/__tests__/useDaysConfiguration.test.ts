@@ -1,14 +1,7 @@
 import { act, waitFor } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useParams } from 'react-router-dom';
-import {
-  dbDaysToDays,
-  getDeletedHourRanges,
-  getEndHourRangeOptions,
-  getHourRangesUpdated,
-  getRemainingHourRangesQuantity,
-  getStartHourRangeOptions,
-} from '../../dayUtils';
+import { dbDaysToDays } from '../../dayUtils';
 import { getDays } from '../../../../../../../api/admin/days';
 import { daysMap, dbDays } from './constants';
 import useDaysConfiguration from '../useDaysConfiguration';
@@ -45,7 +38,7 @@ describe('useDaysConfiguration', () => {
     describe('and there is a days configuration stored in the database', () => {
       it('should call the corresponding services', async () => {
         // Act
-        const { result } = renderHook(() => useDaysConfiguration());
+        renderHook(() => useDaysConfiguration());
 
         // Assert
         expect(mockGetDays).toHaveBeenCalledTimes(1);
@@ -148,7 +141,7 @@ describe('useDaysConfiguration', () => {
     });
 
     describe('and there is not a days configuration stored in the database', () => {
-      //asdas
+      // asdas
     });
   });
 });

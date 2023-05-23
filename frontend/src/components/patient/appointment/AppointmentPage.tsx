@@ -27,7 +27,7 @@ const AppointmentPage = ({ logout }: PropsInterface) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (hospitals.length == 0) {
+    if (hospitals.length === 0) {
       setLoading(true);
       getHospitals(true)
         .then((_hospitals) => {
@@ -51,7 +51,7 @@ const AppointmentPage = ({ logout }: PropsInterface) => {
   }, []);
 
   useEffect(() => {
-    const selectedHospital = hospitals.find((hospital) => hospital.id == hospitalId);
+    const selectedHospital = hospitals.find((hospital) => hospital.id === hospitalId);
     if (selectedHospital) {
       setHospital(selectedHospital);
     }
@@ -59,7 +59,7 @@ const AppointmentPage = ({ logout }: PropsInterface) => {
 
   useEffect(() => {
     if (hospital) {
-      const selectedDoctor = hospital.Doctors?.find((doctor) => doctor.id == doctorId);
+      const selectedDoctor = hospital.Doctors?.find((doctor) => doctor.id === doctorId);
       if (selectedDoctor) {
         setDoctor(selectedDoctor);
       }
@@ -68,7 +68,7 @@ const AppointmentPage = ({ logout }: PropsInterface) => {
 
   function handleHospitalSelection(id: number) {
     setHospitalId(id);
-    const selectedHospital = hospitals.find((hospital) => hospital.id == id);
+    const selectedHospital = hospitals.find((hospital) => hospital.id === id);
     if (selectedHospital) {
       const doctors = selectedHospital.Doctors;
       if (doctors) {

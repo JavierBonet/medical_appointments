@@ -16,7 +16,7 @@ const DoctorsPage = ({ logout }: PropsInterface) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (_doctors.length == 0) {
+    if (_doctors.length === 0) {
       setLoading(true);
       getDoctors()
         .then((doctors) => {
@@ -37,11 +37,11 @@ const DoctorsPage = ({ logout }: PropsInterface) => {
   }, []);
 
   function deleteHandler(id: number) {
-    let deletionConfirmed = confirm('Are you sure to delete the hospital?');
+    const deletionConfirmed = confirm('Are you sure to delete the hospital?');
     if (deletionConfirmed) {
       deleteDoctor(id)
         .then((message) => {
-          const doctors = _doctors.filter((doctor) => doctor.id != id);
+          const doctors = _doctors.filter((doctor) => doctor.id !== id);
           setDoctors(doctors);
           toast.success(message);
         })

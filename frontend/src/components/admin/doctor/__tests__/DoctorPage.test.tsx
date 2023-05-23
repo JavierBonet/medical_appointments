@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { useParams, Routes, Route, MemoryRouter } from 'react-router-dom';
 import { render as rtlRender, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -239,7 +239,7 @@ describe('DoctorPage', () => {
           mockedSaveCalendar.mockClear();
         });
 
-        it(`should show its calendars`, async () => {
+        it('should show its calendars', async () => {
           render(<DoctorPage logout={mockLogout} />);
 
           const calendarsHeader = await screen.findByRole('heading', {

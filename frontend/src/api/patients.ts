@@ -9,7 +9,7 @@ function getPatients() {}
 
 function getPatientById(id: string) {}
 
-function getPatientByEmail(email: string) {
+async function getPatientByEmail(email: string) {
   const url = `${baseUrl}/getByEmail/${email}`;
 
   return axios
@@ -19,7 +19,7 @@ function getPatientByEmail(email: string) {
       return patient;
     })
     .catch((error) => {
-      if (error.response.status == 404) {
+      if (error.response.status === 404) {
         return undefined;
       } else {
         throw error.response.data.message;
@@ -27,24 +27,24 @@ function getPatientByEmail(email: string) {
     });
 }
 
-function login(patient: LoginPatient) {
+async function login(patient: LoginPatient) {
   const url = `${baseUrl}/login`;
   const { email, password } = patient;
 
   return axios
     .post(url, { email, password })
     .then((response) => true)
-    .catch((error) => false);
+    .catch(() => false);
 }
 
-function doesPatientAlreadyExist(email: string) {
+async function doesPatientAlreadyExist(email: string) {
   const url = `${baseUrl}/getByEmail/${email}`;
 
   return axios
     .get(url)
     .then(() => true)
     .catch((error) => {
-      if (error.response.status == 404) {
+      if (error.response.status === 404) {
         return false;
       } else {
         throw error.response.data.message;
@@ -52,7 +52,7 @@ function doesPatientAlreadyExist(email: string) {
     });
 }
 
-function savePatient(patient: OptionalDbPatient) {
+async function savePatient(patient: OptionalDbPatient) {
   let promise: Promise<any>;
   let successMessage = '';
   if (patient.id) {
@@ -70,7 +70,7 @@ function savePatient(patient: OptionalDbPatient) {
     });
 }
 
-function deletePatient(id: number) {
+async function deletePatient(id: number) {
   return axios
     .delete<string>(`${baseUrl}/${id}`)
     .then((response) => response.data)
@@ -79,12 +79,4 @@ function deletePatient(id: number) {
     });
 }
 
-export {
-  getPatients,
-  getPatientById,
-  getPatientByEmail,
-  login,
-  doesPatientAlreadyExist,
-  savePatient,
-  deletePatient,
-};
+export { getPatients, getPatientById, getPatientByEmail, login, doesPatientAlreadyExist, savePatient, deletePatient };

@@ -25,9 +25,8 @@ const SingUpPage = () => {
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>): void {
     const { name, value } = event.target;
-    let newPatient = { ...patient };
-    // As this function will only be invoked with email and password fields, I ignore ts checks
-    // @ts-ignore
+    const newPatient = { ...patient };
+    // @ts-expect-error As this function will only be invoked with email and password fields, I ignore ts checks
     newPatient[name] = value;
     updateErrors(newPatient);
     setPatient(newPatient);
@@ -43,7 +42,7 @@ const SingUpPage = () => {
           toast.info('Patient already registered. Please log in');
           navigate('/patient/signin');
         } else {
-          let dbPatient: OptionalDbPatient = {
+          const dbPatient: OptionalDbPatient = {
             email: patient.email,
             password: patient.password,
           };
@@ -66,7 +65,7 @@ const SingUpPage = () => {
     let existErrors = false;
 
     for (const key in errors) {
-      // @ts-ignore
+      // @ts-expect-error 'key' is an error key
       if (errors[key]) {
         existErrors = true;
         break;
@@ -77,7 +76,7 @@ const SingUpPage = () => {
   }
 
   function updateErrors(patient: OptionalPatient): PatientErrors {
-    let newErrors = { ...defaultErrors };
+    const newErrors = { ...defaultErrors };
 
     newErrors.email = getEmailError(patient.email);
 
@@ -91,8 +90,7 @@ const SingUpPage = () => {
 
   function getEmailError(email: string): string {
     let error = '';
-    const emailRegex =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
     if (!email) {
       error = 'You should set an email';
@@ -118,7 +116,7 @@ const SingUpPage = () => {
   function getPasswordConfirmationError(patient: OptionalPatient): string {
     let error = '';
 
-    if (patient.password != patient.passwordConfirmation) {
+    if (patient.password !== patient.passwordConfirmation) {
       error = 'Passwords should match';
     }
 
@@ -128,12 +126,7 @@ const SingUpPage = () => {
   return (
     <div className="section-container">
       <CustomLoader loading={loading} />
-      <SignUpForm
-        patient={patient}
-        changeHandler={changeHandler}
-        submitHandler={submitHandler}
-        errors={errors}
-      />{' '}
+      <SignUpForm patient={patient} changeHandler={changeHandler} submitHandler={submitHandler} errors={errors} />{' '}
     </div>
   );
 };

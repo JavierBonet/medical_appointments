@@ -1,7 +1,14 @@
 import ConfigureDays from '../ConfigureDays';
 import userEvent from '@testing-library/user-event';
 import { useParams } from 'react-router-dom';
-import { act, render as rtlRender, screen, within, ByRoleMatcher, RenderOptions } from '@testing-library/react';
+import {
+  act,
+  render as rtlRender,
+  screen,
+  within,
+  type ByRoleMatcher,
+  type RenderOptions,
+} from '@testing-library/react';
 import { getDays, saveDays } from '../../../../../../api/admin/days';
 import { ToastContainer } from 'react-toastify';
 import '@testing-library/jest-dom';
@@ -397,19 +404,19 @@ describe('ConfigureDays', () => {
 
       const addButton = screen.getByRole('button', { name: /add/i });
 
-      await act(async () => userEvent.click(addButton));
+      await act(async () => await userEvent.click(addButton));
 
       const newFirstEndDropdownOption = await findDropdownOption(0, 'end', '10:30');
 
-      await act(async () => userEvent.click(newFirstEndDropdownOption));
+      await act(async () => await userEvent.click(newFirstEndDropdownOption));
 
-      await act(async () => userEvent.click(addButton));
+      await act(async () => await userEvent.click(addButton));
 
       const secondStartDropdownOption = await findDropdownOptionByRole(1, 'start', 'alert');
 
       expect(secondStartDropdownOption.textContent).toBe('10:45');
 
-      let secondEndDropdownOption = await findDropdownOptionByRole(1, 'end', 'alert');
+      const secondEndDropdownOption = await findDropdownOptionByRole(1, 'end', 'alert');
 
       expect(secondEndDropdownOption.textContent).toBe('11:00');
     });
@@ -425,7 +432,7 @@ describe('ConfigureDays', () => {
 
       const newFirstEndDropdownOption = await findDropdownOption(0, 'end', '8:30');
 
-      await act(async () => userEvent.click(newFirstEndDropdownOption));
+      await act(async () => await userEvent.click(newFirstEndDropdownOption));
 
       const secondStartDropdownOption = await findDropdownOptionByRole(1, 'start', 'alert');
 
@@ -439,7 +446,7 @@ describe('ConfigureDays', () => {
       // when modifying second start dropdown
       const newSecondStartDropdownOption = await findDropdownOption(1, 'start', '12:30');
 
-      await act(async () => userEvent.click(newSecondStartDropdownOption));
+      await act(async () => await userEvent.click(newSecondStartDropdownOption));
 
       secondEndDropdownOption = await findDropdownOptionByRole(1, 'end', 'alert');
 
@@ -465,7 +472,7 @@ describe('ConfigureDays', () => {
 
       const deleteButton = screen.getByRole('button', { name: /delete/i });
 
-      await act(async () => userEvent.click(deleteButton));
+      await act(async () => await userEvent.click(deleteButton));
 
       hourRanges = await screen.findAllByTestId(/day-hour-range/i);
 
@@ -485,11 +492,11 @@ describe('ConfigureDays', () => {
 
       const addButton = screen.getByRole('button', { name: /add/i });
 
-      await act(async () => userEvent.click(addButton));
+      await act(async () => await userEvent.click(addButton));
 
       const saveButton = screen.getByRole('button', { name: /save/i });
 
-      await act(async () => userEvent.click(saveButton));
+      await act(async () => await userEvent.click(saveButton));
 
       const toast = await screen.findByText(successMessage);
 
@@ -511,19 +518,19 @@ describe('ConfigureDays', () => {
 
       const secondEndDropdownOption = await findDropdownOption(0, 'end', '21:45');
 
-      await act(async () => userEvent.click(secondEndDropdownOption));
+      await act(async () => await userEvent.click(secondEndDropdownOption));
 
       expect(addButton).toBeDisabled();
 
       const otherSecondEndDropdownOption = await findDropdownOption(0, 'end', '21:00');
 
-      await act(async () => userEvent.click(otherSecondEndDropdownOption));
+      await act(async () => await userEvent.click(otherSecondEndDropdownOption));
 
       expect(addButton).toBeEnabled();
 
       const lastSecondEndDropdownOption = await findDropdownOption(0, 'end', '21:30');
 
-      await act(async () => userEvent.click(lastSecondEndDropdownOption));
+      await act(async () => await userEvent.click(lastSecondEndDropdownOption));
 
       expect(addButton).toBeDisabled();
     });
@@ -539,7 +546,7 @@ describe('ConfigureDays', () => {
 
       const firstEndDropdownOption = await findDropdownOption(0, 'end', '7:15');
 
-      await act(() => userEvent.click(firstEndDropdownOption));
+      await act(async () => await userEvent.click(firstEndDropdownOption));
 
       const secondStartDropdownOption = await findDropdownOption(1, 'start', '7:30');
 
@@ -557,7 +564,7 @@ describe('ConfigureDays', () => {
 
       const thursday = screen.getByText(/thursday/i);
 
-      await act(() => userEvent.click(thursday));
+      await act(async () => await userEvent.click(thursday));
 
       let hourRanges = screen.queryAllByTestId('day-hour-range');
 
@@ -565,7 +572,7 @@ describe('ConfigureDays', () => {
 
       const tuesday = screen.getByText(/tuesday/i);
 
-      await act(() => userEvent.click(tuesday));
+      await act(async () => await userEvent.click(tuesday));
 
       hourRanges = screen.queryAllByTestId('day-hour-range');
 

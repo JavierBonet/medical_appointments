@@ -48,7 +48,7 @@ const HospitalPage = ({ logout }: PropsInterface) => {
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    let newHospital = { ...hospital, [name]: value };
+    const newHospital = { ...hospital, [name]: value };
     setHospital(newHospital);
   }
 
@@ -71,11 +71,7 @@ const HospitalPage = ({ logout }: PropsInterface) => {
       ) : (
         <>
           <h1>{hospital.name ? `${hospital.name}` : 'New hospital'}</h1>
-          <HospitalForm
-            hospital={hospital}
-            changeHandler={changeHandler}
-            saveHandler={saveHandler}
-          />
+          <HospitalForm hospital={hospital} changeHandler={changeHandler} saveHandler={saveHandler} />
         </>
       )}
     </div>

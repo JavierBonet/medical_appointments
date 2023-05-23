@@ -38,7 +38,7 @@ const AppointmentsPage = ({ logout }: PropsInterface) => {
     if (confirm('Are you sure to cancel the appointment?')) {
       deleteAppointment(appointmentId)
         .then((message) => {
-          const newAppointments = appointments.filter((appointment) => appointment.id != appointmentId);
+          const newAppointments = appointments.filter((appointment) => appointment.id !== appointmentId);
           setAppointments(newAppointments);
           toast.success(message);
         })
@@ -50,7 +50,7 @@ const AppointmentsPage = ({ logout }: PropsInterface) => {
     <div className="section-container">
       <h1>My appointments</h1>
       <CustomLoader loading={loading} />
-      {appointments.length != 0 && <AppointmentsList appointments={appointments} deleteHandler={deleteHandler} />}
+      {appointments.length !== 0 && <AppointmentsList appointments={appointments} deleteHandler={deleteHandler} />}
       <Link className="create-button" to="../appointment">
         New appointment
       </Link>

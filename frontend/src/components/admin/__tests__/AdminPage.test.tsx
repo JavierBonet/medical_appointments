@@ -1,6 +1,6 @@
-import React, { ReactElement } from 'react';
-import { useParams, Routes, Route, MemoryRouter, useNavigate } from 'react-router-dom';
-import { render as rtlRender, screen, within } from '@testing-library/react';
+import { type ReactElement } from 'react';
+import { Routes, Route, MemoryRouter } from 'react-router-dom';
+import { render as rtlRender, screen } from '@testing-library/react';
 import { ToastContainer } from 'react-toastify';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';

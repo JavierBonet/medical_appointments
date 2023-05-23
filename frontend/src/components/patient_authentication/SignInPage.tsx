@@ -27,8 +27,8 @@ const SignInPage = ({ user, setUser }: PropsInterface) => {
   }, []);
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
-    let { name, value } = event.target;
-    let newPatient = { ...patient, [name]: value };
+    const { name, value } = event.target;
+    const newPatient = { ...patient, [name]: value };
     setPatient(newPatient);
   }
 
@@ -47,11 +47,7 @@ const SignInPage = ({ user, setUser }: PropsInterface) => {
   return (
     <div className="section-container">
       <h1>Log in</h1>
-      <SignInForm
-        patient={patient}
-        changeHandler={changeHandler}
-        submitHandler={submitHandler}
-      />
+      <SignInForm patient={patient} changeHandler={changeHandler} submitHandler={submitHandler} />
     </div>
   );
 };

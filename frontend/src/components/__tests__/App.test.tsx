@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { Routes, Route, MemoryRouter } from 'react-router-dom';
 import { render as rtlRender, screen } from '@testing-library/react';
 import { ToastContainer } from 'react-toastify';

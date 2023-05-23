@@ -1,4 +1,4 @@
-import { render as rtlRender, RenderOptions, screen } from '@testing-library/react';
+import { render as rtlRender, type RenderOptions, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { useParams } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';

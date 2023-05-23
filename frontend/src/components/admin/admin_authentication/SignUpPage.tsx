@@ -25,9 +25,8 @@ const SingUpPage = () => {
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>): void {
     const { name, value } = event.target;
-    let newAdminUser = { ...adminUser };
-    // As this function will only be invoked with email and password fields, I ignore ts checks
-    // @ts-ignore
+    const newAdminUser = { ...adminUser };
+    // @ts-expect-error As this function will only be invoked with email and password fields, I ignore ts checks
     newAdminUser[name] = value;
     updateErrors(newAdminUser);
     setAdminUser(newAdminUser);
@@ -43,7 +42,7 @@ const SingUpPage = () => {
           toast.info('Admin user already registered. Please log in');
           navigate('/admin/signin');
         } else {
-          let dbAdminUser: OptionalDbAdminUser = {
+          const dbAdminUser: OptionalDbAdminUser = {
             email: adminUser.email,
             password: adminUser.password,
           };
@@ -66,7 +65,7 @@ const SingUpPage = () => {
     let existErrors = false;
 
     for (const key in errors) {
-      // @ts-ignore
+      // @ts-expect-error 'key' is an errors key
       if (errors[key]) {
         existErrors = true;
         break;
@@ -77,7 +76,7 @@ const SingUpPage = () => {
   }
 
   function updateErrors(adminUser: OptionalAdminUser): AdminUserErrors {
-    let newErrors = { ...defaultErrors };
+    const newErrors = { ...defaultErrors };
 
     newErrors.email = getEmailError(adminUser.email);
 
@@ -117,7 +116,7 @@ const SingUpPage = () => {
   function getPasswordConfirmationError(adminUser: OptionalAdminUser): string {
     let error = '';
 
-    if (adminUser.password != adminUser.passwordConfirmation) {
+    if (adminUser.password !== adminUser.passwordConfirmation) {
       error = 'Passwords should match';
     }
 

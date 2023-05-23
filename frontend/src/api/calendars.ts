@@ -7,15 +7,10 @@ function getBaseUrl(doctorId: number, hospitalId: number) {
   return `http://localhost:3000/api/patients/calendar/${hospitalId}/${doctorId}`;
 }
 
-function getCalendarByDoctorAndHospitalId(
-  doctorId: number,
-  hospitalId: number
-) {
-  return axios
-    .get<Calendar>(getBaseUrl(doctorId, hospitalId))
-    .then((response) => {
-      return response.data;
-    });
+async function getCalendarByDoctorAndHospitalId(doctorId: number, hospitalId: number) {
+  return axios.get<Calendar>(getBaseUrl(doctorId, hospitalId)).then((response) => {
+    return response.data;
+  });
 }
 
 export { getCalendarByDoctorAndHospitalId };

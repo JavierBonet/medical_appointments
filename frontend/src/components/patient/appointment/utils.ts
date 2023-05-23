@@ -1,7 +1,7 @@
 import { addQuarterToHour, dbWeekDayToSystemDay } from './CalendarMonth/utils';
 
 function getHospitalOptions(hospitals: Hospital[]): SelectOption[] {
-  let options: SelectOption[] = [];
+  const options: SelectOption[] = [];
 
   hospitals.forEach((hospital) => {
     options.push({ key: hospital.id, value: hospital.id, text: hospital.name });
@@ -11,7 +11,7 @@ function getHospitalOptions(hospitals: Hospital[]): SelectOption[] {
 }
 
 function getDoctorOptions(doctors: Doctor[]): SelectOption[] {
-  let options: SelectOption[] = [];
+  const options: SelectOption[] = [];
 
   doctors.forEach((doctor) => {
     options.push({ key: doctor.id, value: doctor.id, text: `${doctor.name} ${doctor.surname}` });
@@ -30,7 +30,7 @@ function getCalendarDates(
   calendar: Calendar,
   appointmentsByDate: Map<string, Appointment[]>
 ): (CalendarDate | undefined)[][] {
-  let datesByWeek: (CalendarDate | undefined)[][] = [];
+  const datesByWeek: (CalendarDate | undefined)[][] = [];
 
   const daysToInclude = new Set(
     calendar.Days.filter((day) => day.HourRanges.length !== 0).map((day) => dbWeekDayToSystemDay(day.number))
@@ -116,12 +116,12 @@ function isDateEnable(
 
 function getDayOfTheMonth(date: Date): string {
   const day = date.getDate();
-  return day < 10 ? '0' + day : '' + day;
+  return day < 10 ? `0${day}` : `${day}`;
 }
 
 function getMonth(date: Date): string {
   const month = date.getMonth() + 1;
-  return month < 10 ? '0' + month : '' + month;
+  return month < 10 ? `0${month}` : `${month}`;
 }
 
 function getMaxAppointmentQuantityByWeekDay(calendar: Calendar): Map<number, number> {

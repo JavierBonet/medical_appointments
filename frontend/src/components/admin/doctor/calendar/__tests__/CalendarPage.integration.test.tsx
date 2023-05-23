@@ -2,11 +2,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { act } from 'react-dom/test-utils';
 import { useParams, useNavigate } from 'react-router-dom';
-import {
-  getCalendar,
-  saveCalendar,
-  getAvailableHospitals,
-} from '../../../../../api/admin/calendars';
+import { getCalendar, getAvailableHospitals } from '../../../../../api/admin/calendars';
 import userEvent from '@testing-library/user-event';
 import CalendarPage from '../CalendarPage';
 
@@ -26,7 +22,6 @@ jest.mock('../../../../../api/admin/calendars', () => ({
 }));
 
 const mockGetCalendar = jest.mocked(getCalendar);
-const mockSaveCalendar = jest.mocked(saveCalendar);
 const mockGetAvailableHospitals = jest.mocked(getAvailableHospitals);
 
 jest.mock('../day/ConfigureDays', () => () => <div>Days configuration</div>);
@@ -125,9 +120,7 @@ describe('CalendarPage', () => {
                 await userEvent.clear(nameInput);
               });
 
-              const nameError = await screen.findByText(
-                /You should set a name/i
-              );
+              const nameError = await screen.findByText(/You should set a name/i);
 
               // Assert
               expect(nameError).toBeInTheDocument();
@@ -171,9 +164,7 @@ describe('CalendarPage', () => {
 
         const header = screen.getByRole('heading', { name: /New calendar/i });
         const nameInput = screen.getByLabelText(/name/i);
-        const hospitalInput = screen
-          .getByTestId('hospitalId')
-          .querySelector('input');
+        const hospitalInput = screen.getByTestId('hospitalId').querySelector('input');
 
         // Assert
         expect(header).toBeInTheDocument();

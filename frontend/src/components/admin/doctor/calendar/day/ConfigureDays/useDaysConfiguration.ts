@@ -23,12 +23,8 @@ export default function useDaysConfiguration() {
   const [days, setDays] = useState(emptyDaysMap());
   const [selectedDay, setSelectedDay] = useState<WeekDay>('monday');
   const [lastSelectedHourIndex, setLastSelectedHourIndex] = useState(0);
-  const [dayIdByNameMap, setDayIdByNameMap] = useState(
-    new Map<WeekDay, number>()
-  );
-  const [hourRangesToDelete, setHourRangesToDelete] = useState(
-    new Map<WeekDay, number[]>()
-  );
+  const [dayIdByNameMap, setDayIdByNameMap] = useState(new Map<WeekDay, number>());
+  const [hourRangesToDelete, setHourRangesToDelete] = useState(new Map<WeekDay, number[]>());
 
   const params = useParams();
 
@@ -60,7 +56,7 @@ export default function useDaysConfiguration() {
       const currentDay = days[selectedDay];
 
       const length = currentDay.length;
-      if (length != 0) {
+      if (length !== 0) {
         setLastSelectedHourIndex(currentDay[length - 1].end.selected);
       } else {
         setLastSelectedHourIndex(0);
@@ -73,9 +69,9 @@ export default function useDaysConfiguration() {
   }
 
   function addHourRangeHandler() {
-    let hourRangesInfo = days[selectedDay];
+    const hourRangesInfo = days[selectedDay];
     let myIndex = 0;
-    if (hourRangesInfo.length != 0) {
+    if (hourRangesInfo.length !== 0) {
       const lastHourRangeInfo = hourRangesInfo[hourRangesInfo.length - 1];
       myIndex = lastHourRangeInfo.end.selected + 1;
     }
@@ -103,11 +99,11 @@ export default function useDaysConfiguration() {
 
   function selectChangeHandler(hourRangeIndex: number, type: 'start' | 'end') {
     return (value: number) => {
-      let newHourRangesInfo = [...days[selectedDay]];
-      let hourRangeInfo = newHourRangesInfo[hourRangeIndex];
+      const newHourRangesInfo = [...days[selectedDay]];
+      const hourRangeInfo = newHourRangesInfo[hourRangeIndex];
       hourRangeInfo[type].selected = value;
 
-      if (type == 'start') {
+      if (type === 'start') {
         hourRangeInfo.end.options = getEndHourRangeOptions(value + 1);
 
         if (value >= hourRangeInfo.end.selected) {
@@ -118,29 +114,18 @@ export default function useDaysConfiguration() {
       // If the modified hour range (either its start or end) isn't the last one
       // then I have to update the following hour range infos
       if (newHourRangesInfo.length - 1 > hourRangeIndex) {
-        let rest = newHourRangesInfo.slice(hourRangeIndex + 1);
-        let updatedHourRanges: HourRangeInfo[] = getHourRangesUpdated(
-          rest,
-          hourRangeInfo
-        );
+        const rest = newHourRangesInfo.slice(hourRangeIndex + 1);
+        const updatedHourRanges: HourRangeInfo[] = getHourRangesUpdated(rest, hourRangeInfo);
         // Replace the old hour range infos with the updated ones
-        newHourRangesInfo.splice(
-          hourRangeIndex + 1,
-          newHourRangesInfo.length,
-          ...updatedHourRanges
-        );
+        newHourRangesInfo.splice(hourRangeIndex + 1, newHourRangesInfo.length, ...updatedHourRanges);
 
-        let previousHourRangesInfo = [...days[selectedDay]];
+        const previousHourRangesInfo = [...days[selectedDay]];
         if (previousHourRangesInfo.length > newHourRangesInfo.length) {
-          let listToDelete = getDeletedHourRanges(
-            previousHourRangesInfo,
-            newHourRangesInfo
-          );
+          const listToDelete = getDeletedHourRanges(previousHourRangesInfo, newHourRangesInfo);
           if (listToDelete.length > 0) {
-            let newHourRangesToDelete = new Map(hourRangesToDelete);
+            const newHourRangesToDelete = new Map(hourRangesToDelete);
 
-            let currentHourRangesToDelete =
-              newHourRangesToDelete.get(selectedDay);
+            const currentHourRangesToDelete = newHourRangesToDelete.get(selectedDay);
             if (currentHourRangesToDelete) {
               currentHourRangesToDelete.push(...listToDelete);
             } else {
@@ -154,8 +139,7 @@ export default function useDaysConfiguration() {
 
       const newDays = { ...days, [selectedDay]: newHourRangesInfo };
       setDays(newDays);
-      const lastIndex =
-        newHourRangesInfo[newHourRangesInfo.length - 1].end.selected;
+      const lastIndex = newHourRangesInfo[newHourRangesInfo.length - 1].end.selected;
       setLastSelectedHourIndex(lastIndex);
     };
   }
@@ -171,12 +155,12 @@ export default function useDaysConfiguration() {
   }
 
   function deleteHandler(id?: number) {
-    let newDays = { ...days };
+    const newDays = { ...days };
     newDays[selectedDay].pop();
 
-    let newHourRangesToDelete = new Map(hourRangesToDelete);
+    const newHourRangesToDelete = new Map(hourRangesToDelete);
 
-    let currentHourRangesToDelete = newHourRangesToDelete.get(selectedDay);
+    const currentHourRangesToDelete = newHourRangesToDelete.get(selectedDay);
     if (id) {
       if (currentHourRangesToDelete) {
         currentHourRangesToDelete.push(id);

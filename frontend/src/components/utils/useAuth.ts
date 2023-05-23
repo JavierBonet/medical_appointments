@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const LOCAL_STORAGE_PATIENT_KEY = 'patient-user';
 
 function useAuth() {
   const getUser = () => {
-    let user: LocalStorageUser | undefined = undefined;
+    let user: LocalStorageUser | undefined;
     const userString = localStorage.getItem(LOCAL_STORAGE_PATIENT_KEY);
     if (userString) {
       user = JSON.parse(userString);

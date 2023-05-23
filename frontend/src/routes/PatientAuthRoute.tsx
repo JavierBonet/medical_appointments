@@ -14,7 +14,7 @@ const PatientAuthRoute = ({ user, redirectPath, children }: RoutesProps) => {
     return <Navigate to={redirectPath} />;
   }
 
-  return children ? children : <Outlet />;
+  return children ?? <Outlet />;
 };
 
 export default PatientAuthRoute;

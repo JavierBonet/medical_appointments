@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const LOCAL_STORAGE_ADMIN_KEY = 'admin-user';
 
 function useAuth() {
   const getAdminUser = () => {
-    let adminUser: LocalStorageAdminUser | undefined = undefined;
+    let adminUser: LocalStorageAdminUser | undefined;
     const adminUserString = localStorage.getItem(LOCAL_STORAGE_ADMIN_KEY);
     if (adminUserString) {
       adminUser = JSON.parse(adminUserString);

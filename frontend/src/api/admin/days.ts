@@ -9,7 +9,7 @@ function getBaseUrl(doctorId: string, calendarId: string) {
   return `http://localhost:3000/api/admin/doctors/${doctorId}/calendars/${calendarId}/days`;
 }
 
-function saveDays(
+async function saveDays(
   doctorId: string,
   calendarId: string,
   days: DaysMap,
@@ -19,11 +19,11 @@ function saveDays(
   let message: string;
   let errorHappened = false;
   const calId = parseInt(calendarId);
-  if (dayIdByNameMap.size == 0) {
+  if (dayIdByNameMap.size === 0) {
     message = 'Days successfully created';
 
     Object.keys(days).forEach((dayName, index) => {
-      let HourRanges: NoDayHourRangeAttributes[] = [];
+      const HourRanges: NoDayHourRangeAttributes[] = [];
 
       const dayHourRanges = days[dayName as WeekDay];
 
@@ -57,9 +57,9 @@ function saveDays(
           for (let i = 0; i < hourRanges.length; i++) {
             const hourRange: OptionalHourRange = {
               ...hourRanges[i],
-              dayId: dayId,
+              dayId,
             };
-            await create(doctorId, calendarId, '' + dayId, hourRange);
+            await create(doctorId, calendarId, `${dayId}`, hourRange);
           }
         })
         .catch((err: Error) => {
@@ -74,8 +74,8 @@ function saveDays(
     message = 'Days successfully updated';
 
     Object.keys(days).forEach((dayName) => {
-      let hourRangesToCreate: HourRangeAttributes[] = [];
-      let hourRangesToUpdate: HourRangeAttributes[] = [];
+      const hourRangesToCreate: HourRangeAttributes[] = [];
+      const hourRangesToUpdate: HourRangeAttributes[] = [];
 
       const dayId = dayIdByNameMap.get(dayName as WeekDay);
 
@@ -96,25 +96,15 @@ function saveDays(
         });
 
         hourRangesToCreate.forEach((hourRange) => {
-          axios
-            .post(
-              `${getBaseUrl(doctorId, calendarId)}/${dayId}/hourRanges`,
-              hourRange
-            )
-            .catch((err: Error) => {
-              message = err.message;
-              errorHappened = true;
-            });
+          axios.post(`${getBaseUrl(doctorId, calendarId)}/${dayId}/hourRanges`, hourRange).catch((err: Error) => {
+            message = err.message;
+            errorHappened = true;
+          });
         });
 
         hourRangesToUpdate.forEach((hourRange) => {
           axios
-            .put(
-              `${getBaseUrl(doctorId, calendarId)}/${dayId}/hourRanges/${
-                hourRange.id
-              }`,
-              hourRange
-            )
+            .put(`${getBaseUrl(doctorId, calendarId)}/${dayId}/hourRanges/${hourRange.id}`, hourRange)
             .catch((err: Error) => {
               message = err.message;
               errorHappened = true;
@@ -124,16 +114,12 @@ function saveDays(
     });
 
     hourRangesToDelete.forEach((idsToDelete, dayName) => {
-      const dayId = dayIdByNameMap.get(dayName as WeekDay);
+      const dayId = dayIdByNameMap.get(dayName);
       idsToDelete.forEach((id) => {
-        axios
-          .delete(
-            `${getBaseUrl(doctorId, calendarId)}/${dayId}/hourRanges/${id}`
-          )
-          .catch((err: Error) => {
-            message = err.message;
-            errorHappened = true;
-          });
+        axios.delete(`${getBaseUrl(doctorId, calendarId)}/${dayId}/hourRanges/${id}`).catch((err: Error) => {
+          message = err.message;
+          errorHappened = true;
+        });
       });
     });
   }
@@ -147,10 +133,8 @@ function saveDays(
   });
 }
 
-function getDays(doctorId: string, calendarId: string) {
-  return axios
-    .get<Day[]>(getBaseUrl(doctorId, calendarId))
-    .then((response) => response.data);
+async function getDays(doctorId: string, calendarId: string) {
+  return axios.get<Day[]>(getBaseUrl(doctorId, calendarId)).then((response) => response.data);
 }
 
 export { saveDays, getDays };

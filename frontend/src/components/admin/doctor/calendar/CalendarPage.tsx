@@ -65,14 +65,14 @@ const CalendarPage = () => {
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    let newCalendar = { ...calendar, [name]: value };
+    const newCalendar = { ...calendar, [name]: value };
     updateErrors(newCalendar);
     setCalendar(newCalendar);
   }
 
   function selectChangeHandler(field: string, id: number) {
     setPreviousHospitalId(id);
-    let newCalendar = { ...calendar, [field]: id };
+    const newCalendar = { ...calendar, [field]: id };
     updateErrors(newCalendar);
     setCalendar(newCalendar);
   }
@@ -103,7 +103,7 @@ const CalendarPage = () => {
     let existErrors = false;
 
     for (const key in errors) {
-      // @ts-ignore
+      // @ts-expect-error 'key' is an error key
       if (errors[key]) {
         existErrors = true;
         break;
@@ -114,7 +114,7 @@ const CalendarPage = () => {
   }
 
   function updateErrors(calendar: OptionalCalendar): CalendarErrors {
-    let newErrors = { ...defaultErrors };
+    const newErrors = { ...defaultErrors };
 
     if (!calendar.name) {
       newErrors.name = 'You should set a name';

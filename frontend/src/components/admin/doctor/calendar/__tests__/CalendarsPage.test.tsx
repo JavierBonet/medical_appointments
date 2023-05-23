@@ -1,8 +1,8 @@
-import { render, render as rtlRender, RenderOptions, screen } from '@testing-library/react';
+import { render as rtlRender, type RenderOptions, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { useParams } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { areAvailableHospitals, deleteCalendar, getCalendars } from '../../../../../api/admin/calendars';
+import { areAvailableHospitals, getCalendars } from '../../../../../api/admin/calendars';
 import '@testing-library/jest-dom';
 import CalendarsPage from '../CalendarsPage';
 
@@ -33,7 +33,6 @@ jest.mock('../../../../../api/admin/calendars', () => ({
 }));
 
 const mockAreAvailableHospitals = jest.mocked(areAvailableHospitals);
-const mockDeleteCalendar = jest.mocked(deleteCalendar);
 const mockGetCalendars = jest.mocked(getCalendars);
 
 describe('CalendarsPage', () => {

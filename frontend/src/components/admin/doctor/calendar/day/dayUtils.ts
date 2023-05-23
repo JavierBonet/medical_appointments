@@ -61,7 +61,7 @@ export const hours = [
   '21:45',
 ];
 
-export let indexByHourMap: { [hour: string]: number } = {};
+export const indexByHourMap: Record<string, number> = {};
 
 hours.forEach((hour, index) => (indexByHourMap[hour] = index));
 
@@ -72,7 +72,7 @@ function getRemainingHourRangesQuantity(index: number) {
 }
 
 function getStartHourRangeOptions(startIndex: number) {
-  let options = [];
+  const options = [];
   for (let i = startIndex; i < hoursLength - 1; i++) {
     options.push({ key: i, value: i, text: hours[i] });
   }
@@ -80,7 +80,7 @@ function getStartHourRangeOptions(startIndex: number) {
 }
 
 function getEndHourRangeOptions(startIndex: number) {
-  let options = [];
+  const options = [];
   for (let i = startIndex; i < hoursLength; i++) {
     options.push({ key: i, value: i, text: hours[i] });
   }
@@ -91,7 +91,7 @@ function getIndexByValue(options: SelectOption[], value: number) {
   let index = -1;
 
   for (let i = 0; i < options.length; i++) {
-    if (options[i].value == value) {
+    if (options[i].value === value) {
       index = i;
       break;
     }
@@ -101,20 +101,19 @@ function getIndexByValue(options: SelectOption[], value: number) {
 }
 
 function getHourRangesUpdated(hourRangeInfos: HourRangeInfo[], previousHourRange: HourRangeInfo): HourRangeInfo[] {
-  let updatedHourRangeInfos = [...hourRangeInfos];
+  const updatedHourRangeInfos = [...hourRangeInfos];
   const length = hourRangeInfos.length;
   let previousSelectedEnd = previousHourRange.end.selected;
-  let stop = false;
 
   for (let i = 0; i < length; i++) {
     if (getRemainingHourRangesQuantity(previousSelectedEnd + 1) >= 2) {
-      let hourRange = updatedHourRangeInfos[i];
-      let currentFirstStartOption = hourRange.start.options[0].value;
+      const hourRange = updatedHourRangeInfos[i];
+      const currentFirstStartOption = hourRange.start.options[0].value;
 
       // If the first option of the start dropdown isn't the next
       // of the previous selected value in the end dropdown,
       // then I have to update the current start options
-      if (currentFirstStartOption - 1 != previousSelectedEnd) {
+      if (currentFirstStartOption - 1 !== previousSelectedEnd) {
         let index = previousSelectedEnd + 1;
         hourRange.start.options = getStartHourRangeOptions(index);
 
@@ -150,7 +149,7 @@ function getHourRangesUpdated(hourRangeInfos: HourRangeInfo[], previousHourRange
 }
 
 function dbDaysToDays(dbDays: Day[]): DaysMap {
-  let daysMap: DaysMap = {
+  const daysMap: DaysMap = {
     monday: [],
     tuesday: [],
     wednesday: [],
@@ -161,11 +160,11 @@ function dbDaysToDays(dbDays: Day[]): DaysMap {
   dbDays.forEach((dbDay) => {
     const dayName = dbDay.name;
     if (
-      dayName == 'monday' ||
-      dayName == 'tuesday' ||
-      dayName == 'wednesday' ||
-      dayName == 'thursday' ||
-      dayName == 'friday'
+      dayName === 'monday' ||
+      dayName === 'tuesday' ||
+      dayName === 'wednesday' ||
+      dayName === 'thursday' ||
+      dayName === 'friday'
     ) {
       daysMap[dayName] = dbHourRangesToHourRangeInfos(dbDay.HourRanges);
     }
@@ -175,7 +174,7 @@ function dbDaysToDays(dbDays: Day[]): DaysMap {
 }
 
 function dbHourRangesToHourRangeInfos(dbHourRanges: HourRange[]): HourRangeInfo[] {
-  let hourRangeInfos: HourRangeInfo[] = [];
+  const hourRangeInfos: HourRangeInfo[] = [];
 
   let previousEnd: number;
   dbHourRanges.forEach((dbHourRange, index) => {
@@ -183,7 +182,7 @@ function dbHourRangesToHourRangeInfos(dbHourRanges: HourRange[]): HourRangeInfo[
 
     const startHourIndex = indexByHourMap[dbHourRange.start];
 
-    if (index == 0) {
+    if (index === 0) {
       startFrom = 0;
     } else {
       startFrom = previousEnd + 1;
@@ -193,11 +192,11 @@ function dbHourRangesToHourRangeInfos(dbHourRanges: HourRange[]): HourRangeInfo[
 
     const id = dbHourRange.id;
 
-    let start = {
+    const start = {
       options: getStartHourRangeOptions(startFrom),
       selected: startHourIndex,
     };
-    let end = {
+    const end = {
       options: getEndHourRangeOptions(startHourIndex + 1),
       selected: endHourIndex,
     };
@@ -217,7 +216,7 @@ function getHourByIndex(index: number): string {
 function getDeletedHourRanges(previousHourRangesInfo: HourRangeInfo[], newHourRangesInfo: HourRangeInfo[]): number[] {
   let hourRangesToDelete: number[] = [];
 
-  let removedHourRanges = previousHourRangesInfo.slice(newHourRangesInfo.length);
+  const removedHourRanges = previousHourRangesInfo.slice(newHourRangesInfo.length);
 
   hourRangesToDelete = removedHourRanges.map((hourRange) => (hourRange.id ? hourRange.id : -1)).filter((id) => id >= 0);
 

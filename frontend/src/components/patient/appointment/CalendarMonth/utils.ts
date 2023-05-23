@@ -14,7 +14,7 @@ function getAppointmentHours(hourRanges: HourRange[]): string[] {
  * @returns List of hours within the {@link hourRange}, including the boundaries
  */
 function getHours(hourRange: HourRange): string[] {
-  let hours: string[] = [];
+  const hours: string[] = [];
 
   let currentHour = hourRange.start;
   while (currentHour !== hourRange.end) {
@@ -37,7 +37,7 @@ function addQuarterToHour(fullHour: string): string {
   const hour = parseInt(strHour);
 
   const newMinutes = strMinutes === '45' ? '00' : `${minutes + 15}`;
-  const newHour = strMinutes === '45' ? `${hour + 1}` : '' + hour;
+  const newHour = strMinutes === '45' ? `${hour + 1}` : `${hour}`;
 
   return `${newHour}:${newMinutes}`;
 }
@@ -47,10 +47,8 @@ function addQuarterToHour(fullHour: string): string {
  * @param appointments Appointments list
  * @returns Mapping between dates and appointments grouped by date
  */
-function getAppointmentsByDateMap(
-  appointments: Appointment[]
-): Map<string, Appointment[]> {
-  let appointmentsMap = new Map<string, Appointment[]>();
+function getAppointmentsByDateMap(appointments: Appointment[]): Map<string, Appointment[]> {
+  const appointmentsMap = new Map<string, Appointment[]>();
 
   appointments.forEach((appointment) => {
     const date = appointment.date;
@@ -68,9 +66,4 @@ function getAppointmentsByDateMap(
   return appointmentsMap;
 }
 
-export {
-  getAppointmentHours,
-  dbWeekDayToSystemDay,
-  addQuarterToHour,
-  getAppointmentsByDateMap,
-};
+export { getAppointmentHours, dbWeekDayToSystemDay, addQuarterToHour, getAppointmentsByDateMap };

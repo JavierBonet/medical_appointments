@@ -13,13 +13,13 @@ function getAssociationsBaseUrl(doctorId: string) {
   return `http://localhost:3000/api/admin/doctors/${doctorId}/associations/hospitals`;
 }
 
-function getCalendars(doctorId: string) {
+async function getCalendars(doctorId: string) {
   return axios.get<Calendar[]>(getBaseUrl(doctorId)).then((response) => {
     return response.data;
   });
 }
 
-function getCalendar(doctorId: string, id: string) {
+async function getCalendar(doctorId: string, id: string) {
   return axios
     .get<Calendar>(`${getBaseUrl(doctorId)}/${id}`)
     .then((response) => response.data)
@@ -35,37 +35,28 @@ function getCalendar(doctorId: string, id: string) {
  * @param doctorId Doctor id
  * @returns True if there is any hospital that isn't linked to the doctor
  */
-function areAvailableHospitals(doctorId: string) {
+async function areAvailableHospitals(doctorId: string) {
   return getAvailableHospitals(doctorId).then((hospitals) => {
-    return hospitals.length != 0;
+    return hospitals.length !== 0;
   });
 }
 
-function getAvailableHospitals(doctorId: string) {
-  return getHospitals(false).then((hospitals) => {
+async function getAvailableHospitals(doctorId: string) {
+  return getHospitals(false).then(async (hospitals) => {
     return getDoctor(doctorId).then((doctor) => {
-      const usedHospitalIds = new Set(
-        doctor.Calendars.map((calendar) => calendar.hospitalId)
-      );
+      const usedHospitalIds = new Set(doctor.Calendars.map((calendar) => calendar.hospitalId));
 
       return hospitals.filter((hospital) => !usedHospitalIds.has(hospital.id));
     });
   });
 }
 
-function saveCalendar(
-  doctorId: string,
-  calendar: OptionalCalendar,
-  oldHospitalId: number | undefined
-) {
+async function saveCalendar(doctorId: string, calendar: OptionalCalendar, oldHospitalId: number | undefined) {
   let promise: Promise<any>;
   let successMessage = '';
   const hospitalId = calendar.hospitalId;
   if (calendar.id) {
-    promise = axios.put<Calendar>(
-      `${getBaseUrl(doctorId)}/${calendar.id}`,
-      calendar
-    );
+    promise = axios.put<Calendar>(`${getBaseUrl(doctorId)}/${calendar.id}`, calendar);
 
     if (oldHospitalId) {
       /*
@@ -73,9 +64,7 @@ function saveCalendar(
        * - Create a new relation between the doctor and the new hospital
        * - Remove the previously created relation
        */
-      axios.put(
-        `${getAssociationsBaseUrl(doctorId)}/${oldHospitalId}/${hospitalId}`
-      );
+      axios.put(`${getAssociationsBaseUrl(doctorId)}/${oldHospitalId}/${hospitalId}`);
     }
 
     successMessage = 'Calendar updated successfully';
@@ -99,7 +88,7 @@ function saveCalendar(
     });
 }
 
-function deleteCalendar(doctorId: string, id: number) {
+async function deleteCalendar(doctorId: string, id: number) {
   return axios
     .delete<string>(`${getBaseUrl(doctorId)}/${id}`)
     .then((response) => response.data)
@@ -108,11 +97,4 @@ function deleteCalendar(doctorId: string, id: number) {
     });
 }
 
-export {
-  getCalendars,
-  getCalendar,
-  areAvailableHospitals,
-  getAvailableHospitals,
-  saveCalendar,
-  deleteCalendar,
-};
+export { getCalendars, getCalendar, areAvailableHospitals, getAvailableHospitals, saveCalendar, deleteCalendar };

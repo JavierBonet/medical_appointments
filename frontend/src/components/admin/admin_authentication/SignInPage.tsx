@@ -27,8 +27,8 @@ const SignInPage = ({ adminUser, setAdminUser }: PropsInterface) => {
   }, []);
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
-    let { name, value } = event.target;
-    let newPatient = { ...currentUser, [name]: value };
+    const { name, value } = event.target;
+    const newPatient = { ...currentUser, [name]: value };
     setCurrentUser(newPatient);
   }
 
@@ -47,11 +47,7 @@ const SignInPage = ({ adminUser, setAdminUser }: PropsInterface) => {
   return (
     <div className="section-container">
       <h1>Admin log in</h1>
-      <SignInForm
-        currentUser={currentUser}
-        changeHandler={changeHandler}
-        submitHandler={submitHandler}
-      />
+      <SignInForm currentUser={currentUser} changeHandler={changeHandler} submitHandler={submitHandler} />
     </div>
   );
 };

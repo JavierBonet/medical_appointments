@@ -9,7 +9,7 @@ function getAdminUsers() {}
 
 function getAdminUserById(id: string) {}
 
-function getAdminUserByEmail(email: string) {
+async function getAdminUserByEmail(email: string) {
   const url = `${baseUrl}/getByEmail/${email}`;
 
   return axios
@@ -19,7 +19,7 @@ function getAdminUserByEmail(email: string) {
       return patient;
     })
     .catch((error) => {
-      if (error.response.status == 404) {
+      if (error.response.status === 404) {
         return undefined;
       } else {
         throw error.response.data.message;
@@ -27,7 +27,7 @@ function getAdminUserByEmail(email: string) {
     });
 }
 
-function login(patient: LoginAdminUser) {
+async function login(patient: LoginAdminUser) {
   const url = `${baseUrl}/login`;
   const { email, password } = patient;
 
@@ -36,12 +36,10 @@ function login(patient: LoginAdminUser) {
     .then((response) => {
       return true;
     })
-    .catch((error) => {
-      return false;
-    });
+    .catch(() => false);
 }
 
-function doesAdminUserAlreadyExist(email: string) {
+async function doesAdminUserAlreadyExist(email: string) {
   const url = `${baseUrl}/getByEmail/${email}`;
 
   return axios
@@ -50,7 +48,7 @@ function doesAdminUserAlreadyExist(email: string) {
       return true;
     })
     .catch((error) => {
-      if (error.response.status == 404) {
+      if (error.response.status === 404) {
         return false;
       } else {
         throw error.response.data.message;
@@ -58,7 +56,7 @@ function doesAdminUserAlreadyExist(email: string) {
     });
 }
 
-function saveAdminUser(patient: OptionalDbAdminUser) {
+async function saveAdminUser(patient: OptionalDbAdminUser) {
   let promise: Promise<any>;
   let successMessage = '';
   if (patient.id) {
@@ -76,7 +74,7 @@ function saveAdminUser(patient: OptionalDbAdminUser) {
     });
 }
 
-function deleteAdminUser(id: number) {
+async function deleteAdminUser(id: number) {
   return axios
     .delete<string>(`${baseUrl}/${id}`)
     .then((response) => response.data)

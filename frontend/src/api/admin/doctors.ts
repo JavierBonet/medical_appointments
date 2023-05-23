@@ -5,7 +5,7 @@ axios.defaults.withCredentials = true;
 
 const baseUrl = 'http://localhost:3000/api/admin/doctors';
 
-function getDoctors() {
+async function getDoctors() {
   return axios
     .get<Doctor[]>(baseUrl)
     .then((response) => response.data)
@@ -19,7 +19,7 @@ function getDoctors() {
     });
 }
 
-function getDoctor(id: string) {
+async function getDoctor(id: string) {
   return axios
     .get<Doctor>(`${baseUrl}/${id}`)
     .then((response) => response.data)
@@ -33,7 +33,7 @@ function getDoctor(id: string) {
     });
 }
 
-function saveDoctor(doctor: OptionalDoctor) {
+async function saveDoctor(doctor: OptionalDoctor) {
   let promise: Promise<any>;
   let successMessage = '';
   if (doctor.id) {
@@ -51,7 +51,7 @@ function saveDoctor(doctor: OptionalDoctor) {
     });
 }
 
-function deleteDoctor(id: number) {
+async function deleteDoctor(id: number) {
   return axios
     .delete<string>(`${baseUrl}/${id}`)
     .then((response) => response.data)

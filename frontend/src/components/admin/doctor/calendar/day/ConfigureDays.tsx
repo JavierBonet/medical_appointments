@@ -47,7 +47,7 @@ const ConfigureDays = () => {
                   changeHandler={selectChangeHandler(index, 'end')}
                   removeLabel={true}
                 />
-                {days[selectedDay].length - 1 == index && (
+                {days[selectedDay].length - 1 === index && (
                   <Button negative onClick={() => deleteHandler(hourRangeInfo.id)}>
                     delete
                   </Button>

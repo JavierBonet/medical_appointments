@@ -48,7 +48,7 @@ const DoctorPage = ({ logout }: PropsInterface) => {
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    let newDoctor = { ...doctor, [name]: value };
+    const newDoctor = { ...doctor, [name]: value };
     setDoctor(newDoctor);
   }
 

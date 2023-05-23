@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { BsChevronLeft } from 'react-icons/bs';
 import LogoutButton from '../commons/LogoutButton';
@@ -9,8 +8,6 @@ interface PropsInterface {
   adminUser: LocalStorageAdminUser | undefined;
   logout: () => void;
 }
-
-const activeStyle = { fontWeight: 'bold' };
 
 const AdminHeader = ({ adminUser, logout }: PropsInterface) => {
   return (
@@ -35,17 +32,11 @@ const AdminHeader = ({ adminUser, logout }: PropsInterface) => {
         ) : (
           <>
             <div className="links-separator"></div>
-            <NavLink
-              to="hospitals"
-              className={({ isActive }) => (isActive ? 'active-link' : '')}
-            >
+            <NavLink to="hospitals" className={({ isActive }) => (isActive ? 'active-link' : '')}>
               Hospitals
             </NavLink>
             <div className="links-separator"></div>
-            <NavLink
-              to="doctors"
-              className={({ isActive }) => (isActive ? 'active-link' : '')}
-            >
+            <NavLink to="doctors" className={({ isActive }) => (isActive ? 'active-link' : '')}>
               Doctors
             </NavLink>
             <LogoutButton logout={logout} />

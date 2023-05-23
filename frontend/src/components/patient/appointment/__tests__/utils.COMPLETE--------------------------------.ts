@@ -27,8 +27,8 @@ const calendar: Calendar = {
 
 describe.skip('Utils', () => {
   it("getCalendarDates should succeed - CREATED JUST TO TEST THE FUNCTION'S OUTPUT", () => {
-    let datesByWeek = getCalendarDates(calendar, new Map());
-    let firstWeek = datesByWeek[0];
+    const datesByWeek = getCalendarDates(calendar, new Map());
+    const firstWeek = datesByWeek[0];
     // console.log(firstWeek[0]);
     // console.log(firstWeek[1]);
     // console.log(firstWeek[2]);

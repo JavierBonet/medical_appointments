@@ -5,8 +5,8 @@ axios.defaults.withCredentials = true;
 
 const baseUrl = 'http://localhost:3000/api/admin/hospitals';
 
-function getHospitals(includeDoctors: boolean) {
-  let url: string = includeDoctors ? `${baseUrl}?includeDoctors=true` : baseUrl;
+async function getHospitals(includeDoctors: boolean) {
+  const url = includeDoctors ? `${baseUrl}?includeDoctors=true` : baseUrl;
   return axios
     .get<Hospital[]>(url)
     .then((response) => {
@@ -22,7 +22,7 @@ function getHospitals(includeDoctors: boolean) {
     });
 }
 
-function getHospital(id: string) {
+async function getHospital(id: string) {
   return axios
     .get<Hospital>(`${baseUrl}/${id}`)
     .then((response) => response.data)
@@ -36,7 +36,7 @@ function getHospital(id: string) {
     });
 }
 
-function saveHospital(hospital: OptionalHospital) {
+async function saveHospital(hospital: OptionalHospital) {
   let promise: Promise<any>;
   let successMessage = '';
   if (hospital.id) {
@@ -54,7 +54,7 @@ function saveHospital(hospital: OptionalHospital) {
     });
 }
 
-function deleteHospital(id: number) {
+async function deleteHospital(id: number) {
   return axios
     .delete<string>(`${baseUrl}/${id}`)
     .then((response) => response.data)
