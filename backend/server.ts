@@ -6,6 +6,9 @@ import authenticationConfig from './authenticationConfig';
 
 import passport from 'passport';
 const session = require('express-session');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocs = require('./openApiDocumentation');
+
 export interface ServerInterface {
   init: (config: GeneralRouterConfig, port?: number) => void;
   start: () => void;
@@ -43,13 +46,11 @@ const Server: ServerInterface = {
     _app.use(passport.session());
 
     // Configure authentication strategies
-    const patientsRepository =
-      config.routerConfig.apiRouterConfig.patientsRouterConfig
-        .patientsRepository;
-    const adminUsersRepository =
-      config.routerConfig.apiRouterConfig.adminRouterConfig
-        .adminUsersRepository;
+    const patientsRepository = config.routerConfig.apiRouterConfig.patientsRouterConfig.patientsRepository;
+    const adminUsersRepository = config.routerConfig.apiRouterConfig.adminRouterConfig.adminUsersRepository;
     authenticationConfig(passport, patientsRepository, adminUsersRepository);
+
+    _app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
     // -----------------------------------------
 

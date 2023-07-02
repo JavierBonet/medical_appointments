@@ -3,9 +3,15 @@
 TODO:
 
   - BOTH:
+    [ ] Add redis or some other cache storage. Just to learn
+    
+    [ ] Refactor repository methods to return the correct results. For example, in the DoctorRepository, the deleteDoctor method should just
+      call Doctor.destroy({where:{id}}) y eso devuelve una Promise<number> con el total de elementos eliminados
+
     [ ] Use jwt
 
     [ ] Add pre commit hooks. use husky for example
+
 
   - BACKEND:
 
@@ -28,6 +34,8 @@ TODO:
 DONE:
 - Features:
 
+  [√] Add OpenAPI, swagger
+  
   [√] Move ConfigureDays logic to a custom hook
 
   [√] Al crear hour ranges solo crea algunos. No se si se reproduce asi nomas:

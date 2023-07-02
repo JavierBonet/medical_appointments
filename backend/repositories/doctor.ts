@@ -2,9 +2,7 @@ import { FindOptions, InferAttributes, ValidationError } from 'sequelize';
 import Doctor, { Attributes, CreationAttributes } from '../db/models/doctor';
 
 const DoctorRepository = {
-  getAll: function getAll(
-    options?: FindOptions<InferAttributes<Doctor, { omit: never }>>
-  ) {
+  getAll: function getAll(options?: FindOptions<InferAttributes<Doctor, { omit: never }>>) {
     return Doctor.findAll(options);
   },
 
@@ -63,10 +61,7 @@ const DoctorRepository = {
     });
   },
 
-  addHospitalAssociation: function addHospitalAssociation(
-    hospitalId: number,
-    doctorId: number
-  ) {
+  addHospitalAssociation: function addHospitalAssociation(hospitalId: number, doctorId: number) {
     Doctor.findByPk(doctorId).then((doctor) => {
       if (doctor) {
         doctor.addHospital(hospitalId);
